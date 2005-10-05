@@ -1,5 +1,6 @@
 # TODO: documentation
 Summary:	The stupid content tracker
+Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
 Version:	0.99.8
 Release:	0.1
@@ -19,7 +20,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 "git" can mean anything, depending on your mood.
 
  - random three-letter combination that is pronounceable, and not
-   actually used by any common UNIX command.  The fact that it is a
+   actually used by any common UNIX command. The fact that it is a
    mispronunciation of "get" may or may not be relevant.
  - stupid. contemptible and despicable. simple. Take your pick from the
    dictionary of slang.
@@ -27,9 +28,26 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
    works for you. Angels sing, and a light suddenly fills the room.
  - "goddamn idiotic truckload of sh*t": when it breaks
 
-This is a stupid (but extremely fast) directory content manager.  It
+This is a stupid (but extremely fast) directory content manager. It
 doesn't do a whole lot, but what it 'does' do is track directory
 contents efficiently.
+
+%description -l pl
+"git" mo¿e oznaczaæ cokolwiek, w zale¿no¶ci od nastroju.
+
+- losow± kombinacjê trzech liter, która jest wymawialna i w³a¶ciwie
+  nie u¿ywana przez ¿adne popularne polecenie uniksowe. Fakt, ¿e jest
+  to b³êdna pisownia s³owa "get" mo¿e mieæ lub nie mieæ znaczenia.
+- g³upi, pogardliwy, prosty. Mo¿na wybraæ ze s³ownika slangu.
+- "global information tracker" (narzêdzie do globalnego ¶ledzenia
+  informacji) - je¶li jeste¶my w dobrym nastroju i git akurat dzia³a.
+  Anio³y ¶piewaj±, a ¶wiat³o niespodziewanie wype³nia pokój.
+- "goddamn idiotic truckload of sh*t" (przeklêty idiotyczny ³adunek
+  g*) - kiedy siê zepsuje.
+
+Jest to prymitywny (ale bardzo szybki) zarz±dca tre¶ci s³ownikowej.
+Nie robi wiele, ale to, co "robi", to wydajne ¶ledzenie zawarto¶ci
+katalogu.
 
 %prep
 %setup -q
@@ -39,6 +57,7 @@ contents efficiently.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	prefix=/usr \
 	DESTDIR=$RPM_BUILD_ROOT
