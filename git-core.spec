@@ -1,7 +1,5 @@
 # TODO:
 # - documentation
-# - there's a conflict between git-core and git (git binary), 
-#   rename the latter to git.gnu?
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
