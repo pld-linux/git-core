@@ -3,12 +3,12 @@
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
-Version:	0.99.9i
+Version:	0.99.9k
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
-Source0:	http://www.kernel.org/pub/software/scm/git/%{name}-%{version}.tar.bz2
-# Source0-md5:	d10e29a4d9730324fe3ef1864ef8b354
+Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
+# Source0-md5:	74c8cdf3900c029385073a4a27b441e5
 URL:		http://git.or.cz/
 BuildRequires:	curl-devel
 BuildRequires:	openssl-devel
@@ -51,7 +51,7 @@ Nie robi wiele, ale to, co "robi", to wydajne ¶ledzenie zawarto¶ci
 katalogu.
 
 %prep
-%setup -q
+%setup -q -n git-%{version}
 %{__make} \
 	prefix=%{_prefix} \
 	CC="%{__cc}" \
