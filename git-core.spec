@@ -4,16 +4,18 @@ Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
 Version:	1.0.7
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 # Source0-md5:	4f8292542771b2303241b0bfea7101ed
 URL:		http://git.or.cz/
+BuildRequires:	asciidoc
 BuildRequires:	curl-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-base
 BuildRequires:	python
+BuildRequires:	xmlto
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -60,6 +62,8 @@ katalogu.
 	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}"
 
+%{__make} -C Documentation
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -67,12 +71,18 @@ rm -rf $RPM_BUILD_ROOT
 	prefix=%{_prefix} \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%{__make} -C Documentation install \
+	prefix=%{_prefix} \
+	mandir=%{_mandir} \
+	DESTDIR=$RPM_BUILD_ROOT
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README
+%doc README Documentation/*.html Documentation/howto Documentation/technical
 %attr(755,root,root) %{_bindir}/*
+%{_mandir}/man*/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*
