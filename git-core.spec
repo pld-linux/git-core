@@ -52,6 +52,8 @@ katalogu.
 
 %prep
 %setup -q -n git-%{version}
+
+%build
 %{__make} \
 	prefix=%{_prefix} \
 	CC="%{__cc}" \
