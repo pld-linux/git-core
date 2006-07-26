@@ -68,6 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	prefix=%{_prefix} \
+	CFLAGS="%{rpmcflags}" \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__make} -C Documentation install \
