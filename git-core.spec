@@ -51,6 +51,13 @@ Jest to prymitywny (ale bardzo szybki) zarz±dca tre¶ci s³ownikowej.
 Nie robi wiele, ale to, co "robi", to wydajne ¶ledzenie zawarto¶ci
 katalogu.
 
+%package devel
+Summary:	header files for git-core
+Group: Development/Libraries
+
+%description devel
+header files for git-core.
+
 %prep
 %setup -q -n git-%{version}
 
@@ -65,6 +72,7 @@ katalogu.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 
 %{__make} install \
 	prefix=%{_prefix} \
@@ -76,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 	mandir=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
+install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -86,3 +97,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man*/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*
+
+%files devel
+%{_includedir}/*
