@@ -38,8 +38,8 @@ contents efficiently.
 "git" mo¿e oznaczaæ cokolwiek, w zale¿no¶ci od nastroju.
 
 - losow± kombinacjê trzech liter, która jest wymawialna i w³a¶ciwie
-  nie u¿ywana przez ¿adne popularne polecenie uniksowe. Fakt, ¿e jest
-  to b³êdna pisownia s³owa "get" mo¿e mieæ lub nie mieæ znaczenia.
+  nie u¿ywana przez ¿adne popularne polecenie uniksowe. Fakt, ¿e jest to
+  b³êdna pisownia s³owa "get" mo¿e mieæ lub nie mieæ znaczenia.
 - g³upi, pogardliwy, prosty. Mo¿na wybraæ ze s³ownika slangu.
 - "global information tracker" (narzêdzie do globalnego ¶ledzenia
   informacji) - je¶li jeste¶my w dobrym nastroju i git akurat dzia³a.
@@ -103,4 +103,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/*
 
 %files devel
+%defattr(644,root,root,755)
 %{_includedir}/*
