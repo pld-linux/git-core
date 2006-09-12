@@ -52,11 +52,15 @@ Nie robi wiele, ale to, co "robi", to wydajne ¶ledzenie zawarto¶ci
 katalogu.
 
 %package devel
-Summary:	header files for git-core
-Group: Development/Libraries
+Summary:	Header files for git-core
+Summary(pl):	Pliki nag³ówkowe dla git-core
+Group:		Development/Libraries
 
 %description devel
-header files for git-core.
+Header files for git-core.
+
+%description devel
+Pliki nag³ówkowe dla git-core.
 
 %prep
 %setup -q -n git-%{version}
