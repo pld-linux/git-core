@@ -1,5 +1,4 @@
-# TODO:
-# perl-git subpackage
+%include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
@@ -16,6 +15,7 @@ BuildRequires:	expat-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-base
 BuildRequires:	python
+BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	xmlto
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
