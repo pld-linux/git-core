@@ -3,12 +3,12 @@
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
-Version:	1.4.3.2
+Version:	1.4.3.4
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	c13797079424790597d696972fffa7b4
+# Source0-md5:	5114c6b58329f3574697a595774df7d0
 URL:		http://git.or.cz/
 BuildRequires:	asciidoc
 BuildRequires:	curl-devel
@@ -64,10 +64,27 @@ Header files for git-core.
 %description devel
 Pliki nag³ówkowe dla git-core.
 
+%package -n perl-git-core
+Summary:	Perl interface to the Git version control system
+Group:		Development/Languages/Perl
+Requires:	%{name} = %{version}-%{release}
+
+%description -n perl-git-core
+This module provides Perl scripts easy way to interface the Git
+version control system. The modules have an easy and well-tested way
+to call arbitrary Git commands; in the future, the interface will also
+provide specialized methods for doing easily operations which are not
+totally trivial to do over the generic command interface.
+
 %prep
 %setup -q -n git-%{version}
 
 %build
+cd perl
+%{__perl} Makefile.PL \
+	INSTALLDIRS=vendor
+cd ..
+
 %{__make} \
 	prefix=%{_prefix} \
 	CC="%{__cc}" \
@@ -107,3 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/*
+
+%files -n perl-git-core
+%defattr(644,root,root,755)
+%{perl_vendorlib}/*.pm
+%{_mandir}/man3/*
