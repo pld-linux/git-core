@@ -65,13 +65,13 @@ Header files for git-core.
 %description devel
 Pliki nag³ówkowe dla git-core.
 
-%package -n perl-Git-Core
+%package -n perl-Git
 Summary:	Perl interface to the Git version control system
 Group:		Development/Languages/Perl
 Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
 
-%description -n perl-Git-Core
+%description -n perl-Git
 This module provides Perl scripts easy way to interface the Git
 version control system. The modules have an easy and well-tested way
 to call arbitrary Git commands; in the future, the interface will also
@@ -132,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_includedir}/*
 
-%files -n perl-Git-Core
+%files -n perl-Git
 %defattr(644,root,root,755)
-%{perl_vendorlib}/*.pm
+%{perl_vendorlib}/Git.pm
 %{_mandir}/man3/*
