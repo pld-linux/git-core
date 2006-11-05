@@ -3,7 +3,7 @@ Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
 Version:	1.4.3.4
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -13,6 +13,7 @@ BuildRequires:	asciidoc
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	openssl-devel
+BuildRequires:	perl-Error
 BuildRequires:	perl-base
 BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
@@ -64,12 +65,13 @@ Header files for git-core.
 %description devel
 Pliki nag³ówkowe dla git-core.
 
-%package -n perl-git-core
+%package -n perl-Git-Core
 Summary:	Perl interface to the Git version control system
 Group:		Development/Languages/Perl
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	perl-git-core
 
-%description -n perl-git-core
+%description -n perl-Git-Core
 This module provides Perl scripts easy way to interface the Git
 version control system. The modules have an easy and well-tested way
 to call arbitrary Git commands; in the future, the interface will also
@@ -80,16 +82,18 @@ totally trivial to do over the generic command interface.
 %setup -q -n git-%{version}
 
 %build
-cd perl
-%{__perl} Makefile.PL \
-	INSTALLDIRS=vendor
-cd ..
-
 %{__make} \
 	prefix=%{_prefix} \
 	CC="%{__cc}" \
 	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}"
+
+# once again to get perl paths stright
+cd perl
+%{__perl} Makefile.PL \
+	INSTALLDIRS=vendor
+%{__make}
+cd ..
 
 %{__make} -C Documentation
 
@@ -110,6 +114,9 @@ install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 
+rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
+rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -125,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_includedir}/*
 
-%files -n perl-git-core
+%files -n perl-Git-Core
 %defattr(644,root,root,755)
 %{perl_vendorlib}/*.pm
 %{_mandir}/man3/*
