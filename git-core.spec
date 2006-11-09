@@ -67,6 +67,7 @@ Pliki nag³ówkowe dla git-core.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
+Summary(pl):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
@@ -77,6 +78,13 @@ version control system. The modules have an easy and well-tested way
 to call arbitrary Git commands; in the future, the interface will also
 provide specialized methods for doing easily operations which are not
 totally trivial to do over the generic command interface.
+
+%description -n perl-Git -l pl
+Ten modu³ umo¿liwia skryptom Perla wspó³pracê z systemem kontroli
+wersji Git. W ³atwy i dobrze przetestowany sposób pozwala wywo³ywaæ
+dowolne polecenia Gita; w przysz³o¶ci interfejs udostêpni tak¿e
+specjalne metody do ³atwego wykonywania operacji nietrywialnych do
+wykonania przy u¿yciu ogólnego interfejsu poleceñ.
 
 %prep
 %setup -q -n git-%{version}
