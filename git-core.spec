@@ -1,3 +1,5 @@
+# TODO:
+# - gitweb subpackage
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
