@@ -19,6 +19,10 @@ BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	xmlto
 BuildRequires:	zlib-devel
+Requires:	coreutils
+Requires:	findutils
+Requires:	grep
+Requires:	sed
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
