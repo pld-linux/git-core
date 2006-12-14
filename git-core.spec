@@ -1,5 +1,6 @@
 # TODO:
 # - gitweb subpackage
+# - gitk subpackage?
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
@@ -12,6 +13,8 @@ Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 # Source0-md5:	c4f72d96f62ae97c6e8d5cdb4afd55ca
 URL:		http://git.or.cz/
 BuildRequires:	asciidoc
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	openssl-devel
@@ -22,10 +25,14 @@ BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	xmlto
 BuildRequires:	zlib-devel
 Requires:	coreutils
+Requires:	curl
+Requires:	diffutils
 Requires:	findutils
 Requires:	grep
+Requires:	openssh-clients
 Requires:	rcs
 Requires:	sed
+Requires:	tk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -97,14 +104,14 @@ wykonania przy u¿yciu ogólnego interfejsu poleceñ.
 %setup -q -n git-%{version}
 
 %build
-%{__make} \
-	prefix=%{_prefix} \
-	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}"
+%{__aclocal}
+%{__autoconf}
+%configure \
+	--with-openssl
 
 # once again to get perl paths stright
 cd perl
+rm -f Makefile
 %{__perl} Makefile.PL \
 	INSTALLDIRS=vendor
 %{__make}
@@ -117,13 +124,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 
 %{__make} install \
-	prefix=%{_prefix} \
-	CFLAGS="%{rpmcflags}" \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__make} -C Documentation install \
-	prefix=%{_prefix} \
-	mandir=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
