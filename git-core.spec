@@ -24,6 +24,7 @@ BuildRequires:	zlib-devel
 Requires:	coreutils
 Requires:	findutils
 Requires:	grep
+Requires:	rcs
 Requires:	sed
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
