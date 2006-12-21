@@ -1,0 +1,20 @@
+diff -urN git-1.4.4.3.org/Makefile git-1.4.4.3/Makefile
+--- git-1.4.4.3.org/Makefile	2006-12-20 21:11:12.000000000 +0100
++++ git-1.4.4.3/Makefile	2006-12-21 00:59:35.012100250 +0100
+@@ -772,6 +772,7 @@
+ 
+ perl/Makefile: perl/Git.pm perl/Makefile.PL GIT-CFLAGS
+ 	(cd perl && $(PERL_PATH) Makefile.PL \
++		INSTALLDIRS='$(INSTALLDIRS)' \
+ 		PREFIX='$(prefix_SQ)')
+ 
+ doc:
+@@ -836,7 +837,7 @@
+ 	$(INSTALL) $(ALL_PROGRAMS) '$(DESTDIR_SQ)$(gitexecdir_SQ)'
+ 	$(INSTALL) git$X gitk '$(DESTDIR_SQ)$(bindir_SQ)'
+ 	$(MAKE) -C templates DESTDIR='$(DESTDIR_SQ)' install
+-	$(MAKE) -C perl install
++	$(MAKE) -C perl install DESTDIR='$(DESTDIR_SQ)'
+ 	$(INSTALL) -d -m755 '$(DESTDIR_SQ)$(GIT_PYTHON_DIR_SQ)'
+ 	$(INSTALL) $(PYMODULES) '$(DESTDIR_SQ)$(GIT_PYTHON_DIR_SQ)'
+ 	if test 'z$(bindir_SQ)' != 'z$(gitexecdir_SQ)'; \
