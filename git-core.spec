@@ -5,12 +5,13 @@
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
-Version:	1.4.4.2
+Version:	1.4.4.3
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	c4f72d96f62ae97c6e8d5cdb4afd55ca
+# Source0-md5:	a4c2c27f7ea3137a5be7edaecfb9db21
+Patch0:		%{name}-build.patch
 URL:		http://git.or.cz/
 BuildRequires:	asciidoc
 BuildRequires:	autoconf
@@ -102,6 +103,7 @@ wykonania przy u¿yciu ogólnego interfejsu poleceñ.
 
 %prep
 %setup -q -n git-%{version}
+%patch0 -p1
 
 %build
 %{__aclocal}
@@ -109,13 +111,8 @@ wykonania przy u¿yciu ogólnego interfejsu poleceñ.
 %configure \
 	--with-openssl
 
-# once again to get perl paths stright
-cd perl
-rm -f Makefile
-%{__perl} Makefile.PL \
+%{__make} \
 	INSTALLDIRS=vendor
-%{__make}
-cd ..
 
 %{__make} -C Documentation
 
