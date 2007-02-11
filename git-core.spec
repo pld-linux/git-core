@@ -77,7 +77,7 @@ Group:		Development/Libraries
 %description devel
 Header files for git-core.
 
-%description devel
+%description devel -l pl
 Pliki nag³ówkowe dla git-core.
 
 %package -n perl-Git
