@@ -3,7 +3,7 @@
 # - gitk subpackage?
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
-Summary(pl.UTF-8):   Prymitywne narzędzie do śledzenia treści
+Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.4.4.4
 Release:	1
@@ -71,7 +71,7 @@ katalogu.
 
 %package devel
 Summary:	Header files for git-core
-Summary(pl.UTF-8):   Pliki nagłówkowe dla git-core
+Summary(pl.UTF-8):	Pliki nagłówkowe dla git-core
 Group:		Development/Libraries
 
 %description devel
@@ -82,7 +82,7 @@ Pliki nagłówkowe dla git-core.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
-Summary(pl.UTF-8):   Perlowy interfejs do systemu kontroli wersji Git
+Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
