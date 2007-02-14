@@ -1,7 +1,25 @@
-diff -urN git-1.4.4.3.org/Makefile git-1.4.4.3/Makefile
---- git-1.4.4.3.org/Makefile	2006-12-20 21:11:12.000000000 +0100
-+++ git-1.4.4.3/Makefile	2006-12-21 00:59:35.012100250 +0100
-@@ -772,6 +772,7 @@
+diff -urN git-1.5.0.org/Makefile git-1.5.0/Makefile
+--- git-1.5.0.org/Makefile	2007-02-14 03:46:46.000000000 +0100
++++ git-1.5.0/Makefile	2007-02-14 10:15:35.646623000 +0100
+@@ -614,7 +614,7 @@
+ 
+ all::
+ 	$(MAKE) -C git-gui all
+-	$(MAKE) -C perl PERL_PATH='$(PERL_PATH_SQ)' prefix='$(prefix_SQ)' all
++	$(MAKE) -C perl PERL_PATH='$(PERL_PATH_SQ)' prefix='$(prefix_SQ)' INSTALLDIRS='$(INSTALLDIRS)' all
+ 	$(MAKE) -C templates
+ 
+ strip: $(PROGRAMS) git$X
+@@ -647,7 +647,7 @@
+ $(patsubst %.perl,%,$(SCRIPT_PERL)): perl/perl.mak
+ 
+ perl/perl.mak: GIT-CFLAGS
+-	$(MAKE) -C perl PERL_PATH='$(PERL_PATH_SQ)' prefix='$(prefix_SQ)' $(@F)
++	$(MAKE) -C perl PERL_PATH='$(PERL_PATH_SQ)' prefix='$(prefix_SQ)' INSTALLDIRS='$(INSTALLDIRS)' $(@F)
+ 
+ $(patsubst %.perl,%,$(SCRIPT_PERL)): % : %.perl
+ 	rm -f $@ $@+
+@@ -780,6 +780,7 @@
  
  perl/Makefile: perl/Git.pm perl/Makefile.PL GIT-CFLAGS
  	(cd perl && $(PERL_PATH) Makefile.PL \
@@ -9,12 +27,3 @@ diff -urN git-1.4.4.3.org/Makefile git-1.4.4.3/Makefile
  		PREFIX='$(prefix_SQ)')
  
  doc:
-@@ -836,7 +837,7 @@
- 	$(INSTALL) $(ALL_PROGRAMS) '$(DESTDIR_SQ)$(gitexecdir_SQ)'
- 	$(INSTALL) git$X gitk '$(DESTDIR_SQ)$(bindir_SQ)'
- 	$(MAKE) -C templates DESTDIR='$(DESTDIR_SQ)' install
--	$(MAKE) -C perl install
-+	$(MAKE) -C perl install DESTDIR='$(DESTDIR_SQ)'
- 	$(INSTALL) -d -m755 '$(DESTDIR_SQ)$(GIT_PYTHON_DIR_SQ)'
- 	$(INSTALL) $(PYMODULES) '$(DESTDIR_SQ)$(GIT_PYTHON_DIR_SQ)'
- 	if test 'z$(bindir_SQ)' != 'z$(gitexecdir_SQ)'; \
