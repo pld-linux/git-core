@@ -1,15 +1,21 @@
+# TODO:
+# - gitweb subpackage
+# - gitk subpackage?
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
 Summary(pl):	Prymitywne narzêdzie do ¶ledzenia tre¶ci
 Name:		git-core
-Version:	1.4.4.2
+Version:	1.5.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	c4f72d96f62ae97c6e8d5cdb4afd55ca
+# Source0-md5:	5c3e163ac201695c9bfd5a19d730303c
+Patch0:		%{name}-build.patch
 URL:		http://git.or.cz/
 BuildRequires:	asciidoc
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	openssl-devel
@@ -19,6 +25,15 @@ BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	xmlto
 BuildRequires:	zlib-devel
+Requires:	coreutils
+Requires:	curl
+Requires:	diffutils
+Requires:	findutils
+Requires:	grep
+Requires:	openssh-clients
+Requires:	rcs
+Requires:	sed
+Requires:	tk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -88,20 +103,16 @@ wykonania przy u¿yciu ogólnego interfejsu poleceñ.
 
 %prep
 %setup -q -n git-%{version}
+%patch0 -p1
 
 %build
-%{__make} \
-	prefix=%{_prefix} \
-	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}"
+%{__aclocal}
+%{__autoconf}
+%configure \
+	--with-openssl
 
-# once again to get perl paths stright
-cd perl
-%{__perl} Makefile.PL \
+%{__make} \
 	INSTALLDIRS=vendor
-%{__make}
-cd ..
 
 %{__make} -C Documentation
 
@@ -110,13 +121,10 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 
 %{__make} install \
-	prefix=%{_prefix} \
-	CFLAGS="%{rpmcflags}" \
+	INSTALLDIRS=vendor \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__make} -C Documentation install \
-	prefix=%{_prefix} \
-	mandir=%{_mandir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
