@@ -3,14 +3,14 @@
 # - gitk subpackage?
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
-Summary(pl.UTF-8):	Prymitywne narzƒôdzie do ≈õledzenia tre≈õci
+Summary(pl):	Prymitywne narzÍdzie do ∂ledzenia tre∂ci
 Name:		git-core
-Version:	1.4.4.4
-Release:	1
+Version:	1.5.0.3
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	970aceba959e7fe92f065d7509e6db51
+# Source0-md5:	ea7a01dbde1da8fce235dde689bfeeea
 Patch0:		%{name}-build.patch
 URL:		http://git.or.cz/
 BuildRequires:	asciidoc
@@ -52,37 +52,37 @@ This is a stupid (but extremely fast) directory content manager. It
 doesn't do a whole lot, but what it 'does' do is track directory
 contents efficiently.
 
-%description -l pl.UTF-8
-"git" mo≈ºe oznaczaƒá cokolwiek, w zale≈ºno≈õci od nastroju.
+%description -l pl
+"git" moøe oznaczaÊ cokolwiek, w zaleøno∂ci od nastroju.
 
-- losowƒÖ kombinacjƒô trzech liter, kt√≥ra jest wymawialna i w≈Ça≈õciwie
-  nie u≈ºywana przez ≈ºadne popularne polecenie uniksowe. Fakt, ≈ºe jest to
-  b≈Çƒôdna pisownia s≈Çowa "get" mo≈ºe mieƒá lub nie mieƒá znaczenia.
-- g≈Çupi, pogardliwy, prosty. Mo≈ºna wybraƒá ze s≈Çownika slangu.
-- "global information tracker" (narzƒôdzie do globalnego ≈õledzenia
-  informacji) - je≈õli jeste≈õmy w dobrym nastroju i git akurat dzia≈Ça.
-  Anio≈Çy ≈õpiewajƒÖ, a ≈õwiat≈Ço niespodziewanie wype≈Çnia pok√≥j.
-- "goddamn idiotic truckload of sh*t" (przeklƒôty idiotyczny ≈Çadunek
-  g*) - kiedy siƒô zepsuje.
+- losow± kombinacjÍ trzech liter, ktÛra jest wymawialna i w≥a∂ciwie
+  nie uøywana przez øadne popularne polecenie uniksowe. Fakt, øe jest to
+  b≥Ídna pisownia s≥owa "get" moøe mieÊ lub nie mieÊ znaczenia.
+- g≥upi, pogardliwy, prosty. Moøna wybraÊ ze s≥ownika slangu.
+- "global information tracker" (narzÍdzie do globalnego ∂ledzenia
+  informacji) - je∂li jeste∂my w dobrym nastroju i git akurat dzia≥a.
+  Anio≥y ∂piewaj±, a ∂wiat≥o niespodziewanie wype≥nia pokÛj.
+- "goddamn idiotic truckload of sh*t" (przeklÍty idiotyczny ≥adunek
+  g*) - kiedy siÍ zepsuje.
 
-Jest to prymitywny (ale bardzo szybki) zarzƒÖdca tre≈õci s≈Çownikowej.
-Nie robi wiele, ale to, co "robi", to wydajne ≈õledzenie zawarto≈õci
+Jest to prymitywny (ale bardzo szybki) zarz±dca tre∂ci s≥ownikowej.
+Nie robi wiele, ale to, co "robi", to wydajne ∂ledzenie zawarto∂ci
 katalogu.
 
 %package devel
 Summary:	Header files for git-core
-Summary(pl.UTF-8):	Pliki nag≈Ç√≥wkowe dla git-core
+Summary(pl):	Pliki nag≥Ûwkowe dla git-core
 Group:		Development/Libraries
 
 %description devel
 Header files for git-core.
 
-%description devel -l pl.UTF-8
-Pliki nag≈Ç√≥wkowe dla git-core.
+%description devel
+Pliki nag≥Ûwkowe dla git-core.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
-Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
+Summary(pl):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
@@ -94,12 +94,12 @@ to call arbitrary Git commands; in the future, the interface will also
 provide specialized methods for doing easily operations which are not
 totally trivial to do over the generic command interface.
 
-%description -n perl-Git -l pl.UTF-8
-Ten modu≈Ç umo≈ºliwia skryptom Perla wsp√≥≈Çpracƒô z systemem kontroli
-wersji Git. W ≈Çatwy i dobrze przetestowany spos√≥b pozwala wywo≈Çywaƒá
-dowolne polecenia Gita; w przysz≈Ço≈õci interfejs udostƒôpni tak≈ºe
-specjalne metody do ≈Çatwego wykonywania operacji nietrywialnych do
-wykonania przy u≈ºyciu og√≥lnego interfejsu polece≈Ñ.
+%description -n perl-Git -l pl
+Ten modu≥ umoøliwia skryptom Perla wspÛ≥pracÍ z systemem kontroli
+wersji Git. W ≥atwy i dobrze przetestowany sposÛb pozwala wywo≥ywaÊ
+dowolne polecenia Gita; w przysz≥o∂ci interfejs udostÍpni takøe
+specjalne metody do ≥atwego wykonywania operacji nietrywialnych do
+wykonania przy uøyciu ogÛlnego interfejsu poleceÒ.
 
 %prep
 %setup -q -n git-%{version}
@@ -121,6 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 
 %{__make} install \
+	INSTALLDIRS=vendor \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{__make} -C Documentation install \
