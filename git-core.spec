@@ -1,6 +1,7 @@
 # TODO:
 # - gitweb subpackage
 # - gitk subpackage?
+%bcond_without	tests
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
@@ -114,6 +115,8 @@ wykonania przy użyciu ogólnego interfejsu poleceń.
 	INSTALLDIRS=vendor
 
 %{__make} -C Documentation
+
+%{?with_tests:%{__make} test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
