@@ -1,7 +1,10 @@
 # TODO:
 # - gitweb subpackage
 # - gitk subpackage?
-%bcond_without	tests
+#
+# Conditional build:
+%bcond_without	tests	# don't perform make test
+#
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
