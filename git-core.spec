@@ -1,6 +1,5 @@
 # TODO:
 # - gitweb subpackage
-# - gitk subpackage?
 #
 # Conditional build:
 %bcond_without	tests	# don't perform make test
@@ -9,12 +8,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.2.1
+Version:	1.5.2.2
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	0a39e786a12974cbe7b14f2fe92dc163
+# Source0-md5:	846940654b703ec5c8de4ee388cb4d08
 URL:		http://git.or.cz/
 BuildRequires:	asciidoc
 BuildRequires:	autoconf
@@ -37,7 +36,6 @@ Requires:	openssh-clients
 Requires:	perl-Error
 Requires:	rcs
 Requires:	sed
-Requires:	tk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,6 +81,31 @@ Header files for git-core.
 
 %description devel -l pl.UTF-8
 Pliki nagłówkowe dla git-core.
+
+%package gitk
+Summary:	Tcl/Tk interface to the Git version control system
+Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tk
+
+%description gitk
+Displays changes in a repository or a selected set of commits. This
+includes visualizing the commit graph, showing information related to
+each commit, and the files in the trees of each revision.
+
+Historically, gitk was the first repository browser. It's written in
+tcl/tk and started off in a separate repository but was later merged
+into the main git repository.
+
+%description gitk -l pl.UTF-8
+Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
+to wizualizacje grafu komitów, wyswietlanie informacji związanych z
+każdym commitów oraz listę plików dla każdej rewizji.
+
+Z punktu widzenia historii, gitk był pierwszą przeglądarką repozytorium
+git. Napisany jest w tcl/tk i początkowo był rozwijany w osobnym
+repozytirum ale z czasem został włączony do głównego repozytorium git.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
@@ -143,15 +166,23 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README Documentation/*.html Documentation/howto Documentation/technical
+%doc README Documentation/[^gitk]*.html Documentation/howto Documentation/technical
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/man*/*
 %{_datadir}/%{name}
 %{_datadir}/git-gui
+%exclude %{_bindir}/gitk
+%exclude %{_mandir}/man1/gitk.1*
 
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/*
+
+%files gitk
+%defattr(644,root,root,755)
+%doc Documentation/gitk.html
+%attr(755,root,root) %{_bindir}/gitk
+%{_mandir}/man1/gitk.1*
 
 %files -n perl-Git
 %defattr(644,root,root,755)
