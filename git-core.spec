@@ -95,17 +95,18 @@ includes visualizing the commit graph, showing information related to
 each commit, and the files in the trees of each revision.
 
 Historically, gitk was the first repository browser. It's written in
-tcl/tk and started off in a separate repository but was later merged
+Tcl/Tk and started off in a separate repository but was later merged
 into the main git repository.
 
 %description gitk -l pl.UTF-8
 Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
-to wizualizacje grafu komitów, wyswietlanie informacji związanych z
-każdym commitów oraz listę plików dla każdej rewizji.
+to wizualizację grafu commitów, wyświetlanie informacji związanych z
+każdym z commitów oraz listę plików dla każdej rewizji.
 
-Z punktu widzenia historii, gitk był pierwszą przeglądarką repozytorium
-git. Napisany jest w tcl/tk i początkowo był rozwijany w osobnym
-repozytirum ale z czasem został włączony do głównego repozytorium git.
+Z punktu widzenia historii, gitk był pierwszą przeglądarką
+repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
+osobnym repozytorium, ale z czasem został włączony do głównego
+repozytorium git.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
@@ -166,7 +167,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README Documentation/[^gitk]*.html Documentation/howto Documentation/technical
+%doc README Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html, Documentation/howto Documentation/technical
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/man*/*
 %{_datadir}/%{name}
