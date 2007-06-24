@@ -1,3 +1,5 @@
+# ToDo:
+# - git-gui subpackage (depends on tk)
 #
 # Conditional build:
 %bcond_without	tests	# don't perform make test
@@ -129,6 +131,18 @@ This package provides a web interface for browsing git repositories.
 %description gitweb -l pl.UTF-8
 Pakiet ten dostarcza interfejs WWW do przegl?dania repozytoriów git.
 
+%package -n bash-completion-git
+Summary:	bash-completion for git
+Summary(pl.UTF-8):	bashowe uzupe¿nianie nazw dla git
+Group:		Applications/Shell
+Requires:	bash-completion
+
+%description -n bash-completion-git
+This package provides bash-completion for git.
+
+%description -n bash-completion-git -l pl.UTF-8
+Pakiet ten dostarcza bashowego uzupe¿niania nazw dla git.
+
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
@@ -150,6 +164,19 @@ wywoÅ‚ywaÄ‡ dowolne polecenia Gita; w przyszÅ‚oÅ›ci interfejs
 udostÄ™pni takÅ¼e specjalne metody do Å‚atwego wykonywania operacji
 nietrywialnych do wykonania przy uÅ¼yciu ogÃ³lnego interfejsu
 poleceÅ„.
+
+%package -n vim-syntax-gitcommit
+Summary:	Vim syntax: gitcommit
+Summary(pl.UTF-8):	Sk¿adnia dla Vima: gitcommit
+Group:		Applications/Editors/Vim
+# for _vimdatadir existence
+Requires:       vim >= 4:6.3.058-3
+
+%description -n vim-syntax-gitcommit
+This plugin provides syntax highlighting for git's commit messages.
+
+%description -n vim-syntax-gitcommit -l pl.UTF-8
+Ta wtyczka dostarcza pod¿wietlanie sk¿adni dla tre¿ci commitów git.
 
 %prep
 %setup -q -n git-%{version}
@@ -176,6 +203,8 @@ poleceÅ„.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_sharedstatedir}/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
+install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
 
 %{__make} install \
 	INSTALLDIRS=vendor \
@@ -184,8 +213,15 @@ install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
 %{__make} -C Documentation install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# header files
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
+
+# bash completion
+install contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
+
+# vim syntax
+install contrib/vim/syntax/gitcommit.vim $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
 
 # gitweb
 install gitweb/*.css gitweb/*.png $RPM_BUILD_ROOT%{appdir}
@@ -215,7 +251,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
+%doc README Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical contrib
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
 %{_mandir}/man1/git-*.1*
@@ -246,7 +282,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
 
+%files -n bash-completion-git
+%defattr(644,root,root,755)
+%{_sysconfdir}/bash_completion.d/*
+
 %files -n perl-Git
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Git.pm
 %{_mandir}/man3/Git.3pm*
+
+%files -n vim-syntax-gitcommit
+%defattr(644,root,root,755)
+%doc contrib/vim/README
+%{_datadir}/vim/vimfiles/syntax/*
