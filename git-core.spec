@@ -216,14 +216,15 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
-%attr(755,root,root) %{_bindir}/*
-%{_mandir}/man*/*
+%attr(755,root,root) %{_bindir}/git
+%attr(755,root,root) %{_bindir}/git-*
+%{_mandir}/man1/git-*.1*
+%{_mandir}/man5/gitattributes.5*
+%{_mandir}/man5/gitignore.5*
+%{_mandir}/man7/git.7*
 %{_datadir}/%{name}
 %{_datadir}/git-gui
 %{_sharedstatedir}/git
-%exclude %{_bindir}/gitk
-%exclude %{_mandir}/man1/gitk.1*
-%exclude %{_mandir}/man3/*
 
 %files devel
 %defattr(644,root,root,755)
@@ -248,4 +249,4 @@ rm -rf $RPM_BUILD_ROOT
 %files -n perl-Git
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Git.pm
-%{_mandir}/man3/*
+%{_mandir}/man3/Git.3pm*
