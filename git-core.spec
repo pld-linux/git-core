@@ -116,7 +116,7 @@ rewizji.
 Z punktu widzenia historii, gitk był pierwszą przeglądarką
 repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany
 w osobnym repozytorium, ale z czasem został włączony do głównego
-repozytorium git.
+repozytorium gita.
 
 %package gitweb
 Summary:	Web frontend to git
@@ -129,11 +129,11 @@ Requires:	webapps
 This package provides a web interface for browsing git repositories.
 
 %description gitweb -l pl.UTF-8
-Pakiet ten dostarcza interfejs WWW do przegl?dania repozytori�w git.
+Pakiet ten dostarcza interfejs WWW do przeglądania repozytoriów gita.
 
 %package -n bash-completion-git
 Summary:	bash-completion for git
-Summary(pl.UTF-8):	bashowe uzupe�nianie nazw dla git
+Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shell
 Requires:	bash-completion
 
@@ -141,7 +141,7 @@ Requires:	bash-completion
 This package provides bash-completion for git.
 
 %description -n bash-completion-git -l pl.UTF-8
-Pakiet ten dostarcza bashowego uzupe�niania nazw dla git.
+Pakiet ten dostarcza bashowego uzupełniania nazw dla gita.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
@@ -167,7 +167,7 @@ poleceń.
 
 %package -n vim-syntax-gitcommit
 Summary:	Vim syntax: gitcommit
-Summary(pl.UTF-8):	Sk�adnia dla Vima: gitcommit
+Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
 Group:		Applications/Editors/Vim
 # for _vimdatadir existence
 Requires:       vim >= 4:6.3.058-3
@@ -176,7 +176,7 @@ Requires:       vim >= 4:6.3.058-3
 This plugin provides syntax highlighting for git's commit messages.
 
 %description -n vim-syntax-gitcommit -l pl.UTF-8
-Ta wtyczka dostarcza pod�wietlanie sk�adni dla tre�ci commit�w git.
+Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %prep
 %setup -q -n git-%{version}
