@@ -1,3 +1,4 @@
+#
 # Conditional build:
 %bcond_without	tests	# don't perform make test
 #
@@ -138,7 +139,7 @@ Requires:	bash-completion
 This package provides bash-completion for git.
 
 %description -n bash-completion-git -l pl.UTF-8
-Pakiet ten dostarcza bashowego uzupełniania nazw dla gita.
+Pakiet ten dostarcza bashowe uzupełnianie nazw dla gita.
 
 %package -n perl-Git
 Summary:	Perl interface to the Git version control system
