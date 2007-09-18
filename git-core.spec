@@ -15,7 +15,7 @@ Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 URL:		http://git.or.cz/
-BuildRequires:	asciidoc
+BuildRequires:	asciidoc >= 7.2.1-3
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
@@ -23,6 +23,7 @@ BuildRequires:	expat-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-Error
 BuildRequires:	perl-base
+%{?with_tests:BuildRequires:	pdksh >= 5.2.14-46}
 BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.264
