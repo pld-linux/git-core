@@ -15,7 +15,7 @@ Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 URL:		http://git.or.cz/
-BuildRequires:	asciidoc >= 7.2.1-3
+BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
