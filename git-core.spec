@@ -131,17 +131,17 @@ This package provides a web interface for browsing git repositories.
 Pakiet ten dostarcza interfejs WWW do przeglądania repozytoriów gita.
 
 %package gitview
-Summary:	A GTK based repository browser for git
-Summary(pl.UTF-8):	Oparta na GTK przeglądarka repozytorium gita
+Summary:	A GTK+ based repository browser for git
+Summary(pl.UTF-8):	Oparta na GTK+ przeglądarka repozytorium gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 #Requires:	pytongowe mambo dżambo
 
 %description gitview
-A GTK based repository browser for git.
+A GTK+ based repository browser for git.
 
 %description gitview -l pl.UTF-8
-Oparta na GTK przeglądarka repozytorium gita.
+Oparta na GTK+ przeglądarka repozytorium gita.
 
 %package -n bash-completion-git
 Summary:	bash-completion for git
