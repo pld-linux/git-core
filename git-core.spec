@@ -130,6 +130,19 @@ This package provides a web interface for browsing git repositories.
 %description gitweb -l pl.UTF-8
 Pakiet ten dostarcza interfejs WWW do przeglądania repozytoriów gita.
 
+%package gitview
+Summary:	A GTK based repository browser for git
+Summary(pl.UTF-8):	Oparta na GTK przeglądarka repozytorium gita
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+#Requires:	pytongowe mambo dżambo
+
+%description gitview
+A GTK based repository browser for git.
+
+%description gitview -l pl.UTF-8
+Oparta na GTK przeglądarka repozytorium gita.
+
 %package -n bash-completion-git
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
@@ -230,6 +243,9 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 
+# gitview
+install contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
+
 # remove unneeded files
 rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
@@ -283,6 +299,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/httpd.conf
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
+
+%files gitview
+%defattr(644,root,root,755)
+%doc contrib/gitview/gitview.txt
+%attr(755,root,root) %{_bindir}/gitview
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
