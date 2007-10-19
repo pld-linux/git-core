@@ -40,6 +40,9 @@ Requires:	rcs
 Requires:	sed
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+# html docs have links to txt files
+%define		_noautocompressdoc	*.txt
+
 %define		webapp		gitweb
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
