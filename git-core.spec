@@ -6,12 +6,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.3.4
+Version:	1.5.3.5
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	b35fd5abba0e8655733c8e8c470f39cf
+# Source0-md5:	3fdff0bdb3638fce1c4bc6795ed81fb3
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 URL:		http://git.or.cz/
