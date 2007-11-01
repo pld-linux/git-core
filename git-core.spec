@@ -23,12 +23,15 @@ BuildRequires:	expat-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-Error
 BuildRequires:	perl-base
-%{?with_tests:BuildRequires:	pdksh >= 5.2.14-46}
 BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.264
 BuildRequires:	xmlto
 BuildRequires:	zlib-devel
+%if %{with tests}
+BuildRequires	pdksh >= 5.2.14-46
+BuildRequires:	cvs
+%endif
 Requires:	coreutils
 Requires:	curl
 Requires:	diffutils
