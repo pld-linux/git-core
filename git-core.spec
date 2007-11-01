@@ -33,6 +33,7 @@ BuildRequires	pdksh >= 5.2.14-46
 BuildRequires:	cvs
 %endif
 Requires:	coreutils
+Requires:	cpio
 Requires:	curl
 Requires:	diffutils
 Requires:	findutils
