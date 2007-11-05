@@ -29,7 +29,7 @@ BuildRequires:	rpmbuild(macros) >= 1.264
 BuildRequires:	xmlto
 BuildRequires:	zlib-devel
 %if %{with tests}
-BuildRequires	pdksh >= 5.2.14-46
+BuildRequires:	pdksh >= 5.2.14-46
 BuildRequires:	cvs
 %endif
 Requires:	coreutils
