@@ -117,14 +117,13 @@ Tcl/Tk and started off in a separate repository but was later merged
 into the main git repository.
 
 %description gitk -l pl.UTF-8
-Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów.
-Oznacza to wizualizację grafu commitów, wyświetlanie informacji
-związanych z każdym z commitów oraz listę plików dla każdej
-rewizji.
+Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
+to wizualizację grafu commitów, wyświetlanie informacji związanych z
+każdym z commitów oraz listę plików dla każdej rewizji.
 
 Z punktu widzenia historii, gitk był pierwszą przeglądarką
-repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany
-w osobnym repozytorium, ale z czasem został włączony do głównego
+repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
+osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
 
 %package gitweb
@@ -156,7 +155,7 @@ Oparta na GTK+ przeglądarka repozytorium gita.
 %package -n bash-completion-git
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
-Group:		Applications/Shell
+Group:		Applications/Shells
 Requires:	bash-completion
 
 %description -n bash-completion-git
