@@ -1,6 +1,7 @@
-#
+
 # Conditional build:
 %bcond_without	tests	# don't perform make test
+%bcond_without	doc	# skip building/packaging docs/manuals (takes some time)
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
@@ -15,7 +16,6 @@ Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 URL:		http://git.or.cz/
-BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
@@ -26,11 +26,14 @@ BuildRequires:	perl-base
 BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpmbuild(macros) >= 1.264
-BuildRequires:	xmlto
 BuildRequires:	zlib-devel
+%if %{with doc}
+BuildRequires:	asciidoc >= 7.1.2-3
+BuildRequires:	xmlto
+%endif
 %if %{with tests}
-BuildRequires:	pdksh >= 5.2.14-46
 BuildRequires:	cvs
+BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
 Requires:	cpio
@@ -178,18 +181,17 @@ totally trivial to do over the generic command interface.
 
 %description -n perl-Git -l pl.UTF-8
 Ten moduł umożliwia skryptom Perla współpracę z systemem kontroli
-wersji Git. W łatwy i dobrze przetestowany sposób pozwala
-wywoływać dowolne polecenia Gita; w przyszłości interfejs
-udostępni także specjalne metody do łatwego wykonywania operacji
-nietrywialnych do wykonania przy użyciu ogólnego interfejsu
-poleceń.
+wersji Git. W łatwy i dobrze przetestowany sposób pozwala wywoływać
+dowolne polecenia Gita; w przyszłości interfejs udostępni także
+specjalne metody do łatwego wykonywania operacji nietrywialnych do
+wykonania przy użyciu ogólnego interfejsu poleceń.
 
 %package -n vim-syntax-gitcommit
 Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
 Group:		Applications/Editors/Vim
 # for _vimdatadir existence
-Requires:       vim >= 4:6.3.058-3
+Requires:	vim >= 4:6.3.058-3
 
 %description -n vim-syntax-gitcommit
 This plugin provides syntax highlighting for git's commit messages.
@@ -214,7 +216,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 	GITWEB_LOGO="/gitweb/git-logo.png" \
 	GITWEB_FAVICON="/gitweb/git-favicon.png"
 
-%{__make} -C Documentation
+%{?with_doc:%{__make} -C Documentation}
 
 %{?with_tests:%{__make} test}
 
@@ -229,8 +231,10 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
 	INSTALLDIRS=vendor \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with doc}
 %{__make} -C Documentation install \
 	DESTDIR=$RPM_BUILD_ROOT
+%endif
 
 # header files and lib
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
@@ -274,14 +278,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical contrib
-%attr(755,root,root) %{_bindir}/git
-%attr(755,root,root) %{_bindir}/git-*
+%doc README contrib
+%if %{with doc}
+%doc Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/gitignore.5*
 %{_mandir}/man5/gitmodules.5*
 %{_mandir}/man7/git.7*
+%endif
+%attr(755,root,root) %{_bindir}/git
+%attr(755,root,root) %{_bindir}/git-*
 %{_datadir}/%{name}
 %{_datadir}/git-gui
 %{_sharedstatedir}/git
@@ -293,9 +300,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files gitk
 %defattr(644,root,root,755)
+%if %{with doc}
 %doc Documentation/gitk.html
-%attr(755,root,root) %{_bindir}/gitk
 %{_mandir}/man1/gitk.1*
+%endif
+%attr(755,root,root) %{_bindir}/gitk
 
 %files gitweb
 %defattr(644,root,root,755)
