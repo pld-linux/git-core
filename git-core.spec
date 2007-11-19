@@ -33,6 +33,8 @@ BuildRequires:	xmlto
 %endif
 %if %{with tests}
 BuildRequires:	cvs
+# tests fail when using this client
+BuildConflicts:	cvs-nserver-client
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
