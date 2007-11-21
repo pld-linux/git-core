@@ -8,13 +8,16 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.5.3.6
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 # Source0-md5:	9b0a6cea7b084f3fc78f264cd2fb49bd
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
+Source3:	%{name}.sysconfig
+Source4:	%{name}.inet
+Source5:	%{name}.init
 URL:		http://git.or.cz/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -34,8 +37,8 @@ BuildRequires:	xmlto
 %if %{with tests}
 BuildRequires:	cvs
 # tests fail when using this client
-BuildConflicts:	cvs-nserver-client
 BuildRequires:	pdksh >= 5.2.14-46
+BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
 Requires:	cpio
@@ -76,20 +79,58 @@ contents efficiently.
 %description -l pl.UTF-8
 "git" może oznaczać cokolwiek, w zależności od nastroju.
 
-- losową kombinację trzech liter, która jest wymawialna i
-  właściwie nie używana przez żadne popularne polecenie uniksowe.
-  Fakt, że jest to błędna pisownia słowa "get" może mieć lub nie
-  mieć znaczenia.
-- głupi, pogardliwy, prosty. Można wybrać ze słownika slangu.
-- "global information tracker" (narzędzie do globalnego śledzenia
-  informacji) - jeśli jesteśmy w dobrym nastroju i git akurat działa.
-  Anioły śpiewają, a światło niespodziewanie wypełnia pokój.
-- "goddamn idiotic truckload of sh*t" (przeklęty idiotyczny ładunek
-  g*) - kiedy się zepsuje.
+ - losową kombinację trzech liter, która jest wymawialna i właściwie
+   nie używana przez żadne popularne polecenie uniksowe. Fakt, że jest to
+   błędna pisownia słowa "get" może mieć lub nie mieć znaczenia.
+ - głupi, pogardliwy, prosty. Można wybrać ze słownika slangu.
+ - "global information tracker" (narzędzie do globalnego śledzenia
+   informacji) - jeśli jesteśmy w dobrym nastroju i git akurat działa.
+   Anioły śpiewają, a światło niespodziewanie wypełnia pokój.
+ - "goddamn idiotic truckload of sh*t" (przeklęty idiotyczny ładunek
+   g*) - kiedy się zepsuje.
 
 Jest to prymitywny (ale bardzo szybki) zarządca treści słownikowej.
 Nie robi wiele, ale to, co "robi", to wydajne śledzenie zawartości
 katalogu.
+
+%package daemon-inetd
+Summary:	Files necessary to run git-daemon as an inetd service
+Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemon w trybie usługi inetd
+Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
+Requires:	setup >= 2.4.11-1
+Provides:	git-core-daemon
+Obsoletes:	git-core-daemon
+Obsoletes:	git-core-daemon-standalone
+
+%description daemon-inetd
+Git-daemon is a really simple TCP git daemon that can serve git
+repositories. This package provides all necessarry files to run
+git-daemon as an inetd service.
+
+%description daemon-inetd -l pl.UTF-8
+Git-daemon to prosty daemon git korzystający z protokołu TCP do
+udostępnienia repozytoriów git. Pakiet ten dostarcza potrzebnych
+plików do uruchomienia git-daemon w trybie usługi inetd.
+
+%package daemon-standalone
+Summary:	Files necessary to run git-daemon as a standalone service
+Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemon w trybie usługi standalone
+Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
+Provides:	git-core-daemon
+Obsoletes:	git-core-daemon
+Obsoletes:	git-core-daemon-inetd
+
+%description daemon-standalone
+Git-daemon is a really simple TCP git daemon that can serve git
+repositories. This package provides all necessarry files to run
+git-daemon as an standalone service.
+
+%description daemon-standalone -l pl.UTF-8
+Git-daemon to prosty daemon git korzystający z protokołu TCP do
+udostępnienia repozytoriów git. Pakiet ten dostarcza potrzebnych
+plików do uruchomienia git-daemon w trybie usługi standalone.
 
 %package devel
 Summary:	Header files for git-core
@@ -227,6 +268,7 @@ install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_sharedstatedir}/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
 install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sysconfig/rc-inetd,rc.d/init.d}
 
 %{__make} install \
 	INSTALLDIRS=vendor \
@@ -258,12 +300,35 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 # gitview
 install contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
+# git-daemon related files
+install %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/git-daemon
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/rc-inetd/git-daemon
+install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/git-daemon
+
 # remove unneeded files
 rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post daemon-inetd
+%service -q rc-inetd reload
+
+%postun daemon-inetd
+if [ "$1" = "0" ]; then
+	%service -q rc-inetd reload
+fi
+
+%post daemon-standalone
+/sbin/chkconfig --add git-daemon
+%service git-daemon restart "git-daemon"
+
+%preun daemon-standalone
+if [ "$1" = "0" ]; then
+	%service git-daemon stop
+	/sbin/chkconfig --del git-daemon
+fi
 
 %triggerin gitweb -- apache1 < 1.3.37-3, apache1-base
 %webapp_register apache %{webapp}
@@ -293,6 +358,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}
 %{_datadir}/git-gui
 %{_sharedstatedir}/git
+
+%files daemon-inetd
+%defattr(644,root,root,755)
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/rc-inetd/git-daemon
+
+%files daemon-standalone
+%defattr(644,root,root,755)
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/git-daemon
+%attr(754,root, root) /etc/rc.d/init.d/git-daemon
 
 %files devel
 %defattr(644,root,root,755)
