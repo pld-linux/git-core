@@ -35,10 +35,9 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-BuildRequires:	cvs
-# tests fail when using this client
+# tests failed sometimes when using nserver client 1.11(?)
+BuildRequires:	cvs-client >= 1.12
 BuildRequires:	pdksh >= 5.2.14-46
-BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
 Requires:	cpio
@@ -187,7 +186,11 @@ Summary:	A GTK+ based repository browser for git
 Summary(pl.UTF-8):	Oparta na GTK+ przeglądarka repozytorium gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
-#Requires:	pytongowe mambo dżambo
+Requires:	python >= 1:2.4
+Requires:	python-pycairo >= 1.0
+Requires:	python-pygobject
+Requires:	python-pygtk-gtk >= 2:2.8
+Suggests:	python-gnome-desktop-gtksourceview
 
 %description gitview
 A GTK+ based repository browser for git.
@@ -308,8 +311,8 @@ install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/git-daemon
 # remove unneeded files
 rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
-rm $RPM_BUILD_ROOT%{perl_vendorlib}/Error.pm
-rm $RPM_BUILD_ROOT%{_mandir}/man3/private-Error.3*
+rm -f $RPM_BUILD_ROOT%{perl_vendorlib}/Error.pm
+rm -f $RPM_BUILD_ROOT%{_mandir}/man3/private-Error.3*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
