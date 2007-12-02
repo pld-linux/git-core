@@ -1,4 +1,4 @@
-
+#
 # Conditional build:
 %bcond_without	tests	# don't perform make test
 %bcond_without	doc	# skip building/packaging docs/manuals (takes some time)
@@ -8,7 +8,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.5.3.7
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
