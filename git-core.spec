@@ -42,6 +42,7 @@ BuildRequires:	pdksh >= 5.2.14-46
 Requires:	coreutils
 Requires:	cpio
 Requires:	curl
+Requires:	cvsps >= 2.1-2
 Requires:	diffutils
 Requires:	findutils
 Requires:	grep
