@@ -393,8 +393,8 @@ fi
 %dir %{_datadir}/gitk
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
-%lang(de) %dir %{_datadir}/gitk/lib/msgs/de.msg
-%lang(it) %dir %{_datadir}/gitk/lib/msgs/it.msg
+%lang(de) %{_datadir}/gitk/lib/msgs/de.msg
+%lang(it) %{_datadir}/gitk/lib/msgs/it.msg
 
 %files gitweb
 %defattr(644,root,root,755)
