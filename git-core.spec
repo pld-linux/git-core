@@ -8,7 +8,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.5.5
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -18,6 +18,7 @@ Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
 Source4:	%{name}.inet
 Source5:	%{name}.init
+Patch0:		%{name}-bashizm.patch
 URL:		http://git.or.cz/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -248,6 +249,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %prep
 %setup -q -n git-%{version}
+%patch0 -p1
 
 %build
 %{__aclocal}
