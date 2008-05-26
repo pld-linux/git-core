@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.5
-Release:	2
+Version:	1.5.5.2
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	09f15f0b0e330986d930746abf6962f4
+# Source0-md5:	7379e652b7c51da209a677b806e1d276
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -37,9 +37,11 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver client 1.11(?)
-BuildRequires:	cvs-client >= 1.12
+BuildRequires:	cvs
+BuildRequires:	cvsps
 BuildRequires:	pdksh >= 5.2.14-46
+# tests fail when using this client
+BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
 Requires:	cpio
@@ -100,7 +102,7 @@ Summary:	Files necessary to run git-daemon as an inetd service
 Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi inetd
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
-Requires:	setup >= 2.4.11-1
+Requires:	setup >= 2.4.10-6
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-standalone
@@ -393,8 +395,8 @@ fi
 %dir %{_datadir}/gitk
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
-%lang(de) %dir %{_datadir}/gitk/lib/msgs/de.msg
-%lang(it) %dir %{_datadir}/gitk/lib/msgs/it.msg
+%lang(de) %{_datadir}/gitk/lib/msgs/de.msg
+%lang(it) %{_datadir}/gitk/lib/msgs/it.msg
 
 %files gitweb
 %defattr(644,root,root,755)
