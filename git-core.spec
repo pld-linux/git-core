@@ -241,7 +241,7 @@ Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
 Group:		Applications/Editors/Vim
 # for _vimdatadir existence
-Requires:	vim >= 4:6.3.058-3
+Requires:	vim-rt >= 4:6.3.058-3
 
 %description -n vim-syntax-gitcommit
 This plugin provides syntax highlighting for git's commit messages.
