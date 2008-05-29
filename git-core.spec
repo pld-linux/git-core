@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.5.2
+Version:	1.5.5.3
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	7379e652b7c51da209a677b806e1d276
+# Source0-md5:	022ce5772b900243ef5d289deb7a3667
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -102,7 +102,7 @@ Summary:	Files necessary to run git-daemon as an inetd service
 Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi inetd
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
-Requires:	setup >= 2.4.10-6
+Requires:	setup >= 2.4.11-1
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-standalone
@@ -357,6 +357,7 @@ fi
 %defattr(644,root,root,755)
 %doc README contrib
 %if %{with doc}
+%doc Documentation/RelNotes*
 %doc Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
 %{_mandir}/man5/gitattributes.5*
