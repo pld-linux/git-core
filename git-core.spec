@@ -1,3 +1,5 @@
+# TODO
+# - use %lang: /usr/share/git-gui/lib/msgs
 #
 # Conditional build:
 %bcond_without	tests	# don't perform make test
