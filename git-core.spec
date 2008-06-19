@@ -380,7 +380,7 @@ fi
 %doc README contrib
 %if %{with doc}
 %doc Documentation/RelNotes*
-%doc Documentation/{[!g]*,git,git[!k]*}.html Documentation/howto Documentation/technical
+%doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
 %exclude %{_mandir}/man1/git-gui.1*
 %{_mandir}/man1/git.1*
@@ -420,7 +420,6 @@ fi
 %files gitk
 %defattr(644,root,root,755)
 %if %{with doc}
-%doc Documentation/gitk.html
 %{_mandir}/man1/gitk.1*
 %endif
 %attr(755,root,root) %{_bindir}/gitk
