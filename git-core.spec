@@ -1,5 +1,3 @@
-# TODO
-# - use %lang: /usr/share/git-gui/lib/msgs
 #
 # Conditional build:
 %bcond_without	tests	# don't perform make test
@@ -9,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.5.4
+Version:	1.5.6
 Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	b0f80ae5e5d818aaccd44b0c9caff6d9
+# Source0-md5:	76c4efaaa5470a5385e22d99349a97b3
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -44,8 +42,6 @@ BuildRequires:	cvs-client >= 1.12
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
-Requires:	cpio
-Requires:	curl
 Requires:	cvsps >= 2.1-2
 Requires:	diffutils
 Requires:	findutils
@@ -202,6 +198,32 @@ A GTK+ based repository browser for git.
 
 %description gitview -l pl.UTF-8
 Oparta na GTK+ przeglądarka repozytorium gita.
+
+%package gui
+Summary:	Tcl/Tk interface to the Git version control system
+Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tk
+
+%description gui
+Displays changes in a repository or a selected set of commits. This
+includes visualizing the commit graph, showing information related to
+each commit, and the files in the trees of each revision.
+
+Historically, gitk was the first repository browser. It's written in
+Tcl/Tk and started off in a separate repository but was later merged
+into the main git repository.
+
+%description gui -l pl.UTF-8
+Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
+to wizualizację grafu commitów, wyświetlanie informacji związanych z
+każdym z commitów oraz listę plików dla każdej rewizji.
+
+Z punktu widzenia historii, gitk był pierwszą przeglądarką
+repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
+osobnym repozytorium, ale z czasem został włączony do głównego
+repozytorium gita.
 
 %package -n bash-completion-git
 Summary:	bash-completion for git
@@ -368,8 +390,8 @@ fi
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
+%exclude %{_bindir}/git-gui
 %{_datadir}/%{name}
-%{_datadir}/git-gui
 %{_localstatedir}/lib/git
 
 %files daemon-inetd
@@ -397,7 +419,9 @@ fi
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
+%lang(es) %{_datadir}/gitk/lib/msgs/es.msg
 %lang(it) %{_datadir}/gitk/lib/msgs/it.msg
+%lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 
 %files gitweb
 %defattr(644,root,root,755)
@@ -413,6 +437,25 @@ fi
 %defattr(644,root,root,755)
 %doc contrib/gitview/gitview.txt
 %attr(755,root,root) %{_bindir}/gitview
+
+%files gui
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/git-gui
+%dir %{_datadir}/git-gui
+%dir %{_datadir}/git-gui/lib
+%dir %{_datadir}/git-gui/lib/msgs
+%{_datadir}/git-gui/lib/git-gui.ico
+%{_datadir}/git-gui/lib/tclIndex
+%{_datadir}/git-gui/lib/*.js
+%{_datadir}/git-gui/lib/*.tcl
+%lang(de) %{_datadir}/git-gui/lib/msgs/de.msg
+%lang(fr) %{_datadir}/git-gui/lib/msgs/fr.msg
+%lang(hu) %{_datadir}/git-gui/lib/msgs/hu.msg
+%lang(it) %{_datadir}/git-gui/lib/msgs/it.msg
+%lang(ja) %{_datadir}/git-gui/lib/msgs/ja.msg
+%lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
+%lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
+%lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
