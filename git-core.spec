@@ -8,7 +8,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.5.6
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -384,11 +384,19 @@ fi
 %doc Documentation/RelNotes*
 %doc Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
+%{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
-%{_mandir}/man5/gitcli.5*
+%{_mandir}/man5/githooks.5*
 %{_mandir}/man5/gitignore.5*
 %{_mandir}/man5/gitmodules.5*
-%{_mandir}/man7/git.7*
+%{_mandir}/man5/gitrepository-layout.5*
+%{_mandir}/man7/gitcli.7*
+%{_mandir}/man7/gitcore-tutorial.7*
+%{_mandir}/man7/gitcvs-migration.7*
+%{_mandir}/man7/gitdiffcore.7*
+%{_mandir}/man7/gitglossary.7*
+%{_mandir}/man7/gittutorial-2.7*
+%{_mandir}/man7/gittutorial.7*
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
