@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.5
-Release:	2
+Version:	1.5.6.3
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	09f15f0b0e330986d930746abf6962f4
+# Source0-md5:	bc1b4280b460356aac67029fae43d4c3
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -37,13 +37,13 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver client 1.11(?)
-BuildRequires:	cvs-client >= 1.12
+BuildRequires:	cvs
+BuildRequires:	cvsps
 BuildRequires:	pdksh >= 5.2.14-46
+# tests fail when using this client
+BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
-Requires:	cpio
-Requires:	curl
 Requires:	cvsps >= 2.1-2
 Requires:	diffutils
 Requires:	findutils
@@ -201,6 +201,32 @@ A GTK+ based repository browser for git.
 %description gitview -l pl.UTF-8
 Oparta na GTK+ przeglądarka repozytorium gita.
 
+%package gui
+Summary:	Tcl/Tk interface to the Git version control system
+Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tk
+
+%description gui
+Displays changes in a repository or a selected set of commits. This
+includes visualizing the commit graph, showing information related to
+each commit, and the files in the trees of each revision.
+
+Historically, gitk was the first repository browser. It's written in
+Tcl/Tk and started off in a separate repository but was later merged
+into the main git repository.
+
+%description gui -l pl.UTF-8
+Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
+to wizualizację grafu commitów, wyświetlanie informacji związanych z
+każdym z commitów oraz listę plików dla każdej rewizji.
+
+Z punktu widzenia historii, gitk był pierwszą przeglądarką
+repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
+osobnym repozytorium, ale z czasem został włączony do głównego
+repozytorium gita.
+
 %package -n bash-completion-git
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
@@ -239,7 +265,7 @@ Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
 Group:		Applications/Editors/Vim
 # for _vimdatadir existence
-Requires:	vim >= 4:6.3.058-3
+Requires:	vim-rt >= 4:6.3.058-3
 
 %description -n vim-syntax-gitcommit
 This plugin provides syntax highlighting for git's commit messages.
@@ -355,18 +381,28 @@ fi
 %defattr(644,root,root,755)
 %doc README contrib
 %if %{with doc}
-%doc Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
+%doc Documentation/RelNotes*
+%doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
+%exclude %{_mandir}/man1/git-gui.1*
+%{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
-%{_mandir}/man5/gitcli.5*
+%{_mandir}/man5/githooks.5*
 %{_mandir}/man5/gitignore.5*
 %{_mandir}/man5/gitmodules.5*
-%{_mandir}/man7/git.7*
+%{_mandir}/man5/gitrepository-layout.5*
+%{_mandir}/man7/gitcli.7*
+%{_mandir}/man7/gitcore-tutorial.7*
+%{_mandir}/man7/gitcvs-migration.7*
+%{_mandir}/man7/gitdiffcore.7*
+%{_mandir}/man7/gitglossary.7*
+%{_mandir}/man7/gittutorial-2.7*
+%{_mandir}/man7/gittutorial.7*
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
+%exclude %{_bindir}/git-gui
 %{_datadir}/%{name}
-%{_datadir}/git-gui
 %{_localstatedir}/lib/git
 
 %files daemon-inetd
@@ -386,15 +422,16 @@ fi
 %files gitk
 %defattr(644,root,root,755)
 %if %{with doc}
-%doc Documentation/gitk.html
 %{_mandir}/man1/gitk.1*
 %endif
 %attr(755,root,root) %{_bindir}/gitk
 %dir %{_datadir}/gitk
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
-%lang(de) %dir %{_datadir}/gitk/lib/msgs/de.msg
-%lang(it) %dir %{_datadir}/gitk/lib/msgs/it.msg
+%lang(de) %{_datadir}/gitk/lib/msgs/de.msg
+%lang(es) %{_datadir}/gitk/lib/msgs/es.msg
+%lang(it) %{_datadir}/gitk/lib/msgs/it.msg
+%lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 
 %files gitweb
 %defattr(644,root,root,755)
@@ -410,6 +447,26 @@ fi
 %defattr(644,root,root,755)
 %doc contrib/gitview/gitview.txt
 %attr(755,root,root) %{_bindir}/gitview
+
+%files gui
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/git-gui
+%{_mandir}/man1/git-gui.1*
+%dir %{_datadir}/git-gui
+%dir %{_datadir}/git-gui/lib
+%dir %{_datadir}/git-gui/lib/msgs
+%{_datadir}/git-gui/lib/git-gui.ico
+%{_datadir}/git-gui/lib/tclIndex
+%{_datadir}/git-gui/lib/*.js
+%{_datadir}/git-gui/lib/*.tcl
+%lang(de) %{_datadir}/git-gui/lib/msgs/de.msg
+%lang(fr) %{_datadir}/git-gui/lib/msgs/fr.msg
+%lang(hu) %{_datadir}/git-gui/lib/msgs/hu.msg
+%lang(it) %{_datadir}/git-gui/lib/msgs/it.msg
+%lang(ja) %{_datadir}/git-gui/lib/msgs/ja.msg
+%lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
+%lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
+%lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
