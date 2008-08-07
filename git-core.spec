@@ -153,20 +153,20 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	tk
 
 %description gitk
-Displays changes in a repository or a selected set of commits. This
-includes visualizing the commit graph, showing information related to
-each commit, and the files in the trees of each revision.
+gitk displays changes in a repository or a selected set of commits.
+This includes visualizing the commit graph, showing information
+related to each commit, and the files in the trees of each revision.
 
 Historically, gitk was the first repository browser. It's written in
 Tcl/Tk and started off in a separate repository but was later merged
 into the main git repository.
 
 %description gitk -l pl.UTF-8
-Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
-to wizualizację grafu commitów, wyświetlanie informacji związanych z
-każdym z commitów oraz listę plików dla każdej rewizji.
+gitk wyświetla zmiany w repozytorium lub wybranym zbiorze commitów.
+Oznacza to wizualizację grafu commitów, wyświetlanie informacji
+związanych z każdym z commitów oraz listę plików dla każdej rewizji.
 
-Z punktu widzenia historii, gitk był pierwszą przeglądarką
+Z historycznego punktu widzenia gitk był pierwszą przeglądarką
 repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
 osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
