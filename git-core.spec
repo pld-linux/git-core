@@ -8,7 +8,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.6.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -397,7 +397,9 @@ fi
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
-%exclude %{_bindir}/git-gui
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*-*
+%exclude %{_libdir}/%{name}/git-gui
 %{_datadir}/%{name}
 %{_localstatedir}/lib/git
 
@@ -446,7 +448,7 @@ fi
 
 %files gui
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/git-gui
+%attr(755,root,root) %{_libdir}/%{name}/git-gui
 %{_mandir}/man1/git-gui.1*
 %dir %{_datadir}/git-gui
 %dir %{_datadir}/git-gui/lib
