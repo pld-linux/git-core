@@ -382,7 +382,9 @@ fi
 %doc Documentation/RelNotes*
 %doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
-%exclude %{_mandir}/man1/git-gui.1*
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*-*
+%exclude %{_libdir}/%{name}/git-gui
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
@@ -399,7 +401,6 @@ fi
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
-%exclude %{_bindir}/git-gui
 %{_datadir}/%{name}
 %{_localstatedir}/lib/git
 
@@ -448,7 +449,7 @@ fi
 
 %files gui
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/git-gui
+%attr(755,root,root) %{_libdir}/%{name}/git-gui
 %{_mandir}/man1/git-gui.1*
 %dir %{_datadir}/git-gui
 %dir %{_datadir}/git-gui/lib
