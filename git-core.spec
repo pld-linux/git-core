@@ -1,4 +1,4 @@
-
+#
 # Conditional build:
 %bcond_without	tests	# don't perform make test
 %bcond_without	doc	# skip building/packaging docs/manuals (takes some time)
@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.5.3.7
+Version:	1.6.0.1
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	a114cbf532ff627698a031a66d072173
+# Source0-md5:	264701ebd9036ca2458358f01aa6c093
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -23,6 +23,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
+BuildRequires:	gettext-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-Error
 BuildRequires:	perl-base
@@ -35,13 +36,14 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver client 1.11(?)
-BuildRequires:	cvs-client >= 1.12
+BuildRequires:	cvs
+BuildRequires:	cvsps
 BuildRequires:	pdksh >= 5.2.14-46
+# tests fail when using this client
+BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
-Requires:	cpio
-Requires:	curl
+Requires:	cvsps >= 2.1-2
 Requires:	diffutils
 Requires:	findutils
 Requires:	grep
@@ -94,7 +96,7 @@ katalogu.
 
 %package daemon-inetd
 Summary:	Files necessary to run git-daemon as an inetd service
-Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemon w trybie usługi inetd
+Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi inetd
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	setup >= 2.4.11-1
@@ -108,13 +110,13 @@ repositories. This package provides all necessarry files to run
 git-daemon as an inetd service.
 
 %description daemon-inetd -l pl.UTF-8
-Git-daemon to prosty daemon git korzystający z protokołu TCP do
-udostępnienia repozytoriów git. Pakiet ten dostarcza potrzebnych
-plików do uruchomienia git-daemon w trybie usługi inetd.
+Git-daemon to prosty demon git korzystający z protokołu TCP do
+udostępniania repozytoriów git. Ten pakiet dostarcza pliki potrzebne
+do uruchomienia git-demona w trybie usługi inetd.
 
 %package daemon-standalone
 Summary:	Files necessary to run git-daemon as a standalone service
-Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemon w trybie usługi standalone
+Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi samodzielnej
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
 Provides:	git-core-daemon
@@ -127,9 +129,9 @@ repositories. This package provides all necessarry files to run
 git-daemon as an standalone service.
 
 %description daemon-standalone -l pl.UTF-8
-Git-daemon to prosty daemon git korzystający z protokołu TCP do
-udostępnienia repozytoriów git. Pakiet ten dostarcza potrzebnych
-plików do uruchomienia git-daemon w trybie usługi standalone.
+Git-daemon to prosty demon git korzystający z protokołu TCP do
+udostępniania repozytoriów git. Ten pakiet dostarcza pliki potrzebne
+do uruchomienia git-daemona w trybie usługi samodzielnej.
 
 %package devel
 Summary:	Header files for git-core
@@ -150,20 +152,20 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	tk
 
 %description gitk
-Displays changes in a repository or a selected set of commits. This
-includes visualizing the commit graph, showing information related to
-each commit, and the files in the trees of each revision.
+gitk displays changes in a repository or a selected set of commits.
+This includes visualizing the commit graph, showing information
+related to each commit, and the files in the trees of each revision.
 
 Historically, gitk was the first repository browser. It's written in
 Tcl/Tk and started off in a separate repository but was later merged
 into the main git repository.
 
 %description gitk -l pl.UTF-8
-Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
-to wizualizację grafu commitów, wyświetlanie informacji związanych z
-każdym z commitów oraz listę plików dla każdej rewizji.
+gitk wyświetla zmiany w repozytorium lub wybranym zbiorze commitów.
+Oznacza to wizualizację grafu commitów, wyświetlanie informacji
+związanych z każdym z commitów oraz listę plików dla każdej rewizji.
 
-Z punktu widzenia historii, gitk był pierwszą przeglądarką
+Z historycznego punktu widzenia gitk był pierwszą przeglądarką
 repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
 osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
@@ -197,6 +199,32 @@ A GTK+ based repository browser for git.
 
 %description gitview -l pl.UTF-8
 Oparta na GTK+ przeglądarka repozytorium gita.
+
+%package gui
+Summary:	Tcl/Tk interface to the Git version control system
+Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tk
+
+%description gui
+Displays changes in a repository or a selected set of commits. This
+includes visualizing the commit graph, showing information related to
+each commit, and the files in the trees of each revision.
+
+Historically, gitk was the first repository browser. It's written in
+Tcl/Tk and started off in a separate repository but was later merged
+into the main git repository.
+
+%description gui -l pl.UTF-8
+Wyświetla zmiany w repozytorium lub wybranym zbiorze commitów. Oznacza
+to wizualizację grafu commitów, wyświetlanie informacji związanych z
+każdym z commitów oraz listę plików dla każdej rewizji.
+
+Z punktu widzenia historii, gitk był pierwszą przeglądarką
+repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
+osobnym repozytorium, ale z czasem został włączony do głównego
+repozytorium gita.
 
 %package -n bash-completion-git
 Summary:	bash-completion for git
@@ -236,7 +264,7 @@ Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
 Group:		Applications/Editors/Vim
 # for _vimdatadir existence
-Requires:	vim >= 4:6.3.058-3
+Requires:	vim-rt >= 4:6.3.058-3
 
 %description -n vim-syntax-gitcommit
 This plugin provides syntax highlighting for git's commit messages.
@@ -267,11 +295,11 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_sharedstatedir}/git}
+install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_localstatedir}/lib/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
 install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sysconfig/rc-inetd,rc.d/init.d}
+install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 
 %{__make} install \
 	INSTALLDIRS=vendor \
@@ -304,9 +332,9 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 install contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
 # git-daemon related files
-install %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/git-daemon
-install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/rc-inetd/git-daemon
-install %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/git-daemon
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # remove unneeded files
 rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
@@ -351,18 +379,30 @@ fi
 %defattr(644,root,root,755)
 %doc README contrib
 %if %{with doc}
-%doc Documentation/{[!g]*,g[!i]*,git,git[!k]*}.html Documentation/howto Documentation/technical
+%doc Documentation/RelNotes*
+%doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*-*
+%exclude %{_libdir}/%{name}/git-gui
+%{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
+%{_mandir}/man5/githooks.5*
 %{_mandir}/man5/gitignore.5*
 %{_mandir}/man5/gitmodules.5*
-%{_mandir}/man7/git.7*
+%{_mandir}/man5/gitrepository-layout.5*
+%{_mandir}/man7/gitcli.7*
+%{_mandir}/man7/gitcore-tutorial.7*
+%{_mandir}/man7/gitcvs-migration.7*
+%{_mandir}/man7/gitdiffcore.7*
+%{_mandir}/man7/gitglossary.7*
+%{_mandir}/man7/gittutorial-2.7*
+%{_mandir}/man7/gittutorial.7*
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
 %{_datadir}/%{name}
-%{_datadir}/git-gui
-%{_sharedstatedir}/git
+%{_localstatedir}/lib/git
 
 %files daemon-inetd
 %defattr(644,root,root,755)
@@ -375,16 +415,22 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/*
-%{_libdir}/*.a
+%{_includedir}/git-core
+%{_libdir}/libgit.a
 
 %files gitk
 %defattr(644,root,root,755)
 %if %{with doc}
-%doc Documentation/gitk.html
 %{_mandir}/man1/gitk.1*
 %endif
 %attr(755,root,root) %{_bindir}/gitk
+%dir %{_datadir}/gitk
+%dir %{_datadir}/gitk/lib
+%dir %{_datadir}/gitk/lib/msgs
+%lang(de) %{_datadir}/gitk/lib/msgs/de.msg
+%lang(es) %{_datadir}/gitk/lib/msgs/es.msg
+%lang(it) %{_datadir}/gitk/lib/msgs/it.msg
+%lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 
 %files gitweb
 %defattr(644,root,root,755)
@@ -400,6 +446,26 @@ fi
 %defattr(644,root,root,755)
 %doc contrib/gitview/gitview.txt
 %attr(755,root,root) %{_bindir}/gitview
+
+%files gui
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-gui
+%{_mandir}/man1/git-gui.1*
+%dir %{_datadir}/git-gui
+%dir %{_datadir}/git-gui/lib
+%dir %{_datadir}/git-gui/lib/msgs
+%{_datadir}/git-gui/lib/git-gui.ico
+%{_datadir}/git-gui/lib/tclIndex
+%{_datadir}/git-gui/lib/*.js
+%{_datadir}/git-gui/lib/*.tcl
+%lang(de) %{_datadir}/git-gui/lib/msgs/de.msg
+%lang(fr) %{_datadir}/git-gui/lib/msgs/fr.msg
+%lang(hu) %{_datadir}/git-gui/lib/msgs/hu.msg
+%lang(it) %{_datadir}/git-gui/lib/msgs/it.msg
+%lang(ja) %{_datadir}/git-gui/lib/msgs/ja.msg
+%lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
+%lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
+%lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
