@@ -5,5 +5,5 @@ PORT=9418
 FLAGS=nowait
 USER=root
 SERVER=tcpd
-DAEMON=/usr/bin/git-daemon
+DAEMON=@libdir@/git/git-daemon
 DAEMONARGS="--inetd --syslog --base-path=/var/lib/git"

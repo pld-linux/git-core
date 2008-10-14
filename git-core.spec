@@ -334,6 +334,10 @@ install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
+# paths cleanup
+sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon 
+sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+
 # remove unneeded files
 rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
