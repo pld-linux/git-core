@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.0.2
+Version:	1.6.0.3
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	1e4d9bfc1cb0abf165d4de93b5172324
+# Source0-md5:	d7178b0b0eaaa07538149bb231902796
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -36,9 +36,11 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver client 1.11(?)
-BuildRequires:	cvs-client >= 1.12
+BuildRequires:	cvs
+BuildRequires:	cvsps
 BuildRequires:	pdksh >= 5.2.14-46
+# tests fail when using this client
+BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
 Requires:	cvsps >= 2.1-2
@@ -334,10 +336,6 @@ install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
-# paths cleanup
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon 
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
-
 # remove unneeded files
 rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
@@ -384,6 +382,9 @@ fi
 %doc Documentation/RelNotes*
 %doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*-*
+%exclude %{_libdir}/%{name}/git-gui
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
@@ -400,9 +401,6 @@ fi
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/*-*
-%exclude %{_libdir}/%{name}/git-gui
 %{_datadir}/%{name}
 %{_localstatedir}/lib/git
 
@@ -452,6 +450,7 @@ fi
 %files gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-gui
+%{_mandir}/man1/git-gui.1*
 %dir %{_datadir}/git-gui
 %dir %{_datadir}/git-gui/lib
 %dir %{_datadir}/git-gui/lib/msgs
