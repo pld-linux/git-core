@@ -33,7 +33,7 @@ start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/git-daemon ]; then
 		msg_starting git-daemon
-		daemon --fork @libdir@/git/git-daemon $DAEMON_OPTS
+		daemon --fork @libdir@/git-core/git-daemon $DAEMON_OPTS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/git-daemon
 	else
