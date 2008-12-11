@@ -8,7 +8,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.6.0.5
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -312,6 +312,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 install libgit.a $RPM_BUILD_ROOT%{_libdir}
+install xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
 install contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
@@ -419,6 +420,7 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/git-core
 %{_libdir}/libgit.a
+%{_libdir}/libgit_xdiff.a
 
 %files gitk
 %defattr(644,root,root,755)
