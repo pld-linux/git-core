@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.0.2
+Version:	1.6.0.6
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	1e4d9bfc1cb0abf165d4de93b5172324
+# Source0-md5:	b5be9b34b441cb57f92086bfaf59f255
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -36,9 +36,11 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver client 1.11(?)
-BuildRequires:	cvs-client >= 1.12
+BuildRequires:	cvs
+BuildRequires:	cvsps
 BuildRequires:	pdksh >= 5.2.14-46
+# tests fail when using this client
+BuildConflicts:	cvs-nserver-client
 %endif
 Requires:	coreutils
 Requires:	cvsps >= 2.1-2
@@ -312,6 +314,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 install libgit.a $RPM_BUILD_ROOT%{_libdir}
+install xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
 install contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
@@ -419,6 +422,7 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/git-core
 %{_libdir}/libgit.a
+%{_libdir}/libgit_xdiff.a
 
 %files gitk
 %defattr(644,root,root,755)
