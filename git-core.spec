@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.0.6
+Version:	1.6.1
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	b5be9b34b441cb57f92086bfaf59f255
+# Source0-md5:	66265d85593473b23290232b9dccef77
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -320,7 +320,19 @@ install xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 install contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
 
 # vim syntax
-install contrib/vim/syntax/gitcommit.vim $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
+cat > $RPM_BUILD_ROOT/%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
+autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG    setf gitcommit
+autocmd BufNewFile,BufRead *.git/config,.gitconfig setf gitconfig
+autocmd BufNewFile,BufRead git-rebase-todo         setf gitrebase
+autocmd BufNewFile,BufRead .msg.[0-9]*
+	\ if getline(1) =~ '^From.*# This line is ignored.$' |
+	\   setf gitsendemail |
+	\ endif
+autocmd BufNewFile,BufRead *.git/**
+	\ if getline(1) =~ '^\x\{40\}\>\|^ref: ' |
+	\   setf git |
+	\ endif
+EOF
 
 # gitweb
 install gitweb/*.css gitweb/*.png $RPM_BUILD_ROOT%{appdir}
@@ -400,6 +412,7 @@ fi
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gittutorial-2.7*
 %{_mandir}/man7/gittutorial.7*
+%{_mandir}/man7/gitworkflows.7*
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
@@ -468,6 +481,7 @@ fi
 %lang(hu) %{_datadir}/git-gui/lib/msgs/hu.msg
 %lang(it) %{_datadir}/git-gui/lib/msgs/it.msg
 %lang(ja) %{_datadir}/git-gui/lib/msgs/ja.msg
+%lang(nb) %{_datadir}/git-gui/lib/msgs/nb.msg
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
