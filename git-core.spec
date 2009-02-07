@@ -37,8 +37,8 @@ BuildRequires:	xmlto
 %endif
 %if %{with tests}
 # tests failed sometimes when using nserver/cvsnt client so enforce pure cvs here
-BuildRequires:	cvs-client >= 1.12
-BuildRequires:	cvs-client < 1.13
+BuildRequires:	cvs-client-gnu >= 1.12
+BuildRequires:	cvs-client-gnu < 1.13
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
