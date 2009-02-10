@@ -18,7 +18,7 @@ Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
 Source4:	%{name}.inet
 Source5:	%{name}.init
-URL:		http://git.or.cz/
+URL:		http://git-scm.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
