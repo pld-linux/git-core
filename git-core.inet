@@ -1,9 +1,0 @@
-SERVICE_NAME=git
-SOCK_TYPE=stream
-PROTOCOL=tcp
-PORT=9418
-FLAGS=nowait
-USER=root
-SERVER=tcpd
-DAEMON=@libdir@/git-core/git-daemon
-DAEMONARGS="--inetd --syslog --base-path=/var/lib/git"

@@ -1,8 +1,0 @@
-# Customized settings for git-daemon
-
-# Daemon options, consult man 1 git-daemon 
-# for a complete list of options
-DAEMON_OPTS="--syslog --base-path=/var/lib/git"
-
-# Define nice level for ssh
-SERVICE_RUN_NICE_LEVEL="+0"
