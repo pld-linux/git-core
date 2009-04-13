@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.2
+Version:	1.6.2.3
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	12c7d874e17c6e111697b1714b5f4319
+# Source0-md5:	7213fa232e0f83fc2971ded6e528ae18
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -36,9 +36,6 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver/cvsnt client so enforce pure cvs here
-BuildRequires:	cvs-gnu-client >= 1.12
-BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
