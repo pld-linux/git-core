@@ -7,18 +7,18 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.0.4
+Version:	1.6.2.3
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	ed8c4fa007a44d51b646865c35461ce8
+# Source0-md5:	7213fa232e0f83fc2971ded6e528ae18
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
 Source4:	%{name}.inet
 Source5:	%{name}.init
-URL:		http://git.or.cz/
+URL:		http://git-scm.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
@@ -36,8 +36,6 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
-# tests failed sometimes when using nserver client 1.11(?)
-BuildRequires:	cvs-client >= 1.12
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
@@ -312,12 +310,25 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 install libgit.a $RPM_BUILD_ROOT%{_libdir}
+install xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
 install contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
 
 # vim syntax
-install contrib/vim/syntax/gitcommit.vim $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
+cat > $RPM_BUILD_ROOT/%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
+autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG    setf gitcommit
+autocmd BufNewFile,BufRead *.git/config,.gitconfig setf gitconfig
+autocmd BufNewFile,BufRead git-rebase-todo         setf gitrebase
+autocmd BufNewFile,BufRead .msg.[0-9]*
+	\ if getline(1) =~ '^From.*# This line is ignored.$' |
+	\   setf gitsendemail |
+	\ endif
+autocmd BufNewFile,BufRead *.git/**
+	\ if getline(1) =~ '^\x\{40\}\>\|^ref: ' |
+	\   setf git |
+	\ endif
+EOF
 
 # gitweb
 install gitweb/*.css gitweb/*.png $RPM_BUILD_ROOT%{appdir}
@@ -397,6 +408,7 @@ fi
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gittutorial-2.7*
 %{_mandir}/man7/gittutorial.7*
+%{_mandir}/man7/gitworkflows.7*
 %endif
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-*
@@ -419,6 +431,7 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/git-core
 %{_libdir}/libgit.a
+%{_libdir}/libgit_xdiff.a
 
 %files gitk
 %defattr(644,root,root,755)
@@ -464,6 +477,7 @@ fi
 %lang(hu) %{_datadir}/git-gui/lib/msgs/hu.msg
 %lang(it) %{_datadir}/git-gui/lib/msgs/it.msg
 %lang(ja) %{_datadir}/git-gui/lib/msgs/ja.msg
+%lang(nb) %{_datadir}/git-gui/lib/msgs/nb.msg
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
