@@ -448,6 +448,7 @@ fi
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
 %lang(es) %{_datadir}/gitk/lib/msgs/es.msg
 %lang(it) %{_datadir}/gitk/lib/msgs/it.msg
+%lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 
 %files gitweb
