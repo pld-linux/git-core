@@ -49,6 +49,8 @@ Requires:	grep
 Requires:	openssh-clients
 Requires:	perl-Error
 Requires:	sed
+Suggests:	git-core-cvs
+Suggests:	git-core-svn
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # html docs have links to txt files
