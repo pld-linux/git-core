@@ -8,7 +8,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.6.4
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -38,18 +38,16 @@ BuildRequires:	xmlto
 %endif
 %if %{with tests}
 # tests failed sometimes when using nserver/cvsnt client so enforce pure cvs here
-BuildRequires:	cvs-gnu-client >= 1.12
 BuildRequires:	cvs-gnu-client < 1.13
+BuildRequires:	cvs-gnu-client >= 1.12
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
-Requires:	cvsps >= 2.1-2
 Requires:	diffutils
 Requires:	findutils
 Requires:	grep
 Requires:	openssh-clients
 Requires:	perl-Error
-Requires:	rcs
 Requires:	sed
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -226,6 +224,32 @@ repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
 osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
 
+%package svn
+Summary:	Subversion support for Git
+Summary(pl.UTF-8):	Obsługa Subversion dla Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+
+%description svn
+Subversion support for Git.
+
+%description svn -l pl.UTF-8
+Obsługa Subversion dla Git.
+
+%package cvs
+Summary:	CVS support for Git
+Summary(pl.UTF-8):	Obsługa CVS dla Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	cvsps >= 2.1-2
+Requires:	rcs
+
+%description cvs
+CVS support for Git.
+
+%description cvs -l pl.UTF-8
+Obsługa CVS dla Git.
+
 %package -n bash-completion-git
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
@@ -350,7 +374,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # paths cleanup
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon 
+sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 
 # remove unneeded files
@@ -399,6 +423,8 @@ fi
 %doc Documentation/RelNotes*
 %doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
+%exclude %{_mandir}/man1/git-svn.1*
+%exclude %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
@@ -407,7 +433,6 @@ fi
 %{_mandir}/man5/gitrepository-layout.5*
 %{_mandir}/man7/gitcli.7*
 %{_mandir}/man7/gitcore-tutorial.7*
-%{_mandir}/man7/gitcvs-migration.7*
 %{_mandir}/man7/gitdiffcore.7*
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gittutorial-2.7*
@@ -420,6 +445,8 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/*-*
 %attr(755,root,root) %{_libdir}/%{name}/git
 %exclude %{_libdir}/%{name}/git-gui
+%exclude %{_libdir}/%{name}/git-svn
+%exclude %{_libdir}/%{name}/git-cvs*
 %{_datadir}/%{name}
 %{_localstatedir}/lib/git
 
@@ -487,6 +514,21 @@ fi
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
+
+%files svn
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-svn
+%if %{with doc}
+%{_mandir}/man1/git-svn.1*
+%endif
+
+%files cvs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-cvs*
+%if %{with doc}
+%{_mandir}/man1/git-cvs*.1*
+%{_mandir}/man7/gitcvs-migration.7*
+%endif
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
