@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	tests	# don't perform make test
+%bcond_with		tests_cvs
 %bcond_without	doc	# skip building/packaging docs/manuals (takes some time)
 #
 %include	/usr/lib/rpm/macros.perl
@@ -37,9 +38,11 @@ BuildRequires:	asciidoc >= 7.1.2-3
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
+%if %{with tests_cvs}
 # tests failed sometimes when using nserver/cvsnt client so enforce pure cvs here
 BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	cvs-gnu-client >= 1.12
+%endif
 BuildRequires:	pdksh >= 5.2.14-46
 %endif
 Requires:	coreutils
@@ -318,7 +321,12 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %{?with_doc:%{__make} -C Documentation}
 
-%{?with_tests:%{__make} test}
+%if %{with tests}
+%if %{without tests_cvs}
+rm t/t*cvs*.sh
+%endif
+%{__make} test
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
