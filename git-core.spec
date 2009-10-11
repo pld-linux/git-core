@@ -7,12 +7,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.4.4
+Version:	1.6.5
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	b150352782998ca1f84185e6af53ec26
+# Source0-md5:	da86c1736c55edb9f446828581137b51
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -308,6 +308,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 	--with-openssl
 
 %{__make} \
+	BLK_SHA1=1 \
 	INSTALLDIRS=vendor \
 	GITWEB_CONFIG="%{webappdir}/gitweb.conf" \
 	GITWEB_PROJECTROOT="/var/lib/git" \
