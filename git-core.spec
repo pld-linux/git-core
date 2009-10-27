@@ -290,7 +290,6 @@ Pakiet ten dostarcza bashowe uzupełnianie nazw dla gita.
 Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
-Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
 
 %description -n perl-Git
@@ -406,6 +405,12 @@ install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 # paths cleanup
 sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+
+# hardlink
+ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-receive-pack}
+ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-upload-archive}
+ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-shell
+ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
 
 # remove unneeded files
 rm $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
