@@ -54,6 +54,8 @@ Requires:	perl-Error
 Requires:	sed
 Suggests:	git-core-cvs
 Suggests:	git-core-svn
+Suggests:	less
+Suggests:	rsync
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # html docs have links to txt files
@@ -255,6 +257,23 @@ CVS support for Git.
 %description cvs -l pl.UTF-8
 Obsługa CVS dla Git.
 
+%package arch
+Summary:	Git tools for importing Arch repositories
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tla
+
+%description arch
+Git tools for importing Arch repositories.
+
+%package email
+Summary:	Git tools for sending email
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+
+%description email
+Git tools for sending email.
+
 %package -n bash-completion-git
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
@@ -332,8 +351,6 @@ rm t/t*cvs*.sh
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_localstatedir}/lib/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
-install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
 install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 
 %{__make} install \
@@ -352,10 +369,12 @@ install libgit.a $RPM_BUILD_ROOT%{_libdir}
 install xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
-install contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
+cp -a contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
 
 # vim syntax
-cat > $RPM_BUILD_ROOT/%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
+install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
+cat > $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
 autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG    setf gitcommit
 autocmd BufNewFile,BufRead *.git/config,.gitconfig setf gitconfig
 autocmd BufNewFile,BufRead git-rebase-todo         setf gitrebase
@@ -370,29 +389,29 @@ autocmd BufNewFile,BufRead *.git/**
 EOF
 
 # gitweb
-install gitweb/*.css gitweb/*.png $RPM_BUILD_ROOT%{appdir}
-install gitweb/gitweb.cgi $RPM_BUILD_ROOT%{cgibindir}
-install %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
-install %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
-install %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
+install -p gitweb/gitweb.cgi $RPM_BUILD_ROOT%{cgibindir}
+cp -a gitweb/*.css gitweb/*.png $RPM_BUILD_ROOT%{appdir}
+cp -a %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
+cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
+cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 
 # gitview
-install contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
+install -p contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
 # git-daemon related files
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
+cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
+cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # paths cleanup
 sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 
 # remove unneeded files
-rm -f $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
-rm -f $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
-rm -f $RPM_BUILD_ROOT%{perl_vendorlib}/Error.pm
-rm -f $RPM_BUILD_ROOT%{_mandir}/man3/private-Error.3*
+rm $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
+rm $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
+rm $RPM_BUILD_ROOT%{perl_vendorlib}/Error.pm
+rm $RPM_BUILD_ROOT%{_mandir}/man3/private-Error.3*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -434,6 +453,12 @@ fi
 %doc Documentation/RelNotes*
 %doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
+%if 0
+# rpm doesn't support exclude for %%doc
+%exclude Documentation/*svn*.html
+%exclude Documentation/*git-cvs*.html
+%exclude Documentation/git-archimport.html
+%endif
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man1/git.1*
@@ -457,7 +482,9 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/git
 %exclude %{_libdir}/%{name}/git-gui
 %exclude %{_libdir}/%{name}/git-svn
+%exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
+%exclude %{_libdir}/%{name}/*email*
 %{_datadir}/%{name}
 %{_localstatedir}/lib/git
 
@@ -531,14 +558,34 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/git-svn
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
+%doc Documentation/*svn*.html
 %endif
 
 %files cvs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-cvs*
 %if %{with doc}
+%doc Documentation/*git-cvs*.html
 %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man7/gitcvs-migration.7*
+%endif
+
+%files arch
+%defattr(644,root,root,755)
+%doc Documentation/git-archimport.txt
+%attr(755,root,root) %{_libdir}/%{name}/git-archimport
+%if %{with doc}
+%doc Documentation/git-archimport.html
+%{_mandir}/man1/git-archimport.1*
+%endif
+
+%files email
+%defattr(644,root,root,755)
+%doc Documentation/*email*.txt
+%attr(755,root,root) %{_libdir}/%{name}/*email*
+%if %{with doc}
+%doc Documentation/*email*.html
+%{_mandir}/man1/*email*.1*
 %endif
 
 %files -n bash-completion-git
@@ -553,4 +600,4 @@ fi
 %files -n vim-syntax-gitcommit
 %defattr(644,root,root,755)
 %doc contrib/vim/README
-%{_datadir}/vim/vimfiles/syntax/*
+%{_datadir}/vim/vimfiles/syntax/*.vim
