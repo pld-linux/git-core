@@ -9,7 +9,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.6.5.2
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -337,7 +337,8 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 	GITWEB_LOGO="/gitweb/git-logo.png" \
 	GITWEB_FAVICON="/gitweb/git-favicon.png"
 
-%{?with_doc:%{__make} -C Documentation}
+# use DOCBOOK_XSL_172=1 to fix 'the ".ft C" problem' in generated manpages.
+%{?with_doc:%{__make} -C Documentation V=1 DOCBOOK_XSL_172=1}
 
 %if %{with tests}
 %if %{without tests_cvs}
