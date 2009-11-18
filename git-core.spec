@@ -8,12 +8,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.5.2
-Release:	2
+Version:	1.6.5.3
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	99708c449b23433136dbdfa38bd16d80
+# Source0-md5:	a1dbc3da46cbf33c4367db689853c142
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -27,7 +27,7 @@ BuildRequires:	docbook-dtd45-xml
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
 BuildRequires:	openssl-devel
-BuildRequires:	perl-Error
+BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-base
 BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
@@ -416,8 +416,6 @@ ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
 # remove unneeded files
 rm $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
-rm $RPM_BUILD_ROOT%{perl_vendorlib}/Error.pm
-rm $RPM_BUILD_ROOT%{_mandir}/man3/private-Error.3*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
