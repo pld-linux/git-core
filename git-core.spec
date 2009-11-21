@@ -23,18 +23,18 @@ URL:		http://git-scm.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
-BuildRequires:	docbook-dtd45-xml
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-base
-BuildRequires:	python
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.264
 BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	asciidoc >= 7.1.2-3
+BuildRequires:	docbook-dtd45-xml
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
