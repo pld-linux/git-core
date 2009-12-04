@@ -99,6 +99,20 @@ Jest to prymitywny (ale bardzo szybki) zarządca treści słownikowej.
 Nie robi wiele, ale to, co "robi", to wydajne śledzenie zawartości
 katalogu.
 
+%package doc
+Summary:	Documentation for git-core
+Summary(pl.UTF-8):	Dokumentacja do git-core
+Group:		Documentation
+
+%description doc
+Documentation for git-core.
+
+%description doc -l pl.UTF-8
+Dokumentacja do git-core.
+
+%description doc -l fr.UTF-8
+Javadoc pour git-core.
+
 %package daemon-inetd
 Summary:	Files necessary to run git-daemon as an inetd service
 Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi inetd
@@ -453,16 +467,11 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README contrib
+%attr(755,root,root) %{_bindir}/git
+%attr(755,root,root) %{_bindir}/git-*
+
 %if %{with doc}
-%doc Documentation/RelNotes*
-%doc Documentation/*.html Documentation/howto Documentation/technical
 %{_mandir}/man1/git-*.1*
-%if 0
-# rpm doesn't support exclude for %%doc
-%exclude Documentation/*svn*.html
-%exclude Documentation/*git-cvs*.html
-%exclude Documentation/git-archimport.html
-%endif
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man1/git.1*
@@ -479,18 +488,26 @@ fi
 %{_mandir}/man7/gittutorial.7*
 %{_mandir}/man7/gitworkflows.7*
 %endif
-%attr(755,root,root) %{_bindir}/git
-%attr(755,root,root) %{_bindir}/git-*
+
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/*-*
 %attr(755,root,root) %{_libdir}/%{name}/git
+
 %exclude %{_libdir}/%{name}/git-gui
 %exclude %{_libdir}/%{name}/git-svn
 %exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
 %exclude %{_libdir}/%{name}/*email*
+
 %{_datadir}/%{name}
+
 %{_localstatedir}/lib/git
+
+%if %{with doc}
+%files doc
+%doc Documentation/RelNotes*
+%doc Documentation/*.html Documentation/howto Documentation/technical
+%endif
 
 %files daemon-inetd
 %defattr(644,root,root,755)
@@ -562,33 +579,27 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/git-svn
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
-%doc Documentation/*svn*.html
 %endif
 
 %files cvs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-cvs*
 %if %{with doc}
-%doc Documentation/*git-cvs*.html
 %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man7/gitcvs-migration.7*
 %endif
 
 %files arch
 %defattr(644,root,root,755)
-%doc Documentation/git-archimport.txt
 %attr(755,root,root) %{_libdir}/%{name}/git-archimport
 %if %{with doc}
-%doc Documentation/git-archimport.html
 %{_mandir}/man1/git-archimport.1*
 %endif
 
 %files email
 %defattr(644,root,root,755)
-%doc Documentation/*email*.txt
 %attr(755,root,root) %{_libdir}/%{name}/*email*
 %if %{with doc}
-%doc Documentation/*email*.html
 %{_mandir}/man1/*email*.1*
 %endif
 
