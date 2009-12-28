@@ -8,12 +8,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.5.7
+Version:	1.6.6
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	0c2eb426cf596755d6d57a83c9a78be7
+# Source0-md5:	25e4bcdc528b3ffadc6e59908a513881
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -536,6 +536,7 @@ fi
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
 %lang(es) %{_datadir}/gitk/lib/msgs/es.msg
 %lang(it) %{_datadir}/gitk/lib/msgs/it.msg
+%lang(ja) %{_datadir}/gitk/lib/msgs/ja.msg
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 
@@ -565,6 +566,7 @@ fi
 %{_datadir}/git-gui/lib/*.js
 %{_datadir}/git-gui/lib/*.tcl
 %lang(de) %{_datadir}/git-gui/lib/msgs/de.msg
+%lang(el) %{_datadir}/git-gui/lib/msgs/el.msg
 %lang(fr) %{_datadir}/git-gui/lib/msgs/fr.msg
 %lang(hu) %{_datadir}/git-gui/lib/msgs/hu.msg
 %lang(it) %{_datadir}/git-gui/lib/msgs/it.msg
