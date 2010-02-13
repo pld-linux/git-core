@@ -8,12 +8,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.6.6.2
+Version:	1.7.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	6f0a112c37ce6f47d762687130f26a1b
+# Source0-md5:	c7553b73e2156d187ece6ba936ae30ab
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -320,6 +320,19 @@ dowolne polecenia Gita; w przyszłości interfejs udostępni także
 specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
+%package -n python-Git
+Summary:	Python interface to the Git version control system
+Summary(pl.UTF-8):	Pythonowy interfejs do systemu kontroli wersji Git
+Group:		Development/Languages/Python
+
+%description -n python-Git
+This module provides Python scripts easy way to interface the Git
+version control system.
+
+%description -n python-Git -l pl.UTF-8
+Ten moduł umożliwia skryptom Pythonowym współpracę z systemem kontroli
+wersji Git.
+
 %package -n vim-syntax-gitcommit
 Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
@@ -505,6 +518,7 @@ fi
 
 %if %{with doc}
 %files doc
+%defattr(644,root,root,755)
 %doc Documentation/RelNotes*
 %doc Documentation/*.html Documentation/howto Documentation/technical
 %endif
@@ -535,6 +549,8 @@ fi
 %dir %{_datadir}/gitk/lib/msgs
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
 %lang(es) %{_datadir}/gitk/lib/msgs/es.msg
+%lang(fr) %{_datadir}/gitk/lib/msgs/fr.msg
+%lang(hu) %{_datadir}/gitk/lib/msgs/hu.msg
 %lang(it) %{_datadir}/gitk/lib/msgs/it.msg
 %lang(ja) %{_datadir}/gitk/lib/msgs/ja.msg
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
@@ -613,6 +629,14 @@ fi
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Git.pm
 %{_mandir}/man3/Git.3pm*
+
+%files -n python-Git
+%defattr(644,root,root,755)
+%{py_sitescriptdir}/git_remote_helpers*.egg-info
+%dir %{py_sitescriptdir}/git_remote_helpers
+%{py_sitescriptdir}/git_remote_helpers/*.py[co]
+%dir %{py_sitescriptdir}/git_remote_helpers/git
+%{py_sitescriptdir}/git_remote_helpers/git/*.py[co]
 
 %files -n vim-syntax-gitcommit
 %defattr(644,root,root,755)
