@@ -28,6 +28,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-base
+BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.264
