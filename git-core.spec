@@ -9,7 +9,7 @@ Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
 Version:	1.7.0.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -391,10 +391,10 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 %endif
 
 # header files and lib
-install *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
-install xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
-install libgit.a $RPM_BUILD_ROOT%{_libdir}
-install xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
+cp -a *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -a xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
+cp -a libgit.a $RPM_BUILD_ROOT%{_libdir}
+cp -a xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
@@ -444,6 +444,7 @@ ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
 # remove unneeded files
 rm $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
 rm $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
+%py_postclean
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -482,7 +483,10 @@ fi
 %defattr(644,root,root,755)
 %doc README contrib
 %attr(755,root,root) %{_bindir}/git
-%attr(755,root,root) %{_bindir}/git-*
+%attr(755,root,root) %{_bindir}/git-receive-pack
+%attr(755,root,root) %{_bindir}/git-shell
+%attr(755,root,root) %{_bindir}/git-upload-archive
+%attr(755,root,root) %{_bindir}/git-upload-pack
 
 %if %{with doc}
 %{_mandir}/man1/git-*.1*
@@ -602,6 +606,7 @@ fi
 
 %files cvs
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/git-cvsserver
 %attr(755,root,root) %{_libdir}/%{name}/git-cvs*
 %if %{with doc}
 %{_mandir}/man1/git-cvs*.1*
