@@ -1,0 +1,27 @@
+diff -ur git-1.7.0.3.orig/t/t1304-default-acl.sh git-1.7.0.3/t/t1304-default-acl.sh
+--- git-1.7.0.3.orig/t/t1304-default-acl.sh	2010-03-22 01:35:03.000000000 +0000
++++ git-1.7.0.3/t/t1304-default-acl.sh	2010-03-23 19:53:49.069813289 +0000
+@@ -9,6 +9,8 @@
+ # => this must come before . ./test-lib.sh
+ umask 077
+ 
++LOGNAME=$(whoami)
++
+ . ./test-lib.sh
+ 
+ # We need an arbitrary other user give permission to using ACLs. root
+Only in git-1.7.0.3/t: t1304-default-acl.sh~
+Only in git-1.7.0.3/t: .t1304-default-acl.sh.swp
+diff -ur git-1.7.0.3.orig/t/t5505-remote.sh git-1.7.0.3/t/t5505-remote.sh
+--- git-1.7.0.3.orig/t/t5505-remote.sh	2010-03-22 01:35:03.000000000 +0000
++++ git-1.7.0.3/t/t5505-remote.sh	2010-03-23 21:23:32.259135950 +0000
+@@ -688,7 +688,7 @@
+ 
+ test_expect_success 'remote set-url --delete .*' '
+ (
+-	test_must_fail git remote set-url --delete someremote .* &&
++	test_must_fail git remote set-url --delete someremote .\* &&
+ 	echo "YYY" >expect &&
+ 	echo baz >>expect &&
+ 	echo bbb >>expect &&
+Only in git-1.7.0.3/t: t5505-remote.sh~

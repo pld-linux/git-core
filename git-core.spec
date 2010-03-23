@@ -19,6 +19,7 @@ Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
 Source4:	%{name}.inet
 Source5:	%{name}.init
+Patch0:		%{name}-tests.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -349,6 +350,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %prep
 %setup -q -n git-%{version}
+%patch0 -p1
 
 %build
 %{__aclocal}
