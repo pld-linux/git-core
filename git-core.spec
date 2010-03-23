@@ -370,7 +370,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %if %{with tests}
 %if %{without tests_cvs}
-rm t/t*cvs*.sh
+rm t/t*cvs*.sh || :
 %endif
 %{__make} test
 %endif
