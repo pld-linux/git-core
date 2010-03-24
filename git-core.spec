@@ -358,8 +358,9 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 %configure \
 	--with-openssl
 
+echo "BLK_SHA1=1" >> config.mak
+
 %{__make} \
-	BLK_SHA1=1 \
 	INSTALLDIRS=vendor \
 	GITWEB_CONFIG="%{webappdir}/gitweb.conf" \
 	GITWEB_PROJECTROOT="/var/lib/git" \
