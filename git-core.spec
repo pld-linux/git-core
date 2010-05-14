@@ -71,14 +71,14 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 "git" can mean anything, depending on your mood.
 
- - random three-letter combination that is pronounceable, and not
-   actually used by any common UNIX command. The fact that it is a
-   mispronunciation of "get" may or may not be relevant.
- - stupid. contemptible and despicable. simple. Take your pick from the
-   dictionary of slang.
- - "global information tracker": you're in a good mood, and it actually
-   works for you. Angels sing, and a light suddenly fills the room.
- - "goddamn idiotic truckload of sh*t": when it breaks
+- random three-letter combination that is pronounceable, and not
+  actually used by any common UNIX command. The fact that it is a
+  mispronunciation of "get" may or may not be relevant.
+- stupid. contemptible and despicable. simple. Take your pick from the
+  dictionary of slang.
+- "global information tracker": you're in a good mood, and it actually
+  works for you. Angels sing, and a light suddenly fills the room.
+- "goddamn idiotic truckload of sh*t": when it breaks
 
 This is a stupid (but extremely fast) directory content manager. It
 doesn't do a whole lot, but what it 'does' do is track directory
@@ -87,15 +87,15 @@ contents efficiently.
 %description -l pl.UTF-8
 "git" może oznaczać cokolwiek, w zależności od nastroju.
 
- - losową kombinację trzech liter, która jest wymawialna i właściwie
-   nie używana przez żadne popularne polecenie uniksowe. Fakt, że jest to
-   błędna pisownia słowa "get" może mieć lub nie mieć znaczenia.
- - głupi, pogardliwy, prosty. Można wybrać ze słownika slangu.
- - "global information tracker" (narzędzie do globalnego śledzenia
-   informacji) - jeśli jesteśmy w dobrym nastroju i git akurat działa.
-   Anioły śpiewają, a światło niespodziewanie wypełnia pokój.
- - "goddamn idiotic truckload of sh*t" (przeklęty idiotyczny ładunek
-   g*) - kiedy się zepsuje.
+- losową kombinację trzech liter, która jest wymawialna i właściwie
+  nie używana przez żadne popularne polecenie uniksowe. Fakt, że jest to
+  błędna pisownia słowa "get" może mieć lub nie mieć znaczenia.
+- głupi, pogardliwy, prosty. Można wybrać ze słownika slangu.
+- "global information tracker" (narzędzie do globalnego śledzenia
+  informacji) - jeśli jesteśmy w dobrym nastroju i git akurat działa.
+  Anioły śpiewają, a światło niespodziewanie wypełnia pokój.
+- "goddamn idiotic truckload of sh*t" (przeklęty idiotyczny ładunek
+  g*) - kiedy się zepsuje.
 
 Jest to prymitywny (ale bardzo szybki) zarządca treści słownikowej.
 Nie robi wiele, ale to, co "robi", to wydajne śledzenie zawartości
@@ -158,6 +158,7 @@ do uruchomienia git-daemona w trybie usługi samodzielnej.
 Summary:	Header files for git-core
 Summary(pl.UTF-8):	Pliki nagłówkowe dla git-core
 Group:		Development/Libraries
+Requires:	zlib-devel
 
 %description devel
 Header files for git-core.
