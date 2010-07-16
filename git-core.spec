@@ -229,6 +229,7 @@ Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tk
+Suggests:	meld
 
 %description gui
 Displays changes in a repository or a selected set of commits. This
