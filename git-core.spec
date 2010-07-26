@@ -8,12 +8,12 @@
 Summary:	The stupid content tracker
 Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
 Name:		git-core
-Version:	1.7.1.1
-Release:	2
+Version:	1.7.2
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	1b116a3e2ecce46a89e4272abf0de955
+# Source0-md5:	652f861ae161e48979ef834707e2dc4c
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}.sysconfig
@@ -426,7 +426,6 @@ EOF
 
 # gitweb
 install -p gitweb/gitweb.cgi $RPM_BUILD_ROOT%{cgibindir}
-cp -a gitweb/*.css gitweb/*.png $RPM_BUILD_ROOT%{appdir}
 cp -a %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
@@ -510,6 +509,7 @@ fi
 %{_mandir}/man7/gitcore-tutorial.7*
 %{_mandir}/man7/gitdiffcore.7*
 %{_mandir}/man7/gitglossary.7*
+%{_mandir}/man7/gitrevisions.7*
 %{_mandir}/man7/gittutorial-2.7*
 %{_mandir}/man7/gittutorial.7*
 %{_mandir}/man7/gitworkflows.7*
