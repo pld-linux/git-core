@@ -256,6 +256,7 @@ Summary:	Subversion support for Git
 Summary(pl.UTF-8):	Obsługa Subversion dla Git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
+Requires:	perl-Term-ReadKey
 
 %description svn
 Subversion support for Git.
