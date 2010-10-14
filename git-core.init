@@ -22,7 +22,7 @@ DAEMON_OPTS="--syslog"
 # Check that networking is up.
 if is_yes "${NETWORKING}"; then
 	if [ ! -f /var/lock/subsys/network -a "$1" != stop -a "$1" != status ]; then
-		msg_network_down git-daemon
+		msg_network_down "git-daemon"
 		exit 1
 	fi
 else
@@ -31,46 +31,50 @@ fi
 
 start() {
 	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/git-daemon ]; then
-		msg_starting git-daemon
-		daemon --fork @libdir@/git-core/git-daemon $DAEMON_OPTS
-		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/git-daemon
-	else
-		msg_already_running git-daemon
+	if [ -f /var/lock/subsys/git-daemon ]; then
+		msg_already_running "git-daemon"
+		return
 	fi
+
+	msg_starting "git-daemon"
+	daemon --fork @libdir@/git-core/git-daemon $DAEMON_OPTS
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/git-daemon
 }
 
 stop() {
-	if [ -f /var/lock/subsys/git-daemon ]; then
-		# Stop daemons.
-		msg_stopping git-daemon
-		killproc git-daemon
-		rm -f /var/lock/subsys/git-daemon
-	else
-		msg_not_running git-daemon
+	if [ ! -f /var/lock/subsys/git-daemon ]; then
+		msg_not_running "git-daemon"
+		return
 	fi
+
+	# Stop daemons.
+	msg_stopping "git-daemon"
+	killproc git-daemon
+	rm -f /var/lock/subsys/git-daemon
 }
 
 reload() {
-	if [ -f /var/lock/subsys/git-daemon ]; then
-		msg_reloading git-daemon
-		killproc git-daemon -HUP
-		RETVAL=$?
-	else
-		msg_not_running git-daemon
+	if [ ! -f /var/lock/subsys/git-daemon ]; then
+		msg_not_running "git-daemon"
 		RETVAL=7
+		return
 	fi
+
+	msg_reloading "git-daemon"
+	killproc git-daemon -HUP
+	RETVAL=$?
 }
 
 condrestart() {
-	if [ -f /var/lock/subsys/git-daemon ]; then
-		stop
-		start
-	else
-		msg_not_running git-daemon
+	if [ ! -f /var/lock/subsys/git-daemon ]; then
+		msg_not_running "git-daemon"
 		RETVAL=$1
+		return
 	fi
+
+	stop
+	start
 }
 
 RETVAL=0
