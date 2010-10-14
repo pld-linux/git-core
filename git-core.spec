@@ -648,11 +648,13 @@ fi
 
 %files -n python-Git
 %defattr(644,root,root,755)
-%{py_sitescriptdir}/git_remote_helpers*.egg-info
 %dir %{py_sitescriptdir}/git_remote_helpers
 %{py_sitescriptdir}/git_remote_helpers/*.py[co]
 %dir %{py_sitescriptdir}/git_remote_helpers/git
 %{py_sitescriptdir}/git_remote_helpers/git/*.py[co]
+%if "%{py_ver}" > "2.4"
+%{py_sitescriptdir}/git_remote_helpers*.egg-info
+%endif
 
 %files -n vim-syntax-gitcommit
 %defattr(644,root,root,755)
