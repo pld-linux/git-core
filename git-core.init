@@ -2,7 +2,7 @@
 #
 # git-daemon	git-daemon tcp daemon for git
 #
-# chkconfig:	345 90 25
+# chkconfig:	345 90 10
 #
 # description:	git-daemon is a simple tcp daemon that serves git repositories
 #
