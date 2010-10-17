@@ -16,9 +16,10 @@ Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 # Source0-md5:	77e1611498919965fb65fd1f229ee155
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
-Source3:	%{name}.sysconfig
-Source4:	%{name}.inet
-Source5:	%{name}.init
+Source3:	%{name}-gitweb-lighttpd.conf
+Source4:	%{name}.sysconfig
+Source5:	%{name}.inet
+Source6:	%{name}.init
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-libcrypto.patch
 URL:		http://git-scm.com/
@@ -199,6 +200,8 @@ Summary(pl.UTF-8):	Webowy frontend do git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	webapps
+Requires:	webserver(alias)
+Requires:	webserver(cgi)
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -431,14 +434,15 @@ install -p gitweb/gitweb.cgi $RPM_BUILD_ROOT%{cgibindir}
 cp -a %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
+cp -a %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
 
 # gitview
 install -p contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
 # git-daemon related files
-cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
-cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
-install -p %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
+cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
+cp -a %{SOURCE5} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+install -p %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # paths cleanup
 sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
@@ -487,6 +491,12 @@ fi
 
 %triggerun gitweb -- apache < 2.2.0, apache-base
 %webapp_unregister httpd %{webapp}
+
+%triggerin gitweb -- lighttpd
+%webapp_register lighttpd %{webapp}
+
+%triggerun gitweb -- lighttpd
+%webapp_unregister lighttpd %{webapp}
 
 %files
 %defattr(644,root,root,755)
@@ -578,6 +588,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitweb.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/apache.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/httpd.conf
+%config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/lighttpd.conf
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
 
