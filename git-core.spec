@@ -196,7 +196,7 @@ repozytorium gita.
 
 %package gitweb
 Summary:	Web frontend to git
-Summary(pl.UTF-8):	Webowy frontend do git
+Summary(pl.UTF-8):	Frontend WWW do gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	webapps
@@ -256,7 +256,7 @@ repozytorium gita.
 
 %package svn
 Summary:	Subversion support for Git
-Summary(pl.UTF-8):	Obsługa Subversion dla Git
+Summary(pl.UTF-8):	Obsługa Subversion dla Gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-Term-ReadKey
@@ -265,11 +265,11 @@ Requires:	perl-Term-ReadKey
 Subversion support for Git.
 
 %description svn -l pl.UTF-8
-Obsługa Subversion dla Git.
+Obsługa Subversion dla Gita.
 
 %package cvs
 Summary:	CVS support for Git
-Summary(pl.UTF-8):	Obsługa CVS dla Git
+Summary(pl.UTF-8):	Obsługa CVS dla Gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	cvsps >= 2.1-2
@@ -279,10 +279,11 @@ Requires:	rcs
 CVS support for Git.
 
 %description cvs -l pl.UTF-8
-Obsługa CVS dla Git.
+Obsługa CVS dla Gita.
 
 %package arch
 Summary:	Git tools for importing Arch repositories
+Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tla
@@ -290,13 +291,20 @@ Requires:	tla
 %description arch
 Git tools for importing Arch repositories.
 
+%description arch -l pl.UTF-8
+Narzędzia Gita do importowania repozytoriów Archa.
+
 %package email
 Summary:	Git tools for sending email
+Summary(pl.UTF-8):	Narzędzia Gita do wysyłania poczty
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 
 %description email
 Git tools for sending email.
+
+%description email -l pl.UTF-8
+Narzędzia Gita do wysyłania poczty.
 
 %package -n bash-completion-git
 Summary:	bash-completion for git
