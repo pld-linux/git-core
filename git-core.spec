@@ -1,8 +1,8 @@
 #
 # Conditional build:
-%bcond_without	tests	# don't perform make test
-%bcond_with		tests_cvs
-%bcond_without	doc	# skip building/packaging docs/manuals (takes some time)
+%bcond_without	tests		# don't perform make test
+%bcond_with	tests_cvs	# perform tests which use CVS
+%bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	The stupid content tracker
@@ -375,7 +375,8 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_PROJECTROOT="/var/lib/git" \
 	GITWEB_CSS="/gitweb/gitweb.css" \
 	GITWEB_LOGO="/gitweb/git-logo.png" \
-	GITWEB_FAVICON="/gitweb/git-favicon.png"
+	GITWEB_FAVICON="/gitweb/git-favicon.png" \
+	V=1
 
 # use DOCBOOK_XSL_172=1 to fix 'the ".ft C" problem' in generated manpages.
 %{?with_doc:%{__make} -C Documentation V=1 DOCBOOK_XSL_172=1}
