@@ -54,6 +54,7 @@ Requires:	findutils
 Requires:	grep
 Requires:	openssh-clients
 Requires:	perl-Error
+Requires:	perl-Git = %{version}-%{release}
 Requires:	sed
 Suggests:	git-core-cvs
 Suggests:	git-core-svn
