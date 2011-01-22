@@ -34,6 +34,7 @@ BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.264
+BuildRequires:	tcl
 BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	asciidoc >= 7.1.2-3
