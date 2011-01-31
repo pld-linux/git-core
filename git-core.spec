@@ -587,7 +587,7 @@ fi
 %lang(hu) %{_datadir}/gitk/lib/msgs/hu.msg
 %lang(it) %{_datadir}/gitk/lib/msgs/it.msg
 %lang(ja) %{_datadir}/gitk/lib/msgs/ja.msg
-%lang(pt_br) %{_datadir}/gitk/lib/msgs/pt_br.msg
+%lang(pt_BR) %{_datadir}/gitk/lib/msgs/pt_br.msg
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 
