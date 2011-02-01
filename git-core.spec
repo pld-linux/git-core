@@ -439,7 +439,7 @@ autocmd BufNewFile,BufRead *.git/**
 EOF
 
 # gitweb
-install -p gitweb/gitweb.cgi $RPM_BUILD_ROOT%{cgibindir}
+mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 cp -a %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
