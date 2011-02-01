@@ -626,7 +626,7 @@ fi
 %lang(nb) %{_datadir}/git-gui/lib/msgs/nb.msg
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
-%lang(zh_cn) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
+%lang(zh_CN) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
 %files svn
 %defattr(644,root,root,755)
