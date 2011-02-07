@@ -1,0 +1,45 @@
+From 2ad6d3e9325a39333be0c4b9094e9d5e756dea65 Mon Sep 17 00:00:00 2001
+From: Kacper <kornet@tuptus>
+Date: Thu, 9 Dec 2010 18:57:06 +0000
+Subject: [PATCH] Preserve Entry class key bindings for SHA id
+
+If bind is specified for key without any modifier, then any combination
+of modifiers may be present in the event. So bind $e $ev "$escript;
+break" breaks some useful bindings from Entry class (for example
+Ctrl+k).
+---
+ gitk |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git gitk-git/gitk gitk-git/gitk
+index 45e3380..0c6f3af 100755
+--- gitk-git/gitk
++++ gitk-git/gitk
+@@ -2365,6 +2365,10 @@ proc makewindow {} {
+         }
+     }
+ 
++    foreach e $entries {
++        bindtags $e [linsert [bindtags $e] 2 entrybind]
++    }
++
+     bind .pwbottom <Configure> {resizecdetpanes %W %w}
+     pack .ctop -fill both -expand 1
+     bindall <1> {selcanvline %W %x %y}
+@@ -2563,12 +2567,8 @@ proc scrollcanv {cscroll f0 f1} {
+ proc bindkey {ev script} {
+     global entries
+     bind . $ev $script
+-    set escript [bind Entry $ev]
+-    if {$escript == {}} {
+-	set escript [bind Entry <Key>]
+-    }
+     foreach e $entries {
+-	bind $e $ev "$escript; break"
++	bind entrybind $ev "break"
+     }
+ }
+ 
+-- 
+1.7.3.3
+

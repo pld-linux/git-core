@@ -21,6 +21,7 @@ Source4:	%{name}.sysconfig
 Source5:	%{name}.inet
 Source6:	%{name}.init
 Patch0:		%{name}-tests.patch
+Patch1:		%{name}-key-bindings.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -368,6 +369,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 %prep
 %setup -q -n git-%{version}
 %patch0 -p1
+%patch1 -p0
 
 %build
 %{__aclocal}
