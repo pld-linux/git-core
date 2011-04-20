@@ -5,8 +5,8 @@
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 #
 %include	/usr/lib/rpm/macros.perl
-Summary:	The stupid content tracker
-Summary(pl.UTF-8):	Prymitywne narzędzie do śledzenia treści
+Summary:	Distributed version control system focused on speed, effectivity and usability
+Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Release:	1
 Version:	1.7.4.5
