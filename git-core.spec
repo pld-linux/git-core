@@ -9,11 +9,11 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Release:	1
-Version:	1.7.4.5
+Version:	1.7.5
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	2fa6c4c847ed87523cf55de54af457eb
+# Source0-md5:	7f0bc26a6e87d251c9b09fa05a186ed3
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
