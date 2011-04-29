@@ -8,7 +8,7 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Release:	1
+Release:	2
 Version:	1.7.5
 License:	GPL v2
 Group:		Development/Tools
@@ -409,7 +409,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/git-core
 cat << EOF > $RPM_BUILD_ROOT%{_sysconfdir}/git-core/gitconfig
 [init]
-	templatedir = /etc/gitolite/templates
+	templatedir = /etc/git-core/templates
 EOF
 
 %{__make} install \
