@@ -1,0 +1,45 @@
+diff --git a/Makefile b/Makefile
+index cbc3fce..f5a37b5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -291,15 +291,8 @@ sharedir = $(prefix)/share
+ gitwebdir = $(sharedir)/gitweb
+ template_dir = share/git-core/templates
+ htmldir = share/doc/git-doc
+-ifeq ($(prefix),/usr)
+-sysconfdir = /etc
+ ETC_GITCONFIG = $(sysconfdir)/gitconfig
+ ETC_GITATTRIBUTES = $(sysconfdir)/gitattributes
+-else
+-sysconfdir = $(prefix)/etc
+-ETC_GITCONFIG = etc/gitconfig
+-ETC_GITATTRIBUTES = etc/gitattributes
+-endif
+ lib = lib
+ # DESTDIR=
+ pathsep = :
+@@ -1192,6 +1185,12 @@ endif
+ -include config.mak.autogen
+ -include config.mak
+ 
++ifeq ($(prefix),/usr)
++sysconfdir ?= /etc
++else
++sysconfdir ?= etc
++endif
++
+ ifdef CHECK_HEADER_DEPENDENCIES
+ COMPUTE_HEADER_DEPENDENCIES =
+ USE_COMPUTED_HEADER_DEPENDENCIES =
+diff --git a/config.mak.in b/config.mak.in
+index e378534..3006494 100644
+--- a/config.mak.in
++++ b/config.mak.in
+@@ -15,6 +15,7 @@ TCLTK_PATH = @TCLTK_PATH@
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+ bindir = @bindir@
++sysconfdir = @sysconfdir@
+ gitexecdir = @libexecdir@/git-core
+ datarootdir = @datarootdir@
+ template_dir = @datadir@/git-core/templates

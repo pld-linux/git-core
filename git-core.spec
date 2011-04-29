@@ -22,6 +22,7 @@ Source5:	%{name}.inet
 Source6:	%{name}.init
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
+Patch2:		%{name}-sysconfdir.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -370,11 +371,13 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 %setup -q -n git-%{version}
 %patch0 -p1
 %patch1 -p0
+%patch2 -p1
 
 %build
 %{__aclocal}
 %{__autoconf}
 %configure \
+	--sysconfdir=%{_sysconfdir}/git-core \
 	--with-openssl
 
 echo "BLK_SHA1=1" >> config.mak
@@ -403,6 +406,11 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_localstatedir}/lib/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
 install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/git-core
+cat << EOF > $RPM_BUILD_ROOT%{_sysconfdir}/git-core/gitconfig
+[init]
+	templatedir = /etc/gitolite/templates
+EOF
 
 %{__make} install \
 	INSTALLDIRS=vendor \
@@ -412,6 +420,10 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 %{__make} -C Documentation install \
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
+
+# copy templates except sample hooks
+cp -a $RPM_BUILD_ROOT%{_datadir}/%{name}/templates $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
+%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/templates/hooks/*.sample
 
 # header files and lib
 cp -a *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
@@ -517,6 +529,7 @@ fi
 %attr(755,root,root) %{_bindir}/git-shell
 %attr(755,root,root) %{_bindir}/git-upload-archive
 %attr(755,root,root) %{_bindir}/git-upload-pack
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/git-core
 
 %if %{with doc}
 %{_mandir}/man1/git-*.1*
