@@ -25,3 +25,18 @@ diff -ur git-1.7.0.3.orig/t/t1304-default-acl.sh git-1.7.0.3/t/t1304-default-acl
  '
  
  test_expect_success PERL 'dummy edit works' '
+diff --git a/t/t1506-rev-parse-diagnosis.sh b/t/t1506-rev-parse-diagnosis.sh
+index 4a6396f..bad09f9 100755
+--- a/t/t1506-rev-parse-diagnosis.sh
++++ b/t/t1506-rev-parse-diagnosis.sh
+@@ -8,8 +8,8 @@ exec </dev/null
+ 
+ test_did_you_mean ()
+ {
+-	printf "fatal: Path '$2$3' $4, but not ${5:-'$3'}.\n" >expected &&
+-	printf "Did you mean '$1:$2$3'${2:+ aka '$1:./$3'}?\n" >>expected &&
++	printf "fatal: Path '$2$3' $4, but not ${5:-\'$3\'}.\n" >expected &&
++	printf "Did you mean '$1:$2$3'${2:+ aka \'$1:./$3\'}?\n" >>expected &&
+ 	test_cmp expected error
+ }
+ 
