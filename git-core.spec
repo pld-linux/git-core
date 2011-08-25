@@ -9,11 +9,11 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Release:	1
-Version:	1.7.6
+Version:	1.7.6.1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
-# Source0-md5:	9e0a438eb71e89eedb61f89470ed32a0
+# Source0-md5:	d1e00772cc9dc6c571999feb9e8771ab
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -49,7 +49,7 @@ BuildRequires:	xmlto
 BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	cvs-gnu-client >= 1.12
 %endif
-BuildRequires:	pdksh >= 5.2.14-46
+Conflicts:	pdksh < 5.2.14-46
 %endif
 Requires:	coreutils
 Requires:	diffutils
