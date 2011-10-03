@@ -8,13 +8,13 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
+Version:	1.7.7
 Release:	1
-Version:	1.7.6.4
 License:	GPL v2
 Group:		Development/Tools
 # Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	e0b7afcc0e5e43bbb82f85598ae34bd8
+# Source0-md5:	5d645884e688921e773186783b65ce33
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -546,6 +546,7 @@ fi
 %{_mandir}/man7/gitcore-tutorial.7*
 %{_mandir}/man7/gitdiffcore.7*
 %{_mandir}/man7/gitglossary.7*
+%{_mandir}/man7/gitnamespaces.7*
 %{_mandir}/man7/gitrevisions.7*
 %{_mandir}/man7/gittutorial-2.7*
 %{_mandir}/man7/gittutorial.7*
@@ -555,6 +556,7 @@ fi
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/*-*
 %attr(755,root,root) %{_libdir}/%{name}/git
+%{_libdir}/%{name}/mergetools
 
 %exclude %{_libdir}/%{name}/git-gui
 %exclude %{_libdir}/%{name}/git-svn
