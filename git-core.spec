@@ -2,19 +2,20 @@
 # Conditional build:
 %bcond_without	tests		# don't perform make test
 %bcond_with	tests_cvs	# perform tests which use CVS
+%bcond_with	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 #
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.7.7.1
+Version:	1.7.7.2
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 # Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	7cfb3e7ea585037272a7ad8e35f4ac0a
+# Source0-md5:	400d85fd17bdb7f8923dbf3b3a2ca671
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -399,7 +400,7 @@ echo "BLK_SHA1=1" >> config.mak
 %if %{without tests_cvs}
 rm t/t*cvs*.sh || :
 %endif
-%{__make} test
+%{!?with_svn:GIT_SKIP_TESTS='t91??'} %{__make} test
 %endif
 
 %install
