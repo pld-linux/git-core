@@ -347,6 +347,7 @@ wykonania przy użyciu ogólnego interfejsu poleceń.
 Summary:	Python interface to the Git version control system
 Summary(pl.UTF-8):	Pythonowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Python
+Requires:	git-core
 
 %description -n python-Git
 This module provides Python scripts easy way to interface the Git
@@ -537,6 +538,7 @@ fi
 %{_mandir}/man1/git-*.1*
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
+%exclude %{_mandir}/man1/git-remote-helpers.1*
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
@@ -563,6 +565,7 @@ fi
 %exclude %{_libdir}/%{name}/git-svn
 %exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
+%exclude %{_libdir}/%{name}/git-remote-testgit
 %exclude %{_libdir}/%{name}/*email*
 
 %{_datadir}/%{name}
@@ -689,12 +692,16 @@ fi
 
 %files -n python-Git
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-remote-testgit
 %dir %{py_sitescriptdir}/git_remote_helpers
 %{py_sitescriptdir}/git_remote_helpers/*.py[co]
 %dir %{py_sitescriptdir}/git_remote_helpers/git
 %{py_sitescriptdir}/git_remote_helpers/git/*.py[co]
 %if "%{py_ver}" > "2.4"
 %{py_sitescriptdir}/git_remote_helpers*.egg-info
+%endif
+%if %{with doc}
+%{_mandir}/man1/git-remote-helpers.1*
 %endif
 
 %files -n vim-syntax-gitcommit
