@@ -4,7 +4,7 @@
 %bcond_with	tests_cvs	# perform tests which use CVS
 %bcond_with	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
-#
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
@@ -315,6 +315,7 @@ Narzędzia Gita do wysyłania poczty.
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion
 
 %description -n bash-completion-git
@@ -327,6 +328,7 @@ Pakiet ten dostarcza bashowe uzupełnianie nazw dla gita.
 Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
 
 %description -n perl-Git
@@ -347,7 +349,7 @@ wykonania przy użyciu ogólnego interfejsu poleceń.
 Summary:	Python interface to the Git version control system
 Summary(pl.UTF-8):	Pythonowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Python
-Requires:	git-core
+Requires:	%{name} = %{version}-%{release}
 
 %description -n python-Git
 This module provides Python scripts easy way to interface the Git
@@ -361,6 +363,7 @@ wersji Git.
 Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
 Group:		Applications/Editors/Vim
+Requires:	%{name} = %{version}-%{release}
 # for _vimdatadir existence
 Requires:	vim-rt >= 4:6.3.058-3
 
@@ -409,10 +412,10 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_localstatedir}/lib/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
 install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/git-core
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 cat << EOF > $RPM_BUILD_ROOT%{_sysconfdir}/git-core/gitconfig
 [init]
-	templatedir = /etc/git-core/templates
+	templatedir = %{_sysconfdir}/%{name}/templates
 EOF
 
 %{__make} install \
@@ -429,15 +432,15 @@ cp -a $RPM_BUILD_ROOT%{_datadir}/%{name}/templates $RPM_BUILD_ROOT%{_sysconfdir}
 %{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/templates/hooks/*.sample
 
 # header files and lib
-cp -a *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -p *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -a compat $RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -a xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
-cp -a libgit.a $RPM_BUILD_ROOT%{_libdir}
-cp -a xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
+cp -p xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
+cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
+cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
-cp -a contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
+install -d $RPM_BUILD_ROOT/etc/bash_completion.d
+cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT/etc/bash_completion.d
 
 # vim syntax
 install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
@@ -457,10 +460,10 @@ EOF
 
 # gitweb
 mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
-cp -a %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
-cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
-cp -a %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
-cp -a %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
 
 # gitview
 install -p contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
@@ -481,8 +484,8 @@ ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-shell
 ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
 
 # remove unneeded files
-rm $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
-rm $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
+%{__rm} $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
+%{__rm} $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
 %py_postclean
 
 %clean
@@ -532,7 +535,7 @@ fi
 %attr(755,root,root) %{_bindir}/git-shell
 %attr(755,root,root) %{_bindir}/git-upload-archive
 %attr(755,root,root) %{_bindir}/git-upload-pack
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/git-core
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}
 
 %if %{with doc}
 %{_mandir}/man1/git-*.1*
@@ -590,7 +593,7 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/git-core
+%{_includedir}/%{name}
 %{_libdir}/libgit.a
 %{_libdir}/libgit_xdiff.a
 
@@ -683,7 +686,7 @@ fi
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
-%{_sysconfdir}/bash_completion.d/*
+/etc/bash_completion.d/*
 
 %files -n perl-Git
 %defattr(644,root,root,755)
