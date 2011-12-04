@@ -328,7 +328,6 @@ Pakiet ten dostarcza bashowe uzupełnianie nazw dla gita.
 Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
-Requires:	%{name} = %{version}-%{release}
 Obsoletes:	perl-git-core
 
 %description -n perl-Git
@@ -688,7 +687,7 @@ fi
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
-/etc/bash_completion.d/*
+/etc/bash_completion.d/git-completion.bash
 
 %files -n perl-Git
 %defattr(644,root,root,755)
@@ -712,4 +711,4 @@ fi
 %files -n vim-syntax-gitcommit
 %defattr(644,root,root,755)
 %doc contrib/vim/README
-%{_datadir}/vim/vimfiles/syntax/*.vim
+%{_datadir}/vim/vimfiles/syntax/gitcommit.vim
