@@ -345,18 +345,18 @@ specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
 %package -n python-Git
-Summary:	Python interface to the Git version control system
-Summary(pl.UTF-8):	Pythonowy interfejs do systemu kontroli wersji Git
+Summary:	Python Git remote helpers for non-git repositories
+Summary(pl.UTF-8):	Pythonowe zdalne moduły pomocnicze dla repozytoriów niegitowych
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
 
 %description -n python-Git
-This module provides Python scripts easy way to interface the Git
-version control system.
+This package contains Python git_repote_helpers package - Git remote
+helpers for non-git repositories.
 
 %description -n python-Git -l pl.UTF-8
-Ten moduł umożliwia skryptom Pythonowym współpracę z systemem kontroli
-wersji Git.
+Ten pakiet zawiera pakiet Pythona git_remote_helpers - zdalne moduły
+pomocnicze Gita dla repozytoriów niegitowych.
 
 %package -n vim-syntax-gitcommit
 Summary:	Vim syntax: gitcommit
