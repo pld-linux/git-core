@@ -26,7 +26,7 @@ Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
 URL:		http://git-scm.com/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
@@ -488,6 +488,8 @@ ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
 %{__rm} $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
 %py_postclean
 
+%find_lang git
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -527,7 +529,7 @@ fi
 %triggerun gitweb -- lighttpd
 %webapp_unregister lighttpd %{webapp}
 
-%files
+%files -f git.lang
 %defattr(644,root,root,755)
 %doc README contrib
 %attr(755,root,root) %{_bindir}/git
@@ -550,6 +552,7 @@ fi
 %{_mandir}/man5/gitrepository-layout.5*
 %{_mandir}/man7/gitcli.7*
 %{_mandir}/man7/gitcore-tutorial.7*
+%{_mandir}/man7/gitcredentials.7*
 %{_mandir}/man7/gitdiffcore.7*
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gitnamespaces.7*
@@ -693,7 +696,8 @@ fi
 %files -n perl-Git
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Git.pm
-%{_mandir}/man3/Git.3pm*
+%{perl_vendorlib}/Git
+%{_mandir}/man3/Git*.3pm*
 
 %files -n python-Git
 %defattr(644,root,root,755)
