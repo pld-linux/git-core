@@ -207,6 +207,7 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	webapps
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
+Suggests:	webserver(setenv)
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -460,6 +461,7 @@ EOF
 
 # gitweb
 mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
+ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
@@ -571,6 +573,7 @@ fi
 %exclude %{_libdir}/%{name}/git-svn
 %exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
+%exclude %{_libdir}/%{name}/git-instaweb
 %exclude %{_libdir}/%{name}/git-remote-testgit
 %exclude %{_libdir}/%{name}/*email*
 
@@ -629,8 +632,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/lighttpd.conf
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
+%attr(755,root,root) %{_libdir}/%{name}/git-instaweb
+%if %{with doc}
 %{_mandir}/man1/gitweb.1*
 %{_mandir}/man5/gitweb.conf.5*
+%endif
 
 %files gitview
 %defattr(644,root,root,755)
