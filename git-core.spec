@@ -490,6 +490,7 @@ ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
 %{__rm} $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
 %py_postclean
 
+mv $RPM_BUILD_ROOT%{_datadir}/locale/pt{_PT,}
 %find_lang git
 
 %clean
