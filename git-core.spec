@@ -2,20 +2,20 @@
 # Conditional build:
 %bcond_without	tests		# don't perform make test
 %bcond_with	tests_cvs	# perform tests which use CVS
-%bcond_with	tests_svn	# perform tests which use subversion
+%bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.7.10.4
+Version:	1.7.11
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 # Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	68319d593d051ef76c26e945bbd2d7ac
+# Source0-md5:	0beee35ec7d11756f51ca1d3ec5c0e16
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -669,6 +669,7 @@ fi
 %files svn
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-svn
+%{perl_vendorlib}/Git/SVN
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
 %endif
@@ -703,7 +704,8 @@ fi
 %files -n perl-Git
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Git.pm
-%{perl_vendorlib}/Git
+%dir %{perl_vendorlib}/Git
+%{perl_vendorlib}/Git/I18N.pm
 %{_mandir}/man3/Git*.3pm*
 
 %files -n python-Git
