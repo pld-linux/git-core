@@ -405,7 +405,7 @@ echo "BLK_SHA1=1" >> config.mak
 %if %{without tests_cvs}
 rm t/t*cvs*.sh || :
 %endif
-%{!?with_svn:GIT_SKIP_TESTS='t91??'} %{__make} test
+%{!?with_tests_svn:GIT_SKIP_TESTS='t91??'} %{__make} test
 %endif
 
 %install
