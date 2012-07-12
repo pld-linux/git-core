@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	tests		# don't perform make test
 %bcond_with	tests_cvs	# perform tests which use CVS
-%bcond_without	tests_svn	# perform tests which use subversion
+%bcond_with	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 
 %include	/usr/lib/rpm/macros.perl
