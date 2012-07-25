@@ -398,7 +398,7 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	V=1
 
-%{?with_doc:%{__make} -C Documentation}
+%{?with_doc:%{__make} -C Documentation V=1}
 
 %if %{with tests}
 %if %{without tests_cvs}
