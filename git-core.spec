@@ -10,7 +10,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.7.11.3
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 # Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
@@ -398,8 +398,7 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	V=1
 
-# use DOCBOOK_XSL_172=1 to fix 'the ".ft C" problem' in generated manpages.
-%{?with_doc:%{__make} -C Documentation V=1 DOCBOOK_XSL_172=1}
+%{?with_doc:%{__make} -C Documentation}
 
 %if %{with tests}
 %if %{without tests_cvs}
