@@ -9,13 +9,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.7.11.5
+Version:	1.7.12
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
-# Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.bz2
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	9985d35c11531d546426ebefb327c847
+# Source0-md5:	ceb1a6b17a3e33bbc70eadf8fce5876c
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -669,6 +668,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-svn
 %{perl_vendorlib}/Git/SVN
+%{perl_vendorlib}/Git/SVN.pm
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
 %endif
@@ -705,6 +705,7 @@ fi
 %{perl_vendorlib}/Git.pm
 %dir %{perl_vendorlib}/Git
 %{perl_vendorlib}/Git/I18N.pm
+%{perl_vendorlib}/Git/IndexInfo.pm
 %{_mandir}/man3/Git*.3pm*
 
 %files -n python-Git
