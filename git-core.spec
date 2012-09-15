@@ -542,8 +542,10 @@ fi
 
 %if %{with doc}
 %{_mandir}/man1/git-*.1*
+%exclude %{_mandir}/man1/git-archimport.1*
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
+%exclude %{_mandir}/man1/*email*.1*
 %exclude %{_mandir}/man1/git-remote-helpers.1*
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
