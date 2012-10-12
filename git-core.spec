@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	tests		# don't perform make test
 %bcond_with	tests_cvs	# perform tests which use CVS
-%bcond_with	tests_svn	# perform tests which use subversion
+%bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 
 %define _rc  rc2
@@ -52,6 +52,7 @@ BuildRequires:	xmlto
 BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	cvs-gnu-client >= 1.12
 %endif
+%{?with_tests_svn:BuildRequires:  subversion}
 Conflicts:	pdksh < 5.2.14-46
 %endif
 Requires:	coreutils
