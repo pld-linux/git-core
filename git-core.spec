@@ -5,7 +5,7 @@
 %bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 
-%define _rc  rc2
+%define _rc  rc3
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
@@ -16,7 +16,7 @@ Release:	0.%{_rc}.1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.%{_rc}.tar.gz
-# Source0-md5:	9d4d7c02b64174f5f81d314b9b4f5c54
+# Source0-md5:	0c583c96cfa311a55800b35da2b3782c
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
