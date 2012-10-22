@@ -2,19 +2,19 @@
 # Conditional build:
 %bcond_without	tests		# don't perform make test
 %bcond_with	tests_cvs	# perform tests which use CVS
-%bcond_with	tests_svn	# perform tests which use subversion
+%bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.7.12.4
+Version:	1.8.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	5f3f0feb59d96f8106e0a56112bc73db
+# Source0-md5:	12f4d20f34ae37086d86dd3b9d037bba
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -50,6 +50,7 @@ BuildRequires:	xmlto
 BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	cvs-gnu-client >= 1.12
 %endif
+%{?with_tests_svn:BuildRequires:  subversion}
 Conflicts:	pdksh < 5.2.14-46
 %endif
 Requires:	coreutils
