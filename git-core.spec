@@ -162,16 +162,16 @@ udostępniania repozytoriów git. Ten pakiet dostarcza pliki potrzebne
 do uruchomienia git-daemona w trybie usługi samodzielnej.
 
 %package devel
-Summary:	Header files for git-core
-Summary(pl.UTF-8):	Pliki nagłówkowe dla git-core
+Summary:	Git library with header files
+Summary(pl.UTF-8):	Biblioteka Gita oraz pliki nagłówkowe
 Group:		Development/Libraries
 Requires:	zlib-devel
 
 %description devel
-Header files for git-core.
+Git library with header files.
 
 %description devel -l pl.UTF-8
-Pliki nagłówkowe dla git-core.
+Biblioteka Gita oraz pliki nagłówkowe.
 
 %package gitk
 Summary:	Tcl/Tk interface to the Git version control system
@@ -402,7 +402,7 @@ echo "BLK_SHA1=1" >> config.mak
 
 %if %{with tests}
 %if %{without tests_cvs}
-rm t/t*cvs*.sh || :
+%{__rm} t/t*cvs*.sh || :
 %endif
 %{!?with_tests_svn:GIT_SKIP_TESTS='t91??'} %{__make} test
 %endif
