@@ -10,7 +10,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -398,7 +398,11 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	V=1
 
-%{?with_doc:%{__make} -C Documentation V=1}
+%if %{with doc}
+%{__make} -C Documentation \
+	MAN_BASE_URL=file://%{_docdir}/%{name}-doc-%{version}/ \
+	V=1
+%endif
 
 %if %{with tests}
 %if %{without tests_cvs}
