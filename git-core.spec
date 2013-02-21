@@ -24,6 +24,7 @@ Source6:	%{name}.init
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
+Patch3:		cherry-picked-commitlog.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -379,6 +380,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 %patch0 -p1
 %patch1 -p0
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__aclocal}
