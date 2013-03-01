@@ -9,12 +9,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.1.4
+Version:	1.8.1.5
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	60f32ef4a6b3fa2143b81a28704333ed
+# Source0-md5:	ce168861c23a700b40ffe94475bb1d9e
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -553,7 +553,7 @@ fi
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
 %exclude %{_mandir}/man1/*email*.1*
-%exclude %{_mandir}/man1/git-remote-helpers.1*
+%exclude %{_mandir}/man1/gitremote-helpers.1*
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
@@ -728,7 +728,7 @@ fi
 %{py_sitescriptdir}/git_remote_helpers*.egg-info
 %endif
 %if %{with doc}
-%{_mandir}/man1/git-remote-helpers.1*
+%{_mandir}/man1/gitremote-helpers.1*
 %endif
 
 %files -n vim-syntax-gitcommit
