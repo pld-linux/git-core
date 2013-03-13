@@ -4,13 +4,14 @@
 %bcond_with	tests_cvs	# perform tests which use CVS
 %bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
+%bcond_without	pcre            # link with libpcre
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.1.5
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -32,6 +33,7 @@ BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
 BuildRequires:	openssl-devel
+%{?with_pcre:BuildRequires:	pcre-devel}
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-base
 BuildRequires:	python-devel
@@ -387,6 +389,7 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 %{__autoconf}
 %configure \
 	--sysconfdir=%{_sysconfdir}/git-core \
+	%{?with_pcre:--with-libpcre} \
 	--with-openssl
 
 echo "BLK_SHA1=1" >> config.mak
