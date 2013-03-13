@@ -10,12 +10,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.1.5
-Release:	2
+Version:	1.8.2
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	ce168861c23a700b40ffe94475bb1d9e
+# Source0-md5:	210834d73c857931c3da34a65eb3e597
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -585,7 +585,8 @@ fi
 %exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
 %exclude %{_libdir}/%{name}/git-instaweb
-%exclude %{_libdir}/%{name}/git-remote-testgit
+%exclude %{_libdir}/%{name}/git-remote-testpy
+%exclude %{_libdir}/%{name}/git-remote-testsvn
 %exclude %{_libdir}/%{name}/*email*
 
 %{_datadir}/%{name}
@@ -679,6 +680,7 @@ fi
 %files svn
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-svn
+%attr(755,root,root) %{_libdir}/%{name}/git-remote-testsvn
 %{perl_vendorlib}/Git/SVN
 %{perl_vendorlib}/Git/SVN.pm
 %if %{with doc}
@@ -722,7 +724,7 @@ fi
 
 %files -n python-Git
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-testgit
+%attr(755,root,root) %{_libdir}/%{name}/git-remote-testpy
 %dir %{py_sitescriptdir}/git_remote_helpers
 %{py_sitescriptdir}/git_remote_helpers/*.py[co]
 %dir %{py_sitescriptdir}/git_remote_helpers/git
