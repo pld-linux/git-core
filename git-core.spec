@@ -4,7 +4,7 @@
 %bcond_with	tests_cvs	# perform tests which use CVS
 %bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
-%bcond_without	pcre            # link with libpcre
+%bcond_without	pcre            # perl-compatible regexes support
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
