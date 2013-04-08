@@ -10,12 +10,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.2
-Release:	2
+Version:	1.8.2.1
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	210834d73c857931c3da34a65eb3e597
+# Source0-md5:	3f6ebca116c627490e4ee1f1324d5e65
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -26,7 +26,6 @@ Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
 Patch3:		cherry-picked-commitlog.patch
-Patch4:	        %{name}-coequal.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -384,7 +383,6 @@ Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 %patch1 -p0
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 %{__aclocal}
