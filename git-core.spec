@@ -6,16 +6,18 @@
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 %bcond_without	pcre            # perl-compatible regexes support
 
+%define _rc  rc0
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.3.4
-Release:	1
+Version:	1.8.4
+Release:	0.%{_rc}.1
 License:	GPL v2
 Group:		Development/Tools
-Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	80eec3201a5d012913d287b85adaee8e
+Source0:	http://git-core.googlecode.com/files/git-%{version}.%{_rc}.tar.gz
+# Source0-md5:	462bcf147755ce52fe3791a19198b982
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-apache.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -383,7 +385,7 @@ This plugin provides syntax highlighting for git's commit messages.
 Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %prep
-%setup -q -n git-%{version}
+%setup -q -n git-%{version}.%{_rc}
 %patch0 -p1
 %patch1 -p0
 %patch2 -p1
@@ -591,7 +593,6 @@ fi
 %exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
 %exclude %{_libdir}/%{name}/git-instaweb
-%exclude %{_libdir}/%{name}/git-remote-testpy
 %exclude %{_libdir}/%{name}/git-remote-testsvn
 %exclude %{_libdir}/%{name}/*email*
 
@@ -730,7 +731,6 @@ fi
 
 %files -n python-Git
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-testpy
 %dir %{py_sitescriptdir}/git_remote_helpers
 %{py_sitescriptdir}/git_remote_helpers/*.py[co]
 %dir %{py_sitescriptdir}/git_remote_helpers/git
