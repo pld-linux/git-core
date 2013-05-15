@@ -11,17 +11,18 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.2.3
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
 # Source0-md5:	03ebfd403a8cf355da0e3f15e53b8925
 Source1:	%{name}-gitweb.conf
-Source2:	%{name}-gitweb-httpd.conf
+Source2:	%{name}-gitweb-apache.conf
 Source3:	%{name}-gitweb-lighttpd.conf
 Source4:	%{name}.sysconfig
 Source5:	%{name}.inet
 Source6:	%{name}.init
+Source7:	%{name}-gitweb-httpd.conf
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
@@ -211,6 +212,7 @@ Requires:	webapps
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
 Suggests:	webserver(setenv)
+Conflicts:	apache-base < 2.4.0-1
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -472,7 +474,7 @@ mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
-cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
+cp -p %{SOURCE7} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
 
 # gitview
@@ -528,10 +530,10 @@ fi
 %triggerun gitweb -- apache1 < 1.3.37-3, apache1-base
 %webapp_unregister apache %{webapp}
 
-%triggerin gitweb -- apache < 2.2.0, apache-base
+%triggerin gitweb -- apache-base
 %webapp_register httpd %{webapp}
 
-%triggerun gitweb -- apache < 2.2.0, apache-base
+%triggerun gitweb -- apache-base
 %webapp_unregister httpd %{webapp}
 
 %triggerin gitweb -- lighttpd
