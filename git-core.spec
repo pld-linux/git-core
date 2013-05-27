@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.3
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -30,6 +30,7 @@ Patch3:		cherry-picked-commitlog.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
+BuildRequires:	bash-completion >= 2.0
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
@@ -78,6 +79,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
+%define		bash_compdir	%(pkg-config --variable completionsdir bash-completion || echo /etc/bash_completion.d)
 
 %description
 "git" can mean anything, depending on your mood.
@@ -323,7 +325,7 @@ Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
-Requires:	bash-completion
+Requires:	bash-completion >= 2.0
 
 %description -n bash-completion-git
 This package provides bash-completion for git.
@@ -450,8 +452,8 @@ cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
 cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 
 # bash completion
-install -d $RPM_BUILD_ROOT/etc/bash_completion.d
-cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT/etc/bash_completion.d
+install -d $RPM_BUILD_ROOT%{bash_compdir}
+cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
 
 # vim syntax
 install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
@@ -714,7 +716,7 @@ fi
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
-/etc/bash_completion.d/git-completion.bash
+%{bash_compdir}/git
 
 %files -n perl-Git
 %defattr(644,root,root,755)
