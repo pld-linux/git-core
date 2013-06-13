@@ -30,7 +30,6 @@ Patch3:		cherry-picked-commitlog.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
-BuildRequires:	bash-completion >= 2.0
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
@@ -79,7 +78,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
-%define		bash_compdir	%(pkg-config --variable completionsdir bash-completion || echo /etc/bash_completion.d)
+%define		bash_compdir	%{_datadir}/bash-completion/completions
 
 %description
 "git" can mean anything, depending on your mood.
