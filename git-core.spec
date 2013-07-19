@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.3.3
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -28,6 +28,7 @@ Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
 Patch3:		cherry-picked-commitlog.patch
 Patch4:	        %{name}-svn-serf.patch
+Patch5:	        %{name}-svn-exit-errors.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
