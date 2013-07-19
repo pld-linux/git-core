@@ -62,15 +62,6 @@ index 7a252ef..0ba15b9 100644
  =item temp_release ( NAME )
  
  =item temp_release ( FILEHANDLE )
-@@ -1248,7 +1277,7 @@ sub _temp_cache {
- 
- 	my $temp_fd = \$TEMP_FILEMAP{$name};
- 	if (defined $$temp_fd and $$temp_fd->opened) {
--		if ($TEMP_FILES{$$temp_fd}{locked}) {
-+		if (temp_is_locked($name)) {
- 			throw Error::Simple("Temp file with moniker '" .
- 				$name . "' already in use");
- 		}
 -- 
 1.8.3.2
 
