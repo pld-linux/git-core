@@ -6,7 +6,7 @@
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 %bcond_without	pcre            # perl-compatible regexes support
 
-%define _rc  rc0
+%define _rc  rc1
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
@@ -17,7 +17,7 @@ Release:	0.%{_rc}.1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.%{_rc}.tar.gz
-# Source0-md5:	462bcf147755ce52fe3791a19198b982
+# Source0-md5:	65764e43561bdeac488b90261d598a0f
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-apache.conf
 Source3:	%{name}-gitweb-lighttpd.conf
