@@ -561,6 +561,7 @@ fi
 %exclude %{_mandir}/man1/git-archimport.1*
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
+%exclude %{_mandir}/man1/git-imap-send*.1*
 %exclude %{_mandir}/man1/*email*.1*
 %exclude %{_mandir}/man1/gitremote-helpers.1*
 %{_mandir}/man1/git.1*
@@ -590,6 +591,7 @@ fi
 %exclude %{_libdir}/%{name}/git-svn
 %exclude %{_libdir}/%{name}/git-archimport
 %exclude %{_libdir}/%{name}/git-cvs*
+%exclude %{_libdir}/%{name}/git-imap-send
 %exclude %{_libdir}/%{name}/git-instaweb
 %exclude %{_libdir}/%{name}/git-remote-testpy
 %exclude %{_libdir}/%{name}/git-remote-testsvn
@@ -711,9 +713,11 @@ fi
 
 %files email
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-imap-send
 %attr(755,root,root) %{_libdir}/%{name}/*email*
 %if %{with doc}
 %{_mandir}/man1/*email*.1*
+%{_mandir}/man1/*imap-send*.1*
 %endif
 
 %files -n bash-completion-git
