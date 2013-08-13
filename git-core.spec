@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.3.4
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -450,8 +450,11 @@ cp -a $RPM_BUILD_ROOT%{_datadir}/%{name}/templates $RPM_BUILD_ROOT%{_sysconfdir}
 cp -p *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -a compat $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -p xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
+install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
+cp -p block-sha1/sha1.h $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
 cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
 cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
+cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 # bash completion
 install -d $RPM_BUILD_ROOT%{bash_compdir}
