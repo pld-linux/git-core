@@ -10,12 +10,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.3.4
-Release:	2
+Version:	1.8.4
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	80eec3201a5d012913d287b85adaee8e
+# Source0-md5:	355768a1c70d0cb4fedf4b598ac1375b
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-apache.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -596,7 +596,6 @@ fi
 %exclude %{_libdir}/%{name}/git-cvs*
 %exclude %{_libdir}/%{name}/git-imap-send
 %exclude %{_libdir}/%{name}/git-instaweb
-%exclude %{_libdir}/%{name}/git-remote-testpy
 %exclude %{_libdir}/%{name}/git-remote-testsvn
 %exclude %{_libdir}/%{name}/*email*
 
@@ -737,7 +736,6 @@ fi
 
 %files -n python-Git
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-testpy
 %dir %{py_sitescriptdir}/git_remote_helpers
 %{py_sitescriptdir}/git_remote_helpers/*.py[co]
 %dir %{py_sitescriptdir}/git_remote_helpers/git
