@@ -6,18 +6,16 @@
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 %bcond_without	pcre            # perl-compatible regexes support
 
-%define _rc  rc4
-
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.4
-Release:	0.%{_rc}.1
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
-Source0:	http://git-core.googlecode.com/files/git-%{version}.%{_rc}.tar.gz
-# Source0-md5:	f010deca987625fa1af4695a6f0964c8
+Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
+# Source0-md5:	355768a1c70d0cb4fedf4b598ac1375b
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-apache.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -385,7 +383,7 @@ This plugin provides syntax highlighting for git's commit messages.
 Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %prep
-%setup -q -n git-%{version}.%{_rc}
+%setup -q -n git-%{version}
 %patch0 -p1
 %patch1 -p0
 %patch2 -p1
