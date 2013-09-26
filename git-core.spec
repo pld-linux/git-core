@@ -17,12 +17,11 @@ Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
 # Source0-md5:	355768a1c70d0cb4fedf4b598ac1375b
 Source1:	%{name}-gitweb.conf
-Source2:	%{name}-gitweb-apache.conf
+Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
 Source4:	%{name}.sysconfig
 Source5:	%{name}.inet
 Source6:	%{name}.init
-Source7:	%{name}-gitweb-httpd.conf
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
@@ -215,7 +214,6 @@ Requires:	webapps
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
 Suggests:	webserver(setenv)
-Conflicts:	apache-base < 2.4.0-1
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -481,7 +479,7 @@ mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
-cp -p %{SOURCE7} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
 
 # gitview
@@ -537,10 +535,10 @@ fi
 %triggerun gitweb -- apache1 < 1.3.37-3, apache1-base
 %webapp_unregister apache %{webapp}
 
-%triggerin gitweb -- apache-base
+%triggerin gitweb -- apache < 2.2.0, apache-base
 %webapp_register httpd %{webapp}
 
-%triggerun gitweb -- apache-base
+%triggerun gitweb -- apache < 2.2.0, apache-base
 %webapp_unregister httpd %{webapp}
 
 %triggerin gitweb -- lighttpd
