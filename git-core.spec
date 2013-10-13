@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.4.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -210,6 +210,7 @@ Summary(pl.UTF-8):	Frontend WWW do gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	webapps
+Requires:	webserver(access)
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
 Suggests:	webserver(setenv)
