@@ -6,16 +6,18 @@
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 %bcond_without	pcre            # perl-compatible regexes support
 
+%define _rc  rc1
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.4.2
-Release:	1
+Version:	1.8.5
+Release:	0.%{_rc}.1
 License:	GPL v2
 Group:		Development/Tools
-Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	6f63d103465b86ca0ebe4189ea54731c
+Source0:	http://git-core.googlecode.com/files/git-%{version}.%{_rc}.tar.gz
+# Source0-md5:	093264675071f17623bc315481fe96fd
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -69,6 +71,7 @@ Suggests:	git-core-cvs
 Suggests:	git-core-svn
 Suggests:	less
 Suggests:	rsync
+Obsoletes:	python-Git
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # html docs have links to txt files
@@ -352,20 +355,6 @@ dowolne polecenia Gita; w przyszłości interfejs udostępni także
 specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
-%package -n python-Git
-Summary:	Python Git remote helpers for non-git repositories
-Summary(pl.UTF-8):	Pythonowe zdalne moduły pomocnicze dla repozytoriów niegitowych
-Group:		Development/Languages/Python
-Requires:	%{name} = %{version}-%{release}
-
-%description -n python-Git
-This package contains Python git_repote_helpers package - Git remote
-helpers for non-git repositories.
-
-%description -n python-Git -l pl.UTF-8
-Ten pakiet zawiera pakiet Pythona git_remote_helpers - zdalne moduły
-pomocnicze Gita dla repozytoriów niegitowych.
-
 %package -n vim-syntax-gitcommit
 Summary:	Vim syntax: gitcommit
 Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
@@ -381,7 +370,7 @@ This plugin provides syntax highlighting for git's commit messages.
 Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
 
 %prep
-%setup -q -n git-%{version}
+%setup -q -n git-%{version}.%{_rc}
 %patch0 -p1
 %patch1 -p0
 %patch2 -p1
@@ -564,8 +553,8 @@ fi
 %exclude %{_mandir}/man1/git-cvs*.1*
 %exclude %{_mandir}/man1/git-imap-send*.1*
 %exclude %{_mandir}/man1/*email*.1*
-%exclude %{_mandir}/man1/gitremote-helpers.1*
 %{_mandir}/man1/git.1*
+%{_mandir}/man1/gitremote-helpers.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
 %{_mandir}/man5/gitignore.5*
@@ -731,19 +720,6 @@ fi
 %{perl_vendorlib}/Git/I18N.pm
 %{perl_vendorlib}/Git/IndexInfo.pm
 %{_mandir}/man3/Git*.3pm*
-
-%files -n python-Git
-%defattr(644,root,root,755)
-%dir %{py_sitescriptdir}/git_remote_helpers
-%{py_sitescriptdir}/git_remote_helpers/*.py[co]
-%dir %{py_sitescriptdir}/git_remote_helpers/git
-%{py_sitescriptdir}/git_remote_helpers/git/*.py[co]
-%if "%{py_ver}" > "2.4"
-%{py_sitescriptdir}/git_remote_helpers*.egg-info
-%endif
-%if %{with doc}
-%{_mandir}/man1/gitremote-helpers.1*
-%endif
 
 %files -n vim-syntax-gitcommit
 %defattr(644,root,root,755)
