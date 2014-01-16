@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.5.3
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -65,7 +65,10 @@ Requires:	openssh-clients
 Requires:	perl-Error
 Requires:	perl-Git = %{version}-%{release}
 Requires:	sed
+Suggests:	git-core-bzr
 Suggests:	git-core-cvs
+Suggests:	git-core-hg
+Suggests:	git-core-p4
 Suggests:	git-core-svn
 Suggests:	less
 Suggests:	rsync
@@ -267,6 +270,32 @@ repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
 osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
 
+%package bzr
+Summary:	Git tools for working with bzr repositories
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	bzr
+
+%description bzr
+Git tools for working with bzr repositories.
+
+%package hg
+Summary:	Git tools for working with mercurial repositories
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	mercurial >= 1.8
+
+%description hg
+Git tools for working with mercurial repositories.
+
+%package p4
+Summary:	Git tools for working with Perforce depots
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+
+%description p4
+Git tools for working with Perforce depots.
+
 %package svn
 Summary:	Subversion support for Git
 Summary(pl.UTF-8):	Obsługa Subversion dla Gita
@@ -445,6 +474,9 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 install -d $RPM_BUILD_ROOT%{bash_compdir}
 cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
 
+# Install bzr and hg remote helpers from contrib
+install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{_libdir}/%{name}
+
 # vim syntax
 install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
 cat > $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
@@ -573,20 +605,25 @@ fi
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/*-*
 %attr(755,root,root) %{_libdir}/%{name}/git
-%{_libdir}/%{name}/mergetools
-
-%exclude %{_libdir}/%{name}/git-gui
-%exclude %{_libdir}/%{name}/git-svn
-%exclude %{_libdir}/%{name}/git-archimport
-%exclude %{_libdir}/%{name}/git-cvs*
-%exclude %{_libdir}/%{name}/git-imap-send
-%exclude %{_libdir}/%{name}/git-instaweb
-%exclude %{_libdir}/%{name}/git-remote-testsvn
-%exclude %{_libdir}/%{name}/*email*
+%dir %{_libdir}/%{name}/mergetools
+%{_libdir}/%{name}/mergetools/*
 
 %{_datadir}/%{name}
-
 %{_localstatedir}/lib/git
+
+# subpackages
+%exclude %{_libdir}/%{name}/*email*
+%exclude %{_libdir}/%{name}/*p4*
+%exclude %{_libdir}/%{name}/git-archimport
+%exclude %{_libdir}/%{name}/git-cvs*
+%exclude %{_libdir}/%{name}/git-gui
+%exclude %{_libdir}/%{name}/git-imap-send
+%exclude %{_libdir}/%{name}/git-instaweb
+%exclude %{_libdir}/%{name}/git-remote-bzr
+%exclude %{_libdir}/%{name}/git-remote-hg
+%exclude %{_libdir}/%{name}/git-remote-testsvn
+%exclude %{_libdir}/%{name}/git-svn
+%exclude %{_libdir}/%{name}/mergetools/p4merge
 
 %if %{with doc}
 %files doc
@@ -671,6 +708,19 @@ fi
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(zh_CN) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
+
+%files bzr
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-remote-bzr
+
+%files hg
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-remote-hg
+
+%files p4
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-p4
+%attr(755,root,root) %{_libdir}/%{name}/mergetools/p4merge
 
 %files svn
 %defattr(644,root,root,755)
