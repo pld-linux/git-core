@@ -270,8 +270,22 @@ repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
 osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
 
+%package arch
+Summary:	Git tools for importing Arch repositories
+Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tla
+
+%description arch
+Git tools for importing Arch repositories.
+
+%description arch -l pl.UTF-8
+Narzędzia Gita do importowania repozytoriów Archa.
+
 %package bzr
 Summary:	Git tools for working with bzr repositories
+Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami bzr
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	bzr
@@ -279,36 +293,8 @@ Requires:	bzr
 %description bzr
 Git tools for working with bzr repositories.
 
-%package hg
-Summary:	Git tools for working with mercurial repositories
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	mercurial >= 1.8
-
-%description hg
-Git tools for working with mercurial repositories.
-
-%package p4
-Summary:	Git tools for working with Perforce depots
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-
-%description p4
-Git tools for working with Perforce depots.
-
-%package svn
-Summary:	Subversion support for Git
-Summary(pl.UTF-8):	Obsługa Subversion dla Gita
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	perl-Encode
-Requires:	perl-Term-ReadKey
-
-%description svn
-Subversion support for Git.
-
-%description svn -l pl.UTF-8
-Obsługa Subversion dla Gita.
+%description bzr -l pl.UTF-8
+Narzędzia Gita do pracy z repozytoriami bzr.
 
 %package cvs
 Summary:	CVS support for Git
@@ -324,18 +310,44 @@ CVS support for Git.
 %description cvs -l pl.UTF-8
 Obsługa CVS dla Gita.
 
-%package arch
-Summary:	Git tools for importing Arch repositories
-Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
+%package hg
+Summary:	Git tools for working with mercurial repositories
+Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami mercuriala
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
-Requires:	tla
+Requires:	mercurial >= 1.8
 
-%description arch
-Git tools for importing Arch repositories.
+%description hg
+Git tools for working with mercurial repositories.
 
-%description arch -l pl.UTF-8
-Narzędzia Gita do importowania repozytoriów Archa.
+%description hg -l pl.UTF-8
+Narzędzia Gita do pracy z repozytoriami mercuriala.
+
+%package p4
+Summary:	Git tools for working with Perforce depots
+Summary(pl.UTF-8):	Narzędzia Gita do pracy z magazynami Perforce'a
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+
+%description p4
+Git tools for working with Perforce depots.
+
+%description p4 -l pl.UTF-8
+Narzędzia Gita do pracy z magazynami Perforce'a.
+
+%package svn
+Summary:	Subversion support for Git
+Summary(pl.UTF-8):	Obsługa Subversion dla Gita
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	perl-Encode
+Requires:	perl-Term-ReadKey
+
+%description svn
+Subversion support for Git.
+
+%description svn -l pl.UTF-8
+Obsługa Subversion dla Gita.
 
 %package email
 Summary:	Git tools for sending email
@@ -709,9 +721,25 @@ fi
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(zh_CN) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
+%files arch
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-archimport
+%if %{with doc}
+%{_mandir}/man1/git-archimport.1*
+%endif
+
 %files bzr
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/git-remote-bzr
+
+%files cvs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/git-cvsserver
+%attr(755,root,root) %{_libdir}/%{name}/git-cvs*
+%if %{with doc}
+%{_mandir}/man1/git-cvs*.1*
+%{_mandir}/man7/gitcvs-migration.7*
+%endif
 
 %files hg
 %defattr(644,root,root,755)
@@ -730,22 +758,6 @@ fi
 %{perl_vendorlib}/Git/SVN.pm
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
-%endif
-
-%files cvs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/git-cvsserver
-%attr(755,root,root) %{_libdir}/%{name}/git-cvs*
-%if %{with doc}
-%{_mandir}/man1/git-cvs*.1*
-%{_mandir}/man7/gitcvs-migration.7*
-%endif
-
-%files arch
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-archimport
-%if %{with doc}
-%{_mandir}/man1/git-archimport.1*
 %endif
 
 %files email
