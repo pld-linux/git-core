@@ -1,3 +1,4 @@
+# http://gitolite.com/gitolite/gitweb.conf.html
 # ----------------------------------------------------------------------
 
 # Per-repo authorization for gitweb using gitolite v3 access rules
@@ -10,9 +11,9 @@
 # values in the code below:
 
 BEGIN {
-	$ENV{HOME} = '/home/git';   # or whatever is the hosting user's $HOME
-	$ENV{GL_BINDIR} = '/full/path/to/gitolite/src';
-	$ENV{GL_LIBDIR} = '/full/path/to/gitolite/src/lib';
+	$ENV{HOME} = '/home/services/git';   # or whatever is the hosting user's $HOME
+	$ENV{GL_BINDIR} = '/usr/share/gitolite';
+	$ENV{GL_LIBDIR} = '/usr/share/gitolite/lib';
 }
 
 # Pull in gitolite's perl API module.  Among other things, this also sets the
