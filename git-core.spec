@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.8.5.3
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -22,6 +22,7 @@ Source3:	%{name}-gitweb-lighttpd.conf
 Source4:	%{name}.sysconfig
 Source5:	%{name}.inet
 Source6:	%{name}.init
+Source7:	gitolite.pl
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
@@ -509,6 +510,7 @@ EOF
 mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
+cp -p %{SOURCE7} $RPM_BUILD_ROOT%{webappdir}/gitolite.pl
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
@@ -682,10 +684,11 @@ fi
 %defattr(644,root,root,755)
 %doc gitweb/{README,INSTALL}
 %dir %{webappdir}
-%config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitweb.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/apache.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/httpd.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/lighttpd.conf
+%config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitweb.conf
+%config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/gitolite.pl
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
 %attr(755,root,root) %{_libdir}/%{name}/git-instaweb
