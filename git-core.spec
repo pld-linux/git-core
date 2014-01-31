@@ -688,7 +688,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/httpd.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/lighttpd.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitweb.conf
-%config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/gitolite.pl
+%config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitolite.pl
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
 %attr(755,root,root) %{_libdir}/%{name}/git-instaweb
