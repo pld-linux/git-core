@@ -10,12 +10,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.8.5.5
+Version:	1.9.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	55c3b57b9d168facbc681d9f7b9a0803
+# Source0-md5:	e16c14b27c644b8e0dd72bdb5ff77450
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -670,6 +670,7 @@ fi
 %dir %{_datadir}/gitk
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
+%lang(bg) %{_datadir}/gitk/lib/msgs/bg.msg
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
 %lang(es) %{_datadir}/gitk/lib/msgs/es.msg
 %lang(fr) %{_datadir}/gitk/lib/msgs/fr.msg
@@ -712,6 +713,7 @@ fi
 %{_datadir}/git-gui/lib/tclIndex
 %{_datadir}/git-gui/lib/*.js
 %{_datadir}/git-gui/lib/*.tcl
+%lang(bg) %{_datadir}/git-gui/lib/msgs/bg.msg
 %lang(de) %{_datadir}/git-gui/lib/msgs/de.msg
 %lang(el) %{_datadir}/git-gui/lib/msgs/el.msg
 %lang(fr) %{_datadir}/git-gui/lib/msgs/fr.msg
