@@ -483,6 +483,10 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 install -d $RPM_BUILD_ROOT%{bash_compdir}
 cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
 
+# Install git-prompt.sh
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
+cp -p contrib/completion/git-prompt.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
+
 # Install bzr and hg remote helpers from contrib
 install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{_libdir}/%{name}
 
