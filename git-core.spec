@@ -11,7 +11,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.9.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -436,6 +436,8 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	V=1
 
+%{__make} -C contrib/subtree
+
 %if %{with doc}
 %{__make} -C Documentation \
 	MAN_BASE_URL=file://%{_docdir}/%{name}-doc-%{version}/ \
@@ -482,6 +484,15 @@ cp -p block-sha1/sha1.h $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
 cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
 cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%{_includedir}/%{name}
+
+%{__make} -C contrib/subtree install \
+	libexecdir=%{_libdir}/%{name} \
+	DESTDIR=$RPM_BUILD_ROOT
+
+%if %{with doc}
+%{__make} -C contrib/subtree install-doc \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
 
 # bash completion
 install -d $RPM_BUILD_ROOT%{bash_compdir}
