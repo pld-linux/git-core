@@ -41,7 +41,7 @@ BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.264
+BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	tcl
 BuildRequires:	zlib-devel
 %if %{with doc}
@@ -83,7 +83,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
-%define		bash_compdir	%{_datadir}/bash-completion/completions
 
 %description
 "git" can mean anything, depending on your mood.
@@ -500,8 +499,8 @@ cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
 install -p contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
 # git-daemon related files
-cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
-cp -a %{SOURCE5} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
+cp -p %{SOURCE5} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 install -p %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # paths cleanup
