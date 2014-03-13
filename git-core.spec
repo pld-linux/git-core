@@ -395,20 +395,6 @@ dowolne polecenia Gita; w przyszłości interfejs udostępni także
 specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
-%package -n vim-syntax-gitcommit
-Summary:	Vim syntax: gitcommit
-Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
-Group:		Applications/Editors/Vim
-Requires:	%{name} = %{version}-%{release}
-# for _vimdatadir existence
-Requires:	vim-rt >= 4:6.3.058-3
-
-%description -n vim-syntax-gitcommit
-This plugin provides syntax highlighting for git's commit messages.
-
-%description -n vim-syntax-gitcommit -l pl.UTF-8
-Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
-
 %prep
 %setup -q -n git-%{version}
 %patch0 -p1
@@ -500,22 +486,6 @@ cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
 
 # Install bzr and hg remote helpers from contrib
 install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{_libdir}/%{name}
-
-# vim syntax
-install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
-cat > $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
-autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG    setf gitcommit
-autocmd BufNewFile,BufRead *.git/config,.gitconfig setf gitconfig
-autocmd BufNewFile,BufRead git-rebase-todo         setf gitrebase
-autocmd BufNewFile,BufRead .msg.[0-9]*
-	\ if getline(1) =~ '^From.*# This line is ignored.$' |
-	\   setf gitsendemail |
-	\ endif
-autocmd BufNewFile,BufRead *.git/**
-	\ if getline(1) =~ '^\x\{40\}\>\|^ref: ' |
-	\   setf git |
-	\ endif
-EOF
 
 # gitweb
 mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
@@ -796,8 +766,3 @@ fi
 %{perl_vendorlib}/Git/I18N.pm
 %{perl_vendorlib}/Git/IndexInfo.pm
 %{_mandir}/man3/Git*.3pm*
-
-%files -n vim-syntax-gitcommit
-%defattr(644,root,root,755)
-%doc contrib/vim/README
-%{_datadir}/vim/vimfiles/syntax/gitcommit.vim
