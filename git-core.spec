@@ -4,14 +4,15 @@
 %bcond_with	tests_cvs	# perform tests which use CVS
 %bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
-%bcond_without	pcre            # perl-compatible regexes support
+%bcond_without	pcre		# perl-compatible regexes support
+%bcond_without	gnome_keyring	# build without gnome keyring support
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	1.9.0
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
@@ -34,6 +35,7 @@ BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
+%{?with_gnome_keyring:BuildRequires:  libgnome-keyring-devel}
 BuildRequires:	openssl-devel
 %{?with_pcre:BuildRequires:	pcre-devel}
 BuildRequires:	perl-Error > 0.15
@@ -397,6 +399,20 @@ dowolne polecenia Gita; w przyszłości interfejs udostępni także
 specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
+%package -n gnome-keyring-git-core
+Summary:	GNOME Keyring authentication provider for Git
+Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME Keyring dla Git
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+
+%description -n gnome-keyring-git-core
+Authentication provider module for Git which allows git client to
+authenticate using GNOME Keyring.
+
+%description -n gnome-keyring-git-core -l pl.UTF-8
+Moduł uwierzytelniający dla Subversion pozwalający klientom git
+uwierzytelniać się przy użyciu mechanizmu GNOME Keyring.
+
 %prep
 %setup -q -n git-%{version}
 %patch0 -p1
@@ -404,6 +420,8 @@ wykonania przy użyciu ogólnego interfejsu poleceń.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+
+%{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
 %build
 %{__aclocal}
@@ -425,6 +443,10 @@ echo "BLK_SHA1=1" >> config.mak
 	V=1
 
 %{__make} -C contrib/subtree
+
+%if %{with gnome_keyring}
+%{__make} -C contrib/credential/gnome-keyring
+%endif
 
 %if %{with doc}
 %{__make} -C Documentation \
@@ -480,6 +502,12 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 %if %{with doc}
 %{__make} -C contrib/subtree install-doc \
 	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%if %{with gnome_keyring}
+install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{_libdir}/%{name}
+# Remove built binary files, otherwise they will be installed in doc
+%{__make} -C contrib/credential/gnome-keyring clean
 %endif
 
 # bash completion
@@ -625,6 +653,7 @@ fi
 %exclude %{_libdir}/%{name}/git-remote-testsvn
 %exclude %{_libdir}/%{name}/git-svn
 %exclude %{_libdir}/%{name}/mergetools/p4merge
+%exclude %{_libdir}/%{name}/git-credential-gnome-keyring
 
 %if %{with doc}
 %files doc
@@ -772,3 +801,9 @@ fi
 %{perl_vendorlib}/Git/I18N.pm
 %{perl_vendorlib}/Git/IndexInfo.pm
 %{_mandir}/man3/Git*.3pm*
+
+%if %{with gnome_keyring}
+%files -n gnome-keyring-git-core
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/git-credential-gnome-keyring
+%endif
