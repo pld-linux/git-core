@@ -367,6 +367,9 @@ Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n bash-completion-git
 This package provides bash-completion for git.
