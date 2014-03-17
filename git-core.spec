@@ -653,7 +653,9 @@ fi
 %exclude %{_libdir}/%{name}/git-remote-testsvn
 %exclude %{_libdir}/%{name}/git-svn
 %exclude %{_libdir}/%{name}/mergetools/p4merge
+%if %{with gnome_keyring}
 %exclude %{_libdir}/%{name}/git-credential-gnome-keyring
+%endif
 
 %if %{with doc}
 %files doc
