@@ -35,7 +35,10 @@ BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 BuildRequires:	gettext-devel
-%{?with_gnome_keyring:BuildRequires:  libgnome-keyring-devel}
+%if %{with gnome_keyring}
+BuildRequires:	libgnome-keyring-devel
+BuildRequires:	pkgconfig
+%endif
 BuildRequires:	openssl-devel
 %{?with_pcre:BuildRequires:	pcre-devel}
 BuildRequires:	perl-Error > 0.15
