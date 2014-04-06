@@ -7,6 +7,8 @@
 %bcond_without	pcre		# perl-compatible regexes support
 %bcond_without	gnome_keyring	# build without gnome keyring support
 
+# for AC: --without doc --without gnome_keyring --without tests
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
@@ -63,9 +65,6 @@ BuildRequires:	cvs-gnu-client >= 1.12
 %{?with_tests_svn:BuildRequires:  subversion}
 Conflicts:	pdksh < 5.2.14-46
 %endif
-Requires:	coreutils
-Requires:	diffutils
-Requires:	findutils
 Requires:	grep
 Requires:	openssh-clients
 Requires:	perl-Error
