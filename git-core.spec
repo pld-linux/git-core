@@ -65,7 +65,10 @@ BuildRequires:	cvs-gnu-client >= 1.12
 %{?with_tests_svn:BuildRequires:  subversion}
 Conflicts:	pdksh < 5.2.14-46
 %endif
+# git-sh-setup: sane_grep
 Requires:	grep
+# git-pull: printf
+Requires:	coreutils
 Requires:	openssh-clients
 Requires:	perl-Error
 Requires:	perl-Git = %{version}-%{release}
