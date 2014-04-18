@@ -90,6 +90,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
+%define		gitcoredir	%{_libdir}/%{name}
 
 %description
 "git" can mean anything, depending on your mood.
@@ -416,7 +417,7 @@ Authentication provider module for Git which allows git client to
 authenticate using GNOME Keyring.
 
 You need to register it with:
-git config --global credential.helper %{_libdir}/%{name}/git-credential-gnome-keyring
+git config --global credential.helper %{gitcoredir}/git-credential-gnome-keyring
 
 %description -n gnome-keyring-git-core -l pl.UTF-8
 Moduł uwierzytelniający dla Subversion pozwalający klientom git
@@ -505,7 +506,7 @@ cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 %{__make} -C contrib/subtree install \
-	libexecdir=%{_libdir}/%{name} \
+	libexecdir=%{gitcoredir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %if %{with doc}
@@ -514,7 +515,7 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 %endif
 
 %if %{with gnome_keyring}
-install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{_libdir}/%{name}
+install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{gitcoredir}
 # Remove built binary files, otherwise they will be installed in doc
 %{__make} -C contrib/credential/gnome-keyring clean
 %endif
@@ -528,7 +529,7 @@ install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
 cp -p contrib/completion/git-prompt.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
 
 # Install bzr and hg remote helpers from contrib
-install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{_libdir}/%{name}
+install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{gitcoredir}
 
 # gitweb
 mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
@@ -554,8 +555,8 @@ sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-d
 # hardlink
 ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-receive-pack}
 ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-upload-archive}
-ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-shell
-ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
+ln -f $RPM_BUILD_ROOT{%{gitcoredir},%{_bindir}}/git-shell
+ln -f $RPM_BUILD_ROOT{%{gitcoredir},%{_bindir}}/git-upload-pack
 
 # remove unneeded files
 %{__rm} $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
@@ -640,30 +641,30 @@ fi
 %{_mandir}/man7/gitworkflows.7*
 %endif
 
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/*-*
-%attr(755,root,root) %{_libdir}/%{name}/git
-%dir %{_libdir}/%{name}/mergetools
-%{_libdir}/%{name}/mergetools/*
+%dir %{gitcoredir}
+%attr(755,root,root) %{gitcoredir}/*-*
+%attr(755,root,root) %{gitcoredir}/git
+%dir %{gitcoredir}/mergetools
+%{gitcoredir}/mergetools/*
 
 %{_datadir}/%{name}
 %{_localstatedir}/lib/git
 
 # subpackages
-%exclude %{_libdir}/%{name}/*email*
-%exclude %{_libdir}/%{name}/*p4*
-%exclude %{_libdir}/%{name}/git-archimport
-%exclude %{_libdir}/%{name}/git-cvs*
-%exclude %{_libdir}/%{name}/git-gui
-%exclude %{_libdir}/%{name}/git-imap-send
-%exclude %{_libdir}/%{name}/git-instaweb
-%exclude %{_libdir}/%{name}/git-remote-bzr
-%exclude %{_libdir}/%{name}/git-remote-hg
-%exclude %{_libdir}/%{name}/git-remote-testsvn
-%exclude %{_libdir}/%{name}/git-svn
-%exclude %{_libdir}/%{name}/mergetools/p4merge
+%exclude %{gitcoredir}/*email*
+%exclude %{gitcoredir}/*p4*
+%exclude %{gitcoredir}/git-archimport
+%exclude %{gitcoredir}/git-cvs*
+%exclude %{gitcoredir}/git-gui
+%exclude %{gitcoredir}/git-imap-send
+%exclude %{gitcoredir}/git-instaweb
+%exclude %{gitcoredir}/git-remote-bzr
+%exclude %{gitcoredir}/git-remote-hg
+%exclude %{gitcoredir}/git-remote-testsvn
+%exclude %{gitcoredir}/git-svn
+%exclude %{gitcoredir}/mergetools/p4merge
 %if %{with gnome_keyring}
-%exclude %{_libdir}/%{name}/git-credential-gnome-keyring
+%exclude %{gitcoredir}/git-credential-gnome-keyring
 %endif
 
 %if %{with doc}
@@ -719,7 +720,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitolite.pl
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
-%attr(755,root,root) %{_libdir}/%{name}/git-instaweb
+%attr(755,root,root) %{gitcoredir}/git-instaweb
 %if %{with doc}
 %{_mandir}/man1/gitweb.1*
 %{_mandir}/man5/gitweb.conf.5*
@@ -732,7 +733,7 @@ fi
 
 %files gui
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-gui
+%attr(755,root,root) %{gitcoredir}/git-gui
 %dir %{_datadir}/git-gui
 %dir %{_datadir}/git-gui/lib
 %dir %{_datadir}/git-gui/lib/msgs
@@ -755,19 +756,19 @@ fi
 
 %files arch
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-archimport
+%attr(755,root,root) %{gitcoredir}/git-archimport
 %if %{with doc}
 %{_mandir}/man1/git-archimport.1*
 %endif
 
 %files bzr
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-bzr
+%attr(755,root,root) %{gitcoredir}/git-remote-bzr
 
 %files cvs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/git-cvsserver
-%attr(755,root,root) %{_libdir}/%{name}/git-cvs*
+%attr(755,root,root) %{gitcoredir}/git-cvs*
 %if %{with doc}
 %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man7/gitcvs-migration.7*
@@ -775,17 +776,17 @@ fi
 
 %files hg
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-hg
+%attr(755,root,root) %{gitcoredir}/git-remote-hg
 
 %files p4
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-p4
-%attr(755,root,root) %{_libdir}/%{name}/mergetools/p4merge
+%attr(755,root,root) %{gitcoredir}/git-p4
+%attr(755,root,root) %{gitcoredir}/mergetools/p4merge
 
 %files svn
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-svn
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-testsvn
+%attr(755,root,root) %{gitcoredir}/git-svn
+%attr(755,root,root) %{gitcoredir}/git-remote-testsvn
 %{perl_vendorlib}/Git/SVN
 %{perl_vendorlib}/Git/SVN.pm
 %if %{with doc}
@@ -794,8 +795,8 @@ fi
 
 %files email
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-imap-send
-%attr(755,root,root) %{_libdir}/%{name}/*email*
+%attr(755,root,root) %{gitcoredir}/git-imap-send
+%attr(755,root,root) %{gitcoredir}/*email*
 %if %{with doc}
 %{_mandir}/man1/*email*.1*
 %{_mandir}/man1/*imap-send*.1*
@@ -816,5 +817,5 @@ fi
 %if %{with gnome_keyring}
 %files -n gnome-keyring-git-core
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-credential-gnome-keyring
+%attr(755,root,root) %{gitcoredir}/git-credential-gnome-keyring
 %endif
