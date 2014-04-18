@@ -408,11 +408,15 @@ wykonania przy użyciu ogólnego interfejsu poleceń.
 Summary:	GNOME Keyring authentication provider for Git
 Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME Keyring dla Git
 Group:		X11/Applications
+URL:		http://git-scm.com/docs/gitcredentials.html
 Requires:	%{name} = %{version}-%{release}
 
 %description -n gnome-keyring-git-core
 Authentication provider module for Git which allows git client to
 authenticate using GNOME Keyring.
+
+You need to register it with:
+git config --global credential.helper %{_libdir}/%{name}/git-credential-gnome-keyring
 
 %description -n gnome-keyring-git-core -l pl.UTF-8
 Moduł uwierzytelniający dla Subversion pozwalający klientom git
