@@ -423,6 +423,9 @@ git config --global credential.helper %{gitcoredir}/git-credential-gnome-keyring
 Moduł uwierzytelniający dla Subversion pozwalający klientom git
 uwierzytelniać się przy użyciu mechanizmu GNOME Keyring.
 
+Moduł trzeba zarejestrować poleceniem:
+git config --global credential.helper %{gitcoredir}/git-credential-gnome-keyring
+
 %prep
 %setup -q -n git-%{version}
 %patch0 -p1
