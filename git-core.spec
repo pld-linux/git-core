@@ -417,14 +417,14 @@ Authentication provider module for Git which allows git client to
 authenticate using GNOME Keyring.
 
 You need to register it with:
-git config --global credential.helper %{gitcoredir}/git-credential-gnome-keyring
+- git config --global credential.helper gnome-keyring
 
 %description -n gnome-keyring-git-core -l pl.UTF-8
 Moduł uwierzytelniający dla Subversion pozwalający klientom git
 uwierzytelniać się przy użyciu mechanizmu GNOME Keyring.
 
 Moduł trzeba zarejestrować poleceniem:
-git config --global credential.helper %{gitcoredir}/git-credential-gnome-keyring
+- git config --global credential.helper gnome-keyring
 
 %prep
 %setup -q -n git-%{version}
