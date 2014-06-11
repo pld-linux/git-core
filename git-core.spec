@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.0.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.gz
@@ -31,6 +31,7 @@ Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
 Patch3:		cherry-picked-commitlog.patch
 Patch4:		%{name}-svn-exit-errors.patch
+Patch5:		no-break-in-case.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -433,6 +434,7 @@ Moduł trzeba zarejestrować poleceniem:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
