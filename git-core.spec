@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.1.3
+Version:	2.2.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.gz
-# Source0-md5:	9dfb41c1abb4ce0f49c8484a36cadf65
+# Source0-md5:	2d5bbcc3e887cc4ba499f80420e2d5f7
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -436,6 +436,9 @@ Moduł trzeba zarejestrować poleceniem:
 
 %{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
+# we build things in contrib but want to have it clean for doc purporses, too
+cp -a contrib contrib-doc
+
 %build
 %{__aclocal}
 %{__autoconf}
@@ -519,8 +522,6 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 
 %if %{with gnome_keyring}
 install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{gitcoredir}
-# Remove built binary files, otherwise they will be installed in doc
-%{__make} -C contrib/credential/gnome-keyring clean
 %endif
 
 # bash completion
@@ -610,7 +611,7 @@ fi
 
 %files -f git.lang
 %defattr(644,root,root,755)
-%doc README contrib
+%doc README contrib-doc
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-receive-pack
 %attr(755,root,root) %{_bindir}/git-shell
@@ -636,6 +637,7 @@ fi
 %{_mandir}/man7/gitcore-tutorial.7*
 %{_mandir}/man7/gitcredentials.7*
 %{_mandir}/man7/gitdiffcore.7*
+%{_mandir}/man7/giteveryday.7*
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gitnamespaces.7*
 %{_mandir}/man7/gitrevisions.7*
