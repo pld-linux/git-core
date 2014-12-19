@@ -516,7 +516,7 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 	DESTDIR=$RPM_BUILD_ROOT
 
 %if %{with doc}
-%{__make} -C contrib/subtree install-doc \
+%{__make} -C contrib/subtree install-man \
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
