@@ -36,7 +36,7 @@ BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 %if %{with gnome_keyring}
 BuildRequires:	libgnome-keyring-devel
 BuildRequires:	pkgconfig
