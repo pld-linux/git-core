@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.3.4
+Version:	2.3.5
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.gz
-# Source0-md5:	5ff7103362e1c56a8510fdb2f9cec41e
+# Source0-md5:	8101cd7497ee64d1ed07d12541826a30
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -62,7 +62,10 @@ BuildRequires:	xmlto
 BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	cvs-gnu-client >= 1.12
 %endif
-%{?with_tests_svn:BuildRequires:  subversion}
+%if %{with tests_svn}
+BuildRequires:	perl-subversion
+BuildRequires:	subversion
+%endif
 Conflicts:	pdksh < 5.2.14-46
 %endif
 # git-sh-setup: sane_grep
