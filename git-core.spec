@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.3.7
+Version:	2.4.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.gz
-# Source0-md5:	370cc33cc0a77a1242b95cc703228162
+# Source0-md5:	544d3f18ccef6479149490a4c34d53ff
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -707,6 +707,7 @@ fi
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
 %lang(bg) %{_datadir}/gitk/lib/msgs/bg.msg
+%lang(ca) %{_datadir}/gitk/lib/msgs/ca.msg
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
 %lang(es) %{_datadir}/gitk/lib/msgs/es.msg
 %lang(fr) %{_datadir}/gitk/lib/msgs/fr.msg
@@ -761,6 +762,7 @@ fi
 %lang(pt_br) %{_datadir}/git-gui/lib/msgs/pt_br.msg
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
+%lang(vi) %{_datadir}/git-gui/lib/msgs/vi.msg
 %lang(zh_CN) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
 %files arch
