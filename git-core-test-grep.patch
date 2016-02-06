@@ -1,0 +1,38 @@
+--- t/t8005-blame-i18n.sh.orig	2016-02-06 17:47:21.108000446 +0100
++++ t/t8005-blame-i18n.sh	2016-02-06 17:48:04.231487635 +0100
+@@ -36,7 +36,7 @@
+ test_expect_success !MINGW \
+ 	'blame respects i18n.commitencoding' '
+ 	git blame --incremental file | \
+-		egrep "^(author|summary) " > actual &&
++		egrep -a "^(author|summary) " > actual &&
+ 	test_cmp actual expected
+ '
+ 
+@@ -53,7 +53,7 @@
+ 	'blame respects i18n.logoutputencoding' '
+ 	git config i18n.logoutputencoding eucJP &&
+ 	git blame --incremental file | \
+-		egrep "^(author|summary) " > actual &&
++		egrep -a "^(author|summary) " > actual &&
+ 	test_cmp actual expected
+ '
+ 
+@@ -69,7 +69,7 @@
+ test_expect_success !MINGW \
+ 	'blame respects --encoding=UTF-8' '
+ 	git blame --incremental --encoding=UTF-8 file | \
+-		egrep "^(author|summary) " > actual &&
++		egrep -a "^(author|summary) " > actual &&
+ 	test_cmp actual expected
+ '
+ 
+@@ -85,7 +85,7 @@
+ test_expect_success !MINGW \
+ 	'blame respects --encoding=none' '
+ 	git blame --incremental --encoding=none file | \
+-		egrep "^(author|summary) " > actual &&
++		egrep -a "^(author|summary) " > actual &&
+ 	test_cmp actual expected
+ '
+ 
