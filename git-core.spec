@@ -133,15 +133,15 @@ katalogu.
 Summary:	Documentation for git-core
 Summary(pl.UTF-8):	Dokumentacja do git-core
 Group:		Documentation
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description doc
 Documentation for git-core.
 
 %description doc -l pl.UTF-8
 Dokumentacja do git-core.
-
-%description doc -l fr.UTF-8
-Javadoc pour git-core.
 
 %package daemon-inetd
 Summary:	Files necessary to run git-daemon as an inetd service
