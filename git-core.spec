@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.7.1
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.gz
@@ -94,7 +94,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
-%define		gitcoredir	%{_libdir}/%{name}
+%define		gitcoredir	%{_prefix}/lib/%{name}
+%define		_libexecdir	%{_prefix}/lib
 
 %description
 "git" can mean anything, depending on your mood.
@@ -152,6 +153,9 @@ Requires:	setup >= 2.4.11-1
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-standalone
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description daemon-inetd
 Git-daemon is a really simple TCP git daemon that can serve git
@@ -171,6 +175,9 @@ Requires:	%{name} = %{version}-%{release}
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-inetd
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description daemon-standalone
 Git-daemon is a really simple TCP git daemon that can serve git
@@ -200,6 +207,9 @@ Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tk
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gitk
 gitk displays changes in a repository or a selected set of commits.
@@ -230,6 +240,9 @@ Requires:	webserver(access)
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
 Suggests:	webserver(setenv)
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -247,6 +260,9 @@ Requires:	python-pycairo >= 1.0
 Requires:	python-pygobject
 Requires:	python-pygtk-gtk >= 2:2.8
 Suggests:	python-gnome-desktop-gtksourceview
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gitview
 A GTK+ based repository browser for git.
@@ -262,6 +278,9 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	tk
 Requires:	xdg-utils
 Suggests:	meld
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gui
 Displays changes in a repository or a selected set of commits. This
@@ -288,6 +307,9 @@ Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tla
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description arch
 Git tools for importing Arch repositories.
@@ -301,6 +323,9 @@ Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami bzr
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	bzr
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description bzr
 Git tools for working with bzr repositories.
@@ -315,6 +340,9 @@ Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	cvsps >= 2.1-2
 Requires:	rcs
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description cvs
 CVS support for Git.
@@ -328,6 +356,9 @@ Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami mercuriala
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	mercurial >= 1.8
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description hg
 Git tools for working with mercurial repositories.
@@ -340,6 +371,9 @@ Summary:	Git tools for working with Perforce depots
 Summary(pl.UTF-8):	Narzędzia Gita do pracy z magazynami Perforce'a
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description p4
 Git tools for working with Perforce depots.
@@ -558,8 +592,8 @@ cp -p %{SOURCE5} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 install -p %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # paths cleanup
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
+sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 
 # hardlink
 ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-receive-pack}
