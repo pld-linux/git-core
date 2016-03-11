@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.7.2
+Version:	2.7.3
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.gz
-# Source0-md5:	162ddc6c9b243899ad67ebd6b1c166b1
+# Source0-md5:	cf6ed3510f0d7784da5e9f4e64c6a43e
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -31,7 +31,6 @@ Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
 Patch3:		cherry-picked-commitlog.patch
 Patch4:		%{name}-svn-exit-errors.patch
-Patch5:		%{name}-test-grep.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -471,7 +470,6 @@ Moduł trzeba zarejestrować poleceniem:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p0
 
 %{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
