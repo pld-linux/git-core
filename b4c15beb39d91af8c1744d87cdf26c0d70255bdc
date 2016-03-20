@@ -1,0 +1,1 @@
+fixes Remote Code Execution in all git versions (client + server) < 2.7.4: CVE-2016-2324, CVE-2016‑2315
