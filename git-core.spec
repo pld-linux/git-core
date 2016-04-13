@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.8.0
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -596,8 +596,9 @@ sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc
 # same file, link
 ln -sf git $RPM_BUILD_ROOT%{_bindir}/git-receive-pack
 ln -sf git $RPM_BUILD_ROOT%{_bindir}/git-upload-archive
-ln -sf ../../%{gitcoredir}/git-shell $RPM_BUILD_ROOT%{_bindir}/git-shell
-ln -sf ../../%{gitcoredir}/git-upload-pack $RPM_BUILD_ROOT%{_bindir}/git-upload-pack
+ln -sf ../..%{gitcoredir}/git-shell $RPM_BUILD_ROOT%{_bindir}/git-shell
+ln -sf ../..%{gitcoredir}/git-upload-pack $RPM_BUILD_ROOT%{_bindir}/git-upload-pack
+ln -sf ../..%{gitcoredir}/git $RPM_BUILD_ROOT%{_bindir}/git
 
 # convert all hardlinks to symlinks, as rpm fails to calculate it properly
 # requiring excessive free space when it may not be available
