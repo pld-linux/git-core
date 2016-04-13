@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.8.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -593,11 +593,27 @@ install -p %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 
-# hardlink
-ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-receive-pack}
-ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-upload-archive}
-ln -f $RPM_BUILD_ROOT{%{gitcoredir},%{_bindir}}/git-shell
-ln -f $RPM_BUILD_ROOT{%{gitcoredir},%{_bindir}}/git-upload-pack
+# same file, link
+ln -sf git $RPM_BUILD_ROOT%{_bindir}/git-receive-pack
+ln -sf git $RPM_BUILD_ROOT%{_bindir}/git-upload-archive
+ln -sf ../../%{gitcoredir}/git-shell $RPM_BUILD_ROOT%{_bindir}/git-shell
+ln -sf ../../%{gitcoredir}/git-upload-pack $RPM_BUILD_ROOT%{_bindir}/git-upload-pack
+
+# convert all hardlinks to symlinks, as rpm fails to calculate it properly
+# requiring excessive free space when it may not be available
+# https://bugs.launchpad.net/pld-linux/+bug/1176337
+find $RPM_BUILD_ROOT%{gitcoredir} -samefile $RPM_BUILD_ROOT%{gitcoredir}/git > files
+for f in $(cat files); do
+	f=${f#$RPM_BUILD_ROOT%{gitcoredir}/}
+	test $f = git && continue
+	ln -snf git $RPM_BUILD_ROOT%{gitcoredir}/$f
+done
+
+# few others
+ln -snf git-gui $RPM_BUILD_ROOT%{gitcoredir}/git-citool
+ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-https
+ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftp
+ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftps
 
 # remove unneeded files
 %{__rm} $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
