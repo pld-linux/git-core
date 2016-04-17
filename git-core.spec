@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.8.0
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -427,6 +427,9 @@ Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Obsoletes:	perl-git-core
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n perl-Git
 This module provides Perl scripts easy way to interface the Git
