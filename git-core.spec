@@ -857,6 +857,12 @@ fi
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
 %endif
+%{_mandir}/man3/Git::SVN::Editor.3pm*
+%{_mandir}/man3/Git::SVN::Fetcher.3pm*
+%{_mandir}/man3/Git::SVN::Memoize::YAML.3pm*
+%{_mandir}/man3/Git::SVN::Prompt.3pm*
+%{_mandir}/man3/Git::SVN::Ra.3pm*
+%{_mandir}/man3/Git::SVN::Utils.3pm*
 
 %files email
 %defattr(644,root,root,755)
@@ -877,7 +883,8 @@ fi
 %dir %{perl_vendorlib}/Git
 %{perl_vendorlib}/Git/I18N.pm
 %{perl_vendorlib}/Git/IndexInfo.pm
-%{_mandir}/man3/Git*.3pm*
+%{_mandir}/man3/Git.3pm*
+%{_mandir}/man3/Git::I18N.3pm*
 
 %if %{with gnome_keyring}
 %files -n gnome-keyring-git-core
