@@ -36,7 +36,11 @@ BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
+%if "%{pld_release}" == "ac"
+BuildRequires:	gettext-devel
+%else
 BuildRequires:	gettext-tools
+%endif
 %if %{with gnome_keyring}
 BuildRequires:	libgnome-keyring-devel
 BuildRequires:	pkgconfig
