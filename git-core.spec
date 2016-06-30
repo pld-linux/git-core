@@ -2,41 +2,57 @@
 # Conditional build:
 %bcond_without	tests		# don't perform make test
 %bcond_with	tests_cvs	# perform tests which use CVS
-%bcond_with	tests_svn	# perform tests which use subversion
+%bcond_without	tests_svn	# perform tests which use subversion
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
+%bcond_without	pcre		# perl-compatible regexes support
+%bcond_without	gnome_keyring	# build without gnome keyring support
+
+# for AC: --without doc --without gnome_keyring --without tests
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	1.7.12.4
-Release:	1
+Version:	2.9.0
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
-Source0:	http://git-core.googlecode.com/files/git-%{version}.tar.gz
-# Source0-md5:	5f3f0feb59d96f8106e0a56112bc73db
+Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
+# Source0-md5:	118ef1e3108ef0b858cd13b74395a59c
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
 Source4:	%{name}.sysconfig
 Source5:	%{name}.inet
 Source6:	%{name}.init
+Source7:	gitolite.pl
 Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
+Patch3:		cherry-picked-commitlog.patch
+Patch4:		%{name}-svn-exit-errors.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
+%if "%{pld_release}" == "ac"
 BuildRequires:	gettext-devel
+%else
+BuildRequires:	gettext-tools
+%endif
+%if %{with gnome_keyring}
+BuildRequires:	libgnome-keyring-devel
+BuildRequires:	pkgconfig
+%endif
 BuildRequires:	openssl-devel
+%{?with_pcre:BuildRequires:	pcre-devel}
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.264
+BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	tcl
 BuildRequires:	zlib-devel
 %if %{with doc}
@@ -50,20 +66,28 @@ BuildRequires:	xmlto
 BuildRequires:	cvs-gnu-client < 1.13
 BuildRequires:	cvs-gnu-client >= 1.12
 %endif
+%if %{with tests_svn}
+BuildRequires:	perl-subversion
+BuildRequires:	subversion
+%endif
 Conflicts:	pdksh < 5.2.14-46
 %endif
-Requires:	coreutils
-Requires:	diffutils
-Requires:	findutils
+# git-sh-setup: sane_grep
 Requires:	grep
-Requires:	openssh-clients
+# git-pull: printf
+Requires:	coreutils
 Requires:	perl-Error
 Requires:	perl-Git = %{version}-%{release}
 Requires:	sed
+Suggests:	git-core-bzr
 Suggests:	git-core-cvs
+Suggests:	git-core-hg
+Suggests:	git-core-p4
 Suggests:	git-core-svn
 Suggests:	less
+Suggests:	openssh-clients
 Suggests:	rsync
+Obsoletes:	python-Git
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # html docs have links to txt files
@@ -73,6 +97,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
+%define		gitcoredir	%{_prefix}/lib/%{name}
+%define		_libexecdir	%{_prefix}/lib
 
 %description
 "git" can mean anything, depending on your mood.
@@ -111,15 +137,15 @@ katalogu.
 Summary:	Documentation for git-core
 Summary(pl.UTF-8):	Dokumentacja do git-core
 Group:		Documentation
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description doc
 Documentation for git-core.
 
 %description doc -l pl.UTF-8
 Dokumentacja do git-core.
-
-%description doc -l fr.UTF-8
-Javadoc pour git-core.
 
 %package daemon-inetd
 Summary:	Files necessary to run git-daemon as an inetd service
@@ -130,6 +156,9 @@ Requires:	setup >= 2.4.11-1
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-standalone
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description daemon-inetd
 Git-daemon is a really simple TCP git daemon that can serve git
@@ -149,6 +178,9 @@ Requires:	%{name} = %{version}-%{release}
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-inetd
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description daemon-standalone
 Git-daemon is a really simple TCP git daemon that can serve git
@@ -161,16 +193,16 @@ udostępniania repozytoriów git. Ten pakiet dostarcza pliki potrzebne
 do uruchomienia git-daemona w trybie usługi samodzielnej.
 
 %package devel
-Summary:	Header files for git-core
-Summary(pl.UTF-8):	Pliki nagłówkowe dla git-core
+Summary:	Git library with header files
+Summary(pl.UTF-8):	Biblioteka Gita oraz pliki nagłówkowe
 Group:		Development/Libraries
 Requires:	zlib-devel
 
 %description devel
-Header files for git-core.
+Git library with header files.
 
 %description devel -l pl.UTF-8
-Pliki nagłówkowe dla git-core.
+Biblioteka Gita oraz pliki nagłówkowe.
 
 %package gitk
 Summary:	Tcl/Tk interface to the Git version control system
@@ -178,6 +210,9 @@ Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tk
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gitk
 gitk displays changes in a repository or a selected set of commits.
@@ -204,9 +239,13 @@ Summary(pl.UTF-8):	Frontend WWW do gita
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	webapps
+Requires:	webserver(access)
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
 Suggests:	webserver(setenv)
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -224,6 +263,9 @@ Requires:	python-pycairo >= 1.0
 Requires:	python-pygobject
 Requires:	python-pygtk-gtk >= 2:2.8
 Suggests:	python-gnome-desktop-gtksourceview
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gitview
 A GTK+ based repository browser for git.
@@ -239,6 +281,9 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	tk
 Requires:	xdg-utils
 Suggests:	meld
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description gui
 Displays changes in a repository or a selected set of commits. This
@@ -259,6 +304,86 @@ repozytorium git. Napisany jest w Tcl/Tk i początkowo był rozwijany w
 osobnym repozytorium, ale z czasem został włączony do głównego
 repozytorium gita.
 
+%package arch
+Summary:	Git tools for importing Arch repositories
+Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	tla
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description arch
+Git tools for importing Arch repositories.
+
+%description arch -l pl.UTF-8
+Narzędzia Gita do importowania repozytoriów Archa.
+
+%package bzr
+Summary:	Git tools for working with bzr repositories
+Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami bzr
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	bzr
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description bzr
+Git tools for working with bzr repositories.
+
+%description bzr -l pl.UTF-8
+Narzędzia Gita do pracy z repozytoriami bzr.
+
+%package cvs
+Summary:	CVS support for Git
+Summary(pl.UTF-8):	Obsługa CVS dla Gita
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	cvsps >= 2.1-2
+Requires:	rcs
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description cvs
+CVS support for Git.
+
+%description cvs -l pl.UTF-8
+Obsługa CVS dla Gita.
+
+%package hg
+Summary:	Git tools for working with mercurial repositories
+Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami mercuriala
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	mercurial >= 1.8
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description hg
+Git tools for working with mercurial repositories.
+
+%description hg -l pl.UTF-8
+Narzędzia Gita do pracy z repozytoriami mercuriala.
+
+%package p4
+Summary:	Git tools for working with Perforce depots
+Summary(pl.UTF-8):	Narzędzia Gita do pracy z magazynami Perforce'a
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description p4
+Git tools for working with Perforce depots.
+
+%description p4 -l pl.UTF-8
+Narzędzia Gita do pracy z magazynami Perforce'a.
+
 %package svn
 Summary:	Subversion support for Git
 Summary(pl.UTF-8):	Obsługa Subversion dla Gita
@@ -272,33 +397,6 @@ Subversion support for Git.
 
 %description svn -l pl.UTF-8
 Obsługa Subversion dla Gita.
-
-%package cvs
-Summary:	CVS support for Git
-Summary(pl.UTF-8):	Obsługa CVS dla Gita
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	cvsps >= 2.1-2
-Requires:	rcs
-
-%description cvs
-CVS support for Git.
-
-%description cvs -l pl.UTF-8
-Obsługa CVS dla Gita.
-
-%package arch
-Summary:	Git tools for importing Arch repositories
-Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	tla
-
-%description arch
-Git tools for importing Arch repositories.
-
-%description arch -l pl.UTF-8
-Narzędzia Gita do importowania repozytoriów Archa.
 
 %package email
 Summary:	Git tools for sending email
@@ -317,7 +415,10 @@ Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
-Requires:	bash-completion
+Requires:	bash-completion >= 2.0
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n bash-completion-git
 This package provides bash-completion for git.
@@ -330,6 +431,9 @@ Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Obsoletes:	perl-git-core
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n perl-Git
 This module provides Perl scripts easy way to interface the Git
@@ -345,45 +449,46 @@ dowolne polecenia Gita; w przyszłości interfejs udostępni także
 specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
-%package -n python-Git
-Summary:	Python Git remote helpers for non-git repositories
-Summary(pl.UTF-8):	Pythonowe zdalne moduły pomocnicze dla repozytoriów niegitowych
-Group:		Development/Languages/Python
+%package -n gnome-keyring-git-core
+Summary:	GNOME Keyring authentication provider for Git
+Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME Keyring dla Git
+Group:		X11/Applications
+URL:		http://git-scm.com/docs/gitcredentials.html
 Requires:	%{name} = %{version}-%{release}
 
-%description -n python-Git
-This package contains Python git_repote_helpers package - Git remote
-helpers for non-git repositories.
+%description -n gnome-keyring-git-core
+Authentication provider module for Git which allows git client to
+authenticate using GNOME Keyring.
 
-%description -n python-Git -l pl.UTF-8
-Ten pakiet zawiera pakiet Pythona git_remote_helpers - zdalne moduły
-pomocnicze Gita dla repozytoriów niegitowych.
+You need to register it with:
+- git config --global credential.helper gnome-keyring
 
-%package -n vim-syntax-gitcommit
-Summary:	Vim syntax: gitcommit
-Summary(pl.UTF-8):	Składnia dla Vima: gitcommit
-Group:		Applications/Editors/Vim
-Requires:	%{name} = %{version}-%{release}
-# for _vimdatadir existence
-Requires:	vim-rt >= 4:6.3.058-3
+%description -n gnome-keyring-git-core -l pl.UTF-8
+Moduł uwierzytelniający dla Subversion pozwalający klientom git
+uwierzytelniać się przy użyciu mechanizmu GNOME Keyring.
 
-%description -n vim-syntax-gitcommit
-This plugin provides syntax highlighting for git's commit messages.
-
-%description -n vim-syntax-gitcommit -l pl.UTF-8
-Ta wtyczka dostarcza podświetlanie składni dla treści commitów gita.
+Moduł trzeba zarejestrować poleceniem:
+- git config --global credential.helper gnome-keyring
 
 %prep
 %setup -q -n git-%{version}
 %patch0 -p1
 %patch1 -p0
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
+
+%{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
+
+# we build things in contrib but want to have it clean for doc purporses, too
+cp -a contrib contrib-doc
 
 %build
 %{__aclocal}
 %{__autoconf}
 %configure \
 	--sysconfdir=%{_sysconfdir}/git-core \
+	%{?with_pcre:--with-libpcre} \
 	--with-openssl
 
 echo "BLK_SHA1=1" >> config.mak
@@ -397,11 +502,21 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	V=1
 
-%{?with_doc:%{__make} -C Documentation V=1}
+%{__make} -C contrib/subtree
+
+%if %{with gnome_keyring}
+%{__make} -C contrib/credential/gnome-keyring
+%endif
+
+%if %{with doc}
+%{__make} -C Documentation \
+	MAN_BASE_URL=file://%{_docdir}/%{name}-doc-%{version}/ \
+	V=1
+%endif
 
 %if %{with tests}
 %if %{without tests_cvs}
-rm t/t*cvs*.sh || :
+%{__rm} t/t*cvs*.sh || :
 %endif
 %{!?with_tests_svn:GIT_SKIP_TESTS='t91??'} %{__make} test
 %endif
@@ -434,33 +549,41 @@ cp -a $RPM_BUILD_ROOT%{_datadir}/%{name}/templates $RPM_BUILD_ROOT%{_sysconfdir}
 cp -p *.h $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -a compat $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -p xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
+install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
+cp -p block-sha1/sha1.h $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
 cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
 cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
+cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%{_includedir}/%{name}
+
+%{__make} -C contrib/subtree install \
+	libexecdir=%{gitcoredir} \
+	DESTDIR=$RPM_BUILD_ROOT
+
+%if %{with doc}
+%{__make} -C contrib/subtree install-man \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%if %{with gnome_keyring}
+install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{gitcoredir}
+%endif
 
 # bash completion
-install -d $RPM_BUILD_ROOT/etc/bash_completion.d
-cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT/etc/bash_completion.d
+install -d $RPM_BUILD_ROOT%{bash_compdir}
+cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
 
-# vim syntax
-install -d $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax
-cat > $RPM_BUILD_ROOT%{_datadir}/vim/vimfiles/syntax/gitcommit.vim << 'EOF'
-autocmd BufNewFile,BufRead *.git/COMMIT_EDITMSG    setf gitcommit
-autocmd BufNewFile,BufRead *.git/config,.gitconfig setf gitconfig
-autocmd BufNewFile,BufRead git-rebase-todo         setf gitrebase
-autocmd BufNewFile,BufRead .msg.[0-9]*
-	\ if getline(1) =~ '^From.*# This line is ignored.$' |
-	\   setf gitsendemail |
-	\ endif
-autocmd BufNewFile,BufRead *.git/**
-	\ if getline(1) =~ '^\x\{40\}\>\|^ref: ' |
-	\   setf git |
-	\ endif
-EOF
+# Install git-prompt.sh
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
+cp -p contrib/completion/git-prompt.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
+
+# Install bzr and hg remote helpers from contrib
+install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{gitcoredir}
 
 # gitweb
 mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
+cp -p %{SOURCE7} $RPM_BUILD_ROOT%{webappdir}/gitolite.pl
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
@@ -469,19 +592,36 @@ cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
 install -p contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
 # git-daemon related files
-cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
-cp -a %{SOURCE5} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
+cp -p %{SOURCE5} $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 install -p %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
 
 # paths cleanup
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
-sed -e 's,@libdir@,%{_libdir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
+sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/rc.d/init.d/git-daemon
+sed -e 's,@libdir@/git-core,%{gitcoredir},g' -i $RPM_BUILD_ROOT/etc/sysconfig/rc-inetd/git-daemon
 
-# hardlink
-ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-receive-pack}
-ln -f $RPM_BUILD_ROOT%{_bindir}/{git,git-upload-archive}
-ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-shell
-ln -f $RPM_BUILD_ROOT{%{_libdir}/%{name},%{_bindir}}/git-upload-pack
+# same file, link
+ln -sf git $RPM_BUILD_ROOT%{_bindir}/git-receive-pack
+ln -sf git $RPM_BUILD_ROOT%{_bindir}/git-upload-archive
+ln -sf ../..%{gitcoredir}/git-shell $RPM_BUILD_ROOT%{_bindir}/git-shell
+ln -sf ../..%{gitcoredir}/git-upload-pack $RPM_BUILD_ROOT%{_bindir}/git-upload-pack
+ln -sf ../..%{gitcoredir}/git $RPM_BUILD_ROOT%{_bindir}/git
+
+# convert all hardlinks to symlinks, as rpm fails to calculate it properly
+# requiring excessive free space when it may not be available
+# https://bugs.launchpad.net/pld-linux/+bug/1176337
+find $RPM_BUILD_ROOT%{gitcoredir} -samefile $RPM_BUILD_ROOT%{gitcoredir}/git > files
+for f in $(cat files); do
+	f=${f#$RPM_BUILD_ROOT%{gitcoredir}/}
+	test $f = git && continue
+	ln -snf git $RPM_BUILD_ROOT%{gitcoredir}/$f
+done
+
+# few others
+ln -snf git-gui $RPM_BUILD_ROOT%{gitcoredir}/git-citool
+ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-https
+ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftp
+ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftps
 
 # remove unneeded files
 %{__rm} $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
@@ -532,7 +672,7 @@ fi
 
 %files -f git.lang
 %defattr(644,root,root,755)
-%doc README contrib
+%doc README.md contrib-doc
 %attr(755,root,root) %{_bindir}/git
 %attr(755,root,root) %{_bindir}/git-receive-pack
 %attr(755,root,root) %{_bindir}/git-shell
@@ -545,9 +685,10 @@ fi
 %exclude %{_mandir}/man1/git-archimport.1*
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
+%exclude %{_mandir}/man1/git-imap-send*.1*
 %exclude %{_mandir}/man1/*email*.1*
-%exclude %{_mandir}/man1/git-remote-helpers.1*
 %{_mandir}/man1/git.1*
+%{_mandir}/man1/gitremote-helpers.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
 %{_mandir}/man5/gitignore.5*
@@ -557,6 +698,7 @@ fi
 %{_mandir}/man7/gitcore-tutorial.7*
 %{_mandir}/man7/gitcredentials.7*
 %{_mandir}/man7/gitdiffcore.7*
+%{_mandir}/man7/giteveryday.7*
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gitnamespaces.7*
 %{_mandir}/man7/gitrevisions.7*
@@ -565,22 +707,31 @@ fi
 %{_mandir}/man7/gitworkflows.7*
 %endif
 
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/*-*
-%attr(755,root,root) %{_libdir}/%{name}/git
-%{_libdir}/%{name}/mergetools
-
-%exclude %{_libdir}/%{name}/git-gui
-%exclude %{_libdir}/%{name}/git-svn
-%exclude %{_libdir}/%{name}/git-archimport
-%exclude %{_libdir}/%{name}/git-cvs*
-%exclude %{_libdir}/%{name}/git-instaweb
-%exclude %{_libdir}/%{name}/git-remote-testgit
-%exclude %{_libdir}/%{name}/*email*
+%dir %{gitcoredir}
+%attr(755,root,root) %{gitcoredir}/*-*
+%attr(755,root,root) %{gitcoredir}/git
+%dir %{gitcoredir}/mergetools
+%{gitcoredir}/mergetools/*
 
 %{_datadir}/%{name}
-
 %{_localstatedir}/lib/git
+
+# subpackages
+%exclude %{gitcoredir}/*email*
+%exclude %{gitcoredir}/*p4*
+%exclude %{gitcoredir}/git-archimport
+%exclude %{gitcoredir}/git-cvs*
+%exclude %{gitcoredir}/git-gui
+%exclude %{gitcoredir}/git-imap-send
+%exclude %{gitcoredir}/git-instaweb
+%exclude %{gitcoredir}/git-remote-bzr
+%exclude %{gitcoredir}/git-remote-hg
+%exclude %{gitcoredir}/git-remote-testsvn
+%exclude %{gitcoredir}/git-svn
+%exclude %{gitcoredir}/mergetools/p4merge
+%if %{with gnome_keyring}
+%exclude %{gitcoredir}/git-credential-gnome-keyring
+%endif
 
 %if %{with doc}
 %files doc
@@ -613,6 +764,8 @@ fi
 %dir %{_datadir}/gitk
 %dir %{_datadir}/gitk/lib
 %dir %{_datadir}/gitk/lib/msgs
+%lang(bg) %{_datadir}/gitk/lib/msgs/bg.msg
+%lang(ca) %{_datadir}/gitk/lib/msgs/ca.msg
 %lang(de) %{_datadir}/gitk/lib/msgs/de.msg
 %lang(es) %{_datadir}/gitk/lib/msgs/es.msg
 %lang(fr) %{_datadir}/gitk/lib/msgs/fr.msg
@@ -622,18 +775,20 @@ fi
 %lang(pt_BR) %{_datadir}/gitk/lib/msgs/pt_br.msg
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
+%lang(vi) %{_datadir}/gitk/lib/msgs/vi.msg
 
 %files gitweb
 %defattr(644,root,root,755)
 %doc gitweb/{README,INSTALL}
 %dir %{webappdir}
-%config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitweb.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/apache.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/httpd.conf
 %config(noreplace) %verify(not md5 mtime size) %attr(640,root,root) %{webappdir}/lighttpd.conf
+%config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitweb.conf
+%config(noreplace) %verify(not md5 mtime size) %attr(640,root,http) %{webappdir}/gitolite.pl
 %attr(755,root,root) %{cgibindir}/gitweb.cgi
 %{appdir}
-%attr(755,root,root) %{_libdir}/%{name}/git-instaweb
+%attr(755,root,root) %{gitcoredir}/git-instaweb
 %if %{with doc}
 %{_mandir}/man1/gitweb.1*
 %{_mandir}/man5/gitweb.conf.5*
@@ -646,7 +801,7 @@ fi
 
 %files gui
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-gui
+%attr(755,root,root) %{gitcoredir}/git-gui
 %dir %{_datadir}/git-gui
 %dir %{_datadir}/git-gui/lib
 %dir %{_datadir}/git-gui/lib/msgs
@@ -654,6 +809,7 @@ fi
 %{_datadir}/git-gui/lib/tclIndex
 %{_datadir}/git-gui/lib/*.js
 %{_datadir}/git-gui/lib/*.tcl
+%lang(bg) %{_datadir}/git-gui/lib/msgs/bg.msg
 %lang(de) %{_datadir}/git-gui/lib/msgs/de.msg
 %lang(el) %{_datadir}/git-gui/lib/msgs/el.msg
 %lang(fr) %{_datadir}/git-gui/lib/msgs/fr.msg
@@ -664,43 +820,66 @@ fi
 %lang(pt_br) %{_datadir}/git-gui/lib/msgs/pt_br.msg
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
+%lang(vi) %{_datadir}/git-gui/lib/msgs/vi.msg
 %lang(zh_CN) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
 
-%files svn
+%files arch
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-svn
-%{perl_vendorlib}/Git/SVN
-%{perl_vendorlib}/Git/SVN.pm
+%attr(755,root,root) %{gitcoredir}/git-archimport
 %if %{with doc}
-%{_mandir}/man1/git-svn.1*
+%{_mandir}/man1/git-archimport.1*
 %endif
+
+%files bzr
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gitcoredir}/git-remote-bzr
 
 %files cvs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/git-cvsserver
-%attr(755,root,root) %{_libdir}/%{name}/git-cvs*
+%attr(755,root,root) %{gitcoredir}/git-cvs*
 %if %{with doc}
 %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man7/gitcvs-migration.7*
 %endif
 
-%files arch
+%files hg
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-archimport
+%attr(755,root,root) %{gitcoredir}/git-remote-hg
+
+%files p4
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gitcoredir}/git-p4
+%attr(755,root,root) %{gitcoredir}/mergetools/p4merge
+
+%files svn
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gitcoredir}/git-svn
+%attr(755,root,root) %{gitcoredir}/git-remote-testsvn
+%{perl_vendorlib}/Git/SVN
+%{perl_vendorlib}/Git/SVN.pm
 %if %{with doc}
-%{_mandir}/man1/git-archimport.1*
+%{_mandir}/man1/git-svn.1*
 %endif
+%{_mandir}/man3/Git::SVN::Editor.3pm*
+%{_mandir}/man3/Git::SVN::Fetcher.3pm*
+%{_mandir}/man3/Git::SVN::Memoize::YAML.3pm*
+%{_mandir}/man3/Git::SVN::Prompt.3pm*
+%{_mandir}/man3/Git::SVN::Ra.3pm*
+%{_mandir}/man3/Git::SVN::Utils.3pm*
 
 %files email
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/*email*
+%attr(755,root,root) %{gitcoredir}/git-imap-send
+%attr(755,root,root) %{gitcoredir}/*email*
 %if %{with doc}
 %{_mandir}/man1/*email*.1*
+%{_mandir}/man1/*imap-send*.1*
 %endif
 
 %files -n bash-completion-git
 %defattr(644,root,root,755)
-/etc/bash_completion.d/git-completion.bash
+%{bash_compdir}/git
 
 %files -n perl-Git
 %defattr(644,root,root,755)
@@ -708,23 +887,11 @@ fi
 %dir %{perl_vendorlib}/Git
 %{perl_vendorlib}/Git/I18N.pm
 %{perl_vendorlib}/Git/IndexInfo.pm
-%{_mandir}/man3/Git*.3pm*
+%{_mandir}/man3/Git.3pm*
+%{_mandir}/man3/Git::I18N.3pm*
 
-%files -n python-Git
+%if %{with gnome_keyring}
+%files -n gnome-keyring-git-core
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/git-remote-testgit
-%dir %{py_sitescriptdir}/git_remote_helpers
-%{py_sitescriptdir}/git_remote_helpers/*.py[co]
-%dir %{py_sitescriptdir}/git_remote_helpers/git
-%{py_sitescriptdir}/git_remote_helpers/git/*.py[co]
-%if "%{py_ver}" > "2.4"
-%{py_sitescriptdir}/git_remote_helpers*.egg-info
+%attr(755,root,root) %{gitcoredir}/git-credential-gnome-keyring
 %endif
-%if %{with doc}
-%{_mandir}/man1/git-remote-helpers.1*
-%endif
-
-%files -n vim-syntax-gitcommit
-%defattr(644,root,root,755)
-%doc contrib/vim/README
-%{_datadir}/vim/vimfiles/syntax/gitcommit.vim
