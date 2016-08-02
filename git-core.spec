@@ -403,8 +403,8 @@ Obsługa Subversion dla Gita.
 Summary:	Git tools for sending email
 Summary(pl.UTF-8):	Narzędzia Gita do wysyłania poczty
 Group:		Development/Tools
-Suggests:   perl-Net-SMTP-SSL
 Requires:	%{name} = %{version}-%{release}
+Suggests:	perl-Net-SMTP-SSL
 
 %description email
 Git tools for sending email.
