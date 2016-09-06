@@ -6,6 +6,7 @@
 %bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
 %bcond_without	pcre		# perl-compatible regexes support
 %bcond_without	gnome_keyring	# build without gnome keyring support
+%bcond_without	tk		# build without the Tcl/Tk interface
 
 # for AC: --without doc --without gnome_keyring --without tests
 
@@ -53,8 +54,10 @@ BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.673
+%if %{with tk}
 # wish
 BuildRequires:	tk
+%endif
 BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	asciidoc >= 7.1.2-3
@@ -757,6 +760,7 @@ fi
 %{_libdir}/libgit.a
 %{_libdir}/libgit_xdiff.a
 
+%if %{with tk}
 %files gitk
 %defattr(644,root,root,755)
 %if %{with doc}
@@ -778,6 +782,7 @@ fi
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 %lang(vi) %{_datadir}/gitk/lib/msgs/vi.msg
+%endif
 
 %files gitweb
 %defattr(644,root,root,755)
@@ -801,6 +806,7 @@ fi
 %doc contrib/gitview/gitview.txt
 %attr(755,root,root) %{_bindir}/gitview
 
+%if %{with tk}
 %files gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gitcoredir}/git-gui
@@ -824,6 +830,7 @@ fi
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(vi) %{_datadir}/git-gui/lib/msgs/vi.msg
 %lang(zh_CN) %{_datadir}/git-gui/lib/msgs/zh_cn.msg
+%endif
 
 %files arch
 %defattr(644,root,root,755)
