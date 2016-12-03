@@ -826,7 +826,7 @@ fi
 %lang(ja) %{_datadir}/git-gui/lib/msgs/ja.msg
 %lang(nb) %{_datadir}/git-gui/lib/msgs/nb.msg
 %lang(pt) %{_datadir}/git-gui/lib/msgs/pt_pt.msg
-%lang(pt_br) %{_datadir}/git-gui/lib/msgs/pt_br.msg
+%lang(pt_BR) %{_datadir}/git-gui/lib/msgs/pt_br.msg
 %lang(ru) %{_datadir}/git-gui/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/git-gui/lib/msgs/sv.msg
 %lang(vi) %{_datadir}/git-gui/lib/msgs/vi.msg
