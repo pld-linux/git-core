@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.11.1
+Version:	2.12.1
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	2970ae6cd234b2fca4f2d14ba4226f35
+# Source0-md5:	8aa0430bd7476a51c983dc68cc03f6b9
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -31,7 +31,6 @@ Patch0:		%{name}-tests.patch
 Patch1:		%{name}-key-bindings.patch
 Patch2:		%{name}-sysconfdir.patch
 Patch3:		cherry-picked-commitlog.patch
-Patch4:		%{name}-t5615.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -91,6 +90,7 @@ Suggests:	git-core-svn
 Suggests:	less
 Suggests:	openssh-clients
 Suggests:	rsync
+Obsoletes:	git-core-gitview
 Obsoletes:	python-Git
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -256,26 +256,6 @@ This package provides a web interface for browsing git repositories.
 
 %description gitweb -l pl.UTF-8
 Pakiet ten dostarcza interfejs WWW do przeglądania repozytoriów gita.
-
-%package gitview
-Summary:	A GTK+ based repository browser for git
-Summary(pl.UTF-8):	Oparta na GTK+ przeglądarka repozytorium gita
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	python >= 1:2.4
-Requires:	python-pycairo >= 1.0
-Requires:	python-pygobject
-Requires:	python-pygtk-gtk >= 2:2.8
-Suggests:	python-gnome-desktop-gtksourceview
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
-
-%description gitview
-A GTK+ based repository browser for git.
-
-%description gitview -l pl.UTF-8
-Oparta na GTK+ przeglądarka repozytorium gita.
 
 %package gui
 Summary:	Tcl/Tk interface to the Git version control system
@@ -481,7 +461,6 @@ Moduł trzeba zarejestrować poleceniem:
 %patch1 -p0
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
@@ -592,9 +571,6 @@ cp -p %{SOURCE7} $RPM_BUILD_ROOT%{webappdir}/gitolite.pl
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/apache.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{webappdir}/httpd.conf
 cp -p %{SOURCE3} $RPM_BUILD_ROOT%{webappdir}/lighttpd.conf
-
-# gitview
-install -p contrib/gitview/gitview $RPM_BUILD_ROOT%{_bindir}
 
 # git-daemon related files
 cp -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/git-daemon
@@ -779,6 +755,7 @@ fi
 %lang(it) %{_datadir}/gitk/lib/msgs/it.msg
 %lang(ja) %{_datadir}/gitk/lib/msgs/ja.msg
 %lang(pt_BR) %{_datadir}/gitk/lib/msgs/pt_br.msg
+%lang(pt_PT) %{_datadir}/gitk/lib/msgs/pt_pt.msg
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 %lang(vi) %{_datadir}/gitk/lib/msgs/vi.msg
@@ -800,11 +777,6 @@ fi
 %{_mandir}/man1/gitweb.1*
 %{_mandir}/man5/gitweb.conf.5*
 %endif
-
-%files gitview
-%defattr(644,root,root,755)
-%doc contrib/gitview/gitview.txt
-%attr(755,root,root) %{_bindir}/gitview
 
 %if %{with tk}
 %files gui
