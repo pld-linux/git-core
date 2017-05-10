@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.12.2
+Version:	2.13.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	ad5ae08664c40caf074392abc301cccd
+# Source0-md5:	a18711ae968ded392d2208c8c6277b7d
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -27,10 +27,9 @@ Source4:	%{name}.sysconfig
 Source5:	%{name}.inet
 Source6:	%{name}.init
 Source7:	gitolite.pl
-Patch0:		%{name}-tests.patch
-Patch1:		%{name}-key-bindings.patch
-Patch2:		%{name}-sysconfdir.patch
-Patch3:		cherry-picked-commitlog.patch
+Patch0:		%{name}-key-bindings.patch
+Patch1:		%{name}-sysconfdir.patch
+Patch2:		cherry-picked-commitlog.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -457,10 +456,9 @@ Moduł trzeba zarejestrować poleceniem:
 
 %prep
 %setup -q -n git-%{version}
-%patch0 -p1
-%patch1 -p0
+%patch0 -p0
+%patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
