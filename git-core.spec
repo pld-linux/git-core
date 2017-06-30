@@ -15,7 +15,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.13.2
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -100,8 +100,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
 %define		appdir		%{_datadir}/%{webapp}
 %define		cgibindir	%{_prefix}/lib/cgi-bin
-%define		gitcoredir	%{_prefix}/lib/%{name}
-%define		_libexecdir	%{_prefix}/lib
+%define		gitcoredir	%{_libdir}/%{name}
 
 %description
 "git" can mean anything, depending on your mood.
@@ -246,9 +245,6 @@ Requires:	webserver(access)
 Requires:	webserver(alias)
 Requires:	webserver(cgi)
 Suggests:	webserver(setenv)
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description gitweb
 This package provides a web interface for browsing git repositories.
@@ -264,9 +260,6 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	tk
 Requires:	xdg-utils
 Suggests:	meld
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description gui
 Displays changes in a repository or a selected set of commits. This
@@ -293,9 +286,6 @@ Summary(pl.UTF-8):	Narzędzia Gita do importowania repozytoriów Archa
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tla
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description arch
 Git tools for importing Arch repositories.
@@ -309,9 +299,6 @@ Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami bzr
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	bzr
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description bzr
 Git tools for working with bzr repositories.
@@ -326,9 +313,6 @@ Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	cvsps >= 2.1-2
 Requires:	rcs
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description cvs
 CVS support for Git.
@@ -342,9 +326,6 @@ Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami mercuriala
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	mercurial >= 1.8
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description hg
 Git tools for working with mercurial repositories.
@@ -357,9 +338,6 @@ Summary:	Git tools for working with Perforce depots
 Summary(pl.UTF-8):	Narzędzia Gita do pracy z magazynami Perforce'a
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description p4
 Git tools for working with Perforce depots.
