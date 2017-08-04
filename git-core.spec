@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.13.3
+Version:	2.14.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	e10ede8b80a2c987d04ee376534cb7e1
+# Source0-md5:	8422cbf87b85e1a5e8e2cbca49333f84
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -45,7 +45,7 @@ BuildRequires:	libgnome-keyring-devel
 BuildRequires:	pkgconfig
 %endif
 BuildRequires:	openssl-devel
-%{?with_pcre:BuildRequires:	pcre-devel}
+%{?with_pcre:BuildRequires:	pcre2-8-devel}
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-base
 BuildRequires:	python-devel
@@ -448,7 +448,7 @@ cp -a contrib contrib-doc
 %{__autoconf}
 %configure \
 	--sysconfdir=%{_sysconfdir}/git-core \
-	%{?with_pcre:--with-libpcre} \
+	%{?with_pcre:--with-libpcre2} \
 	--with-openssl
 
 echo "BLK_SHA1=1" >> config.mak
@@ -659,6 +659,7 @@ fi
 %{_mandir}/man7/gitglossary.7*
 %{_mandir}/man7/gitnamespaces.7*
 %{_mandir}/man7/gitrevisions.7*
+%{_mandir}/man7/gitsubmodules.7*
 %{_mandir}/man7/gittutorial-2.7*
 %{_mandir}/man7/gittutorial.7*
 %{_mandir}/man7/gitworkflows.7*
