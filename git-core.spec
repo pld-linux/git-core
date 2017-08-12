@@ -15,7 +15,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.14.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -158,9 +158,6 @@ Requires:	setup >= 2.4.11-1
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-standalone
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description daemon-inetd
 Git-daemon is a really simple TCP git daemon that can serve git
@@ -180,9 +177,6 @@ Requires:	%{name} = %{version}-%{release}
 Provides:	git-core-daemon
 Obsoletes:	git-core-daemon
 Obsoletes:	git-core-daemon-inetd
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
 
 %description daemon-standalone
 Git-daemon is a really simple TCP git daemon that can serve git
