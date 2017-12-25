@@ -15,7 +15,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.15.1
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -78,8 +78,6 @@ Conflicts:	pdksh < 5.2.14-46
 Requires:	grep
 # git-pull: printf
 Requires:	coreutils
-Requires:	perl-Error
-Requires:	perl-Git = %{version}-%{release}
 Requires:	sed
 Suggests:	git-core-bzr
 Suggests:	git-core-cvs
@@ -88,6 +86,7 @@ Suggests:	git-core-p4
 Suggests:	git-core-svn
 Suggests:	less
 Suggests:	openssh-clients
+Suggests:	perl-Git = %{version}-%{release}
 Suggests:	rsync
 Obsoletes:	git-core-gitview
 Obsoletes:	python-Git
@@ -95,6 +94,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # html docs have links to txt files
 %define		_noautocompressdoc	*.txt
+
+# do not generate perl dependency, git add -p support is optional
+%define		_noautoreqfiles %{_libexecdir}/%{name}/git-add--interactive
 
 %define		webapp		gitweb
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
