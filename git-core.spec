@@ -90,6 +90,7 @@ Suggests:	perl-Git = %{version}-%{release}
 Suggests:	rsync
 Obsoletes:	git-core-gitview
 Obsoletes:	python-Git
+Conflicts:	perl-Git < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # html docs have links to txt files
@@ -389,7 +390,6 @@ Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Obsoletes:	perl-git-core
-Conflicts:	%{name} < %{version}
 %if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
 %endif
