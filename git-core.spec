@@ -676,6 +676,7 @@ fi
 %exclude %{gitcoredir}/*email*
 %exclude %{gitcoredir}/*p4*
 %exclude %{gitcoredir}/git-archimport
+%exclude %{gitcoredir}/git-citool
 %exclude %{gitcoredir}/git-cvs*
 %exclude %{gitcoredir}/git-gui
 %exclude %{gitcoredir}/git-imap-send
@@ -756,6 +757,7 @@ fi
 %if %{with tk}
 %files gui
 %defattr(644,root,root,755)
+%attr(755,root,root) %{gitcoredir}/git-citool
 %attr(755,root,root) %{gitcoredir}/git-gui
 %dir %{_datadir}/git-gui
 %dir %{_datadir}/git-gui/lib
