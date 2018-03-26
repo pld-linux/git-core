@@ -15,7 +15,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.16.2
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -97,7 +97,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautocompressdoc	*.txt
 
 # do not generate perl dependency, git add -p support is optional
-%define		_noautoreqfiles %{_libexecdir}/%{name}/git-add--interactive
+# skip dependency generation from templates
+%define		_noautoreqfiles %{_libexecdir}/%{name}/git-add--interactive %{_datadir}/%{name}/templates
 
 %define		webapp		gitweb
 %define		webappdir	%{_sysconfdir}/webapps/%{webapp}
