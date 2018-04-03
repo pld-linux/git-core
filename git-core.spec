@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.16.2
-Release:	3
+Version:	2.17.0
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	13a715b3f0b2088839079eed2f8902ad
+# Source0-md5:	371985891f467969802fe1c7584a45bf
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -452,12 +452,13 @@ cp -a contrib contrib-doc
 echo "BLK_SHA1=1" >> config.mak
 
 %{__make} \
-	INSTALLDIRS=vendor \
 	GITWEB_CONFIG="%{webappdir}/gitweb.conf" \
 	GITWEB_PROJECTROOT="/var/lib/git" \
 	GITWEB_CSS="/gitweb/gitweb.css" \
 	GITWEB_LOGO="/gitweb/git-logo.png" \
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
+	NO_PERL_CPAN_FALLBACKS=1 \
+	perllibdir=%{perl_vendorlib} \
 	V=1
 
 %{__make} -C contrib/subtree
@@ -467,7 +468,7 @@ echo "BLK_SHA1=1" >> config.mak
 %endif
 
 %if %{with doc}
-%{__make} -C Documentation \
+%{__make} doc \
 	MAN_BASE_URL=file://%{_docdir}/%{name}-doc-%{version}/ \
 	V=1
 %endif
@@ -481,7 +482,7 @@ echo "BLK_SHA1=1" >> config.mak
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_localstatedir}/lib/git}
+install -d $RPM_BUILD_ROOT{%{_includedir}/%{name}/xdiff,%{_libdir},%{_localstatedir}/lib/git}
 install -d $RPM_BUILD_ROOT{%{appdir},%{cgibindir},%{webappdir}}
 install -d $RPM_BUILD_ROOT/etc/{sysconfig/rc-inetd,rc.d/init.d}
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
@@ -491,11 +492,12 @@ cat << EOF > $RPM_BUILD_ROOT%{_sysconfdir}/git-core/gitconfig
 EOF
 
 %{__make} install \
-	INSTALLDIRS=vendor \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	NO_PERL_CPAN_FALLBACKS=1 \
+	perllibdir=%{perl_vendorlib}
 
 %if %{with doc}
-%{__make} -C Documentation install \
+%{__make} install-doc \
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
@@ -579,8 +581,6 @@ ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftp
 ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftps
 
 # remove unneeded files
-%{__rm} $RPM_BUILD_ROOT%{perl_archlib}/perllocal.pod
-%{__rm} $RPM_BUILD_ROOT%{perl_vendorarch}/auto/Git/.packlist
 %py_postclean
 
 mv $RPM_BUILD_ROOT%{_localedir}/pt{_PT,}
@@ -820,12 +820,6 @@ fi
 %if %{with doc}
 %{_mandir}/man1/git-svn.1*
 %endif
-%{_mandir}/man3/Git::SVN::Editor.3pm*
-%{_mandir}/man3/Git::SVN::Fetcher.3pm*
-%{_mandir}/man3/Git::SVN::Memoize::YAML.3pm*
-%{_mandir}/man3/Git::SVN::Prompt.3pm*
-%{_mandir}/man3/Git::SVN::Ra.3pm*
-%{_mandir}/man3/Git::SVN::Utils.3pm*
 
 %files email
 %defattr(644,root,root,755)
@@ -846,9 +840,13 @@ fi
 %dir %{perl_vendorlib}/Git
 %{perl_vendorlib}/Git/I18N.pm
 %{perl_vendorlib}/Git/IndexInfo.pm
+%{perl_vendorlib}/Git/LoadCPAN.pm
 %{perl_vendorlib}/Git/Packet.pm
+%dir %{perl_vendorlib}/Git/LoadCPAN
+%{perl_vendorlib}/Git/LoadCPAN/Error.pm
+%dir %{perl_vendorlib}/Git/LoadCPAN/Mail
+%{perl_vendorlib}/Git/LoadCPAN/Mail/Address.pm
 %{_mandir}/man3/Git.3pm*
-%{_mandir}/man3/Git::I18N.3pm*
 
 %if %{with gnome_keyring}
 %files -n gnome-keyring-git-core
