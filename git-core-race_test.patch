@@ -1,0 +1,11 @@
+diff -u -r git-2.17.0.orig/t/t5570-git-daemon.sh git-2.17.0/t/t5570-git-daemon.sh
+--- git-2.17.0.orig/t/t5570-git-daemon.sh	2018-04-04 22:46:50.449393002 +0200
++++ git-2.17.0/t/t5570-git-daemon.sh	2018-04-04 22:47:11.655798538 +0200
+@@ -192,6 +192,7 @@
+ 	GIT_OVERRIDE_VIRTUAL_HOST=localhost \
+ 		git -c protocol.version=1 \
+ 			ls-remote "$GIT_DAEMON_URL/interp.git" &&
++        sleep 1 &&
+ 	grep -i extended.attribute daemon.log | cut -d" " -f2- >actual &&
+ 	test_cmp expect actual
+ '
