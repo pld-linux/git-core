@@ -48,6 +48,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	openssl-devel
 %{?with_pcre:BuildRequires:	pcre2-8-devel}
 BuildRequires:	perl-Error > 0.15
+BuildRequires:	perl-MailTools
 BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
@@ -363,6 +364,8 @@ Summary:	Git tools for sending email
 Summary(pl.UTF-8):	Narzędzia Gita do wysyłania poczty
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
+Requires:	perl-Error
+Requires:	perl-MailTools
 Suggests:	perl-Net-SMTP-SSL
 
 %description email
