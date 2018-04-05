@@ -30,7 +30,6 @@ Source7:	gitolite.pl
 Patch0:		%{name}-key-bindings.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		cherry-picked-commitlog.patch
-Patch3:		%{name}-race_test.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -439,7 +438,6 @@ Moduł trzeba zarejestrować poleceniem:
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
 
@@ -479,10 +477,16 @@ echo "BLK_SHA1=1" >> config.mak
 %endif
 
 %if %{with tests}
+# t5770 has multiple race conditions making it very unstable
+GIT_SKIP_TESTS=t5570
 %if %{without tests_cvs}
 %{__rm} t/t*cvs*.sh || :
 %endif
-%{!?with_tests_svn:GIT_SKIP_TESTS='t91??'} %{__make} test
+%if %{without tests_svn}
+GIT_SKIP_TESTS="$GIT_SKIP_TESTS t91??"
+%endif
+export GIT_SKIP_TESTS
+%{__make} test
 %endif
 
 %install
