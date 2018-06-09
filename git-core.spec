@@ -486,7 +486,8 @@ GIT_SKIP_TESTS=t5570
 GIT_SKIP_TESTS="$GIT_SKIP_TESTS t91??"
 %endif
 export GIT_SKIP_TESTS
-%{__make} test
+%{__make} test \
+	NO_PERL_CPAN_FALLBACKS=1
 %endif
 
 %install
