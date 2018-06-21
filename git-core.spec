@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.17.1
+Version:	2.18.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	5179245515c637357b4a134e8d4e9a6f
+# Source0-md5:	7a668403aa7807d0db37e8573299d471
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -439,7 +439,7 @@ Moduł trzeba zarejestrować poleceniem:
 %patch1 -p1
 %patch2 -p1
 
-%{__rm} {Documentation/technical,contrib/emacs,contrib/credential/gnome-keyring}/.gitignore
+%{__rm} {Documentation/technical,contrib/credential/gnome-keyring}/.gitignore
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
