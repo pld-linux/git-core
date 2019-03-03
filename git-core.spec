@@ -477,8 +477,6 @@ echo "BLK_SHA1=1" >> config.mak
 %endif
 
 %if %{with tests}
-# t5770 has multiple race conditions making it very unstable
-GIT_SKIP_TESTS=t5570
 %if %{without tests_cvs}
 %{__rm} t/t*cvs*.sh || :
 %endif
