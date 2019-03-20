@@ -1,12 +1,13 @@
 #
 # Conditional build:
-%bcond_without	tests		# don't perform make test
-%bcond_with	tests_cvs	# perform tests which use CVS
-%bcond_without	tests_svn	# perform tests which use subversion
-%bcond_without	doc		# skip building/packaging docs/manuals (takes some time)
+%bcond_without	tests		# test suite
+%bcond_with	tests_cvs	# tests which use CVS
+%bcond_without	tests_svn	# tests which use subversion
+%bcond_without	doc		# building/packaging docs/manuals (takes some time)
 %bcond_without	pcre		# perl-compatible regexes support
-%bcond_without	gnome_keyring	# build without gnome keyring support
-%bcond_without	tk		# build without the Tcl/Tk interface
+%bcond_without	gnome_keyring	# gnome keyring credentials support
+%bcond_without	libsecret	# libsecret credentials support
+%bcond_without	tk		# Tcl/Tk interface
 
 # for AC: --without doc --without gnome_keyring --without tests
 
@@ -40,15 +41,23 @@ BuildRequires:	gettext-devel
 %else
 BuildRequires:	gettext-tools
 %endif
+%if %{with gnome_keyring} || %{with libsecret}
+BuildRequires:	glib2-devel >= 2.0
+%endif
 %if %{with gnome_keyring}
 BuildRequires:	libgnome-keyring-devel
-BuildRequires:	pkgconfig
+%endif
+%if %{with libsecret}
+BuildRequires:	libsecret-devel
 %endif
 BuildRequires:	openssl-devel
 %{?with_pcre:BuildRequires:	pcre2-8-devel}
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-MailTools
 BuildRequires:	perl-base
+%if %{with gnome_keyring} || %{with libsecret}
+BuildRequires:	pkgconfig
+%endif
 BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
@@ -414,7 +423,7 @@ wykonania przy użyciu ogólnego interfejsu poleceń.
 
 %package -n gnome-keyring-git-core
 Summary:	GNOME Keyring authentication provider for Git
-Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME Keyring dla Git
+Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME Keyring dla Gita
 Group:		X11/Applications
 URL:		http://git-scm.com/docs/gitcredentials.html
 Requires:	%{name} = %{version}-%{release}
@@ -427,11 +436,32 @@ You need to register it with:
 - git config --global credential.helper gnome-keyring
 
 %description -n gnome-keyring-git-core -l pl.UTF-8
-Moduł uwierzytelniający dla Subversion pozwalający klientom git
+Moduł uwierzytelniający dla Gita pozwalający klientom git
 uwierzytelniać się przy użyciu mechanizmu GNOME Keyring.
 
 Moduł trzeba zarejestrować poleceniem:
 - git config --global credential.helper gnome-keyring
+
+%package credential-libsecret
+Summary:	GNOME authentication provider for Git using libsecret
+Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME dla Gita wykorzystujący libsecret
+Group:		X11/Applications
+URL:		http://git-scm.com/docs/gitcredentials.html
+Requires:	%{name} = %{version}-%{release}
+
+%description credential-libsecret
+Authentication provider module for Git which allows git client to
+authenticate using GNOME libsecret.
+
+You need to register it with:
+- git config --global credential.helper libsecret
+
+%description credential-libsecret -l pl.UTF-8
+Moduł uwierzytelniający dla Gita pozwalający klientom git
+uwierzytelniać się przy użyciu mechanizmu GNOME libsecret.
+
+Moduł trzeba zarejestrować poleceniem:
+- git config --global credential.helper libsecret
 
 %prep
 %setup -q -n git-%{version}
@@ -467,7 +497,17 @@ echo "BLK_SHA1=1" >> config.mak
 %{__make} -C contrib/subtree
 
 %if %{with gnome_keyring}
-%{__make} -C contrib/credential/gnome-keyring
+%{__make} -C contrib/credential/gnome-keyring \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -Wall" \
+	LDFLAGS="%{rpmldflags}"
+%endif
+
+%if %{with libsecret}
+%{__make} -C contrib/credential/libsecret \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -Wall" \
+	LDFLAGS="%{rpmldflags}"
 %endif
 
 %if %{with doc}
@@ -536,6 +576,10 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{gitcoredir}
 %endif
 
+%if %{with libsecret}
+install -p contrib/credential/libsecret/git-credential-libsecret $RPM_BUILD_ROOT%{gitcoredir}
+%endif
+
 # bash completion
 install -d $RPM_BUILD_ROOT%{bash_compdir}
 cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
@@ -548,7 +592,7 @@ cp -p contrib/completion/git-prompt.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/contri
 install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{gitcoredir}
 
 # gitweb
-mv $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
+%{__mv} $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{webappdir}/gitweb.conf
 cp -p %{SOURCE7} $RPM_BUILD_ROOT%{webappdir}/gitolite.pl
@@ -591,7 +635,7 @@ ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftps
 # remove unneeded files
 %py_postclean
 
-mv $RPM_BUILD_ROOT%{_localedir}/pt{_PT,}
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/pt{_PT,}
 %find_lang git
 
 %clean
@@ -696,6 +740,9 @@ fi
 %exclude %{gitcoredir}/mergetools/p4merge
 %if %{with gnome_keyring}
 %exclude %{gitcoredir}/git-credential-gnome-keyring
+%endif
+%if %{with libsecret}
+%exclude %{gitcoredir}/git-credential-libsecret
 %endif
 
 %if %{with doc}
@@ -860,4 +907,10 @@ fi
 %files -n gnome-keyring-git-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gitcoredir}/git-credential-gnome-keyring
+%endif
+
+%if %{with libsecret}
+%files credential-libsecret
+%defattr(644,root,root,755)
+%attr(755,root,root) %{gitcoredir}/git-credential-libsecret
 %endif
