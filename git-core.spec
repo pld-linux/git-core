@@ -15,12 +15,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.23.0
+Version:	2.24.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	93ee0f867f81a39e0ef29eabfb1d2c5b
+# Source0-md5:	9ef425dbbd05ba4b54e6695fc1fc7e7b
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -790,6 +790,7 @@ fi
 %lang(ru) %{_datadir}/gitk/lib/msgs/ru.msg
 %lang(sv) %{_datadir}/gitk/lib/msgs/sv.msg
 %lang(vi) %{_datadir}/gitk/lib/msgs/vi.msg
+%lang(zh_CN) %{_datadir}/gitk/lib/msgs/zh_cn.msg
 %endif
 
 %files gitweb
