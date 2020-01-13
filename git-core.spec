@@ -15,12 +15,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.24.1
+Version:	2.25.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	42540aa4eabfb831127a801a89c1b6e0
+# Source0-md5:	eab5cdee7c478c0804346d8835e314c9
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -473,6 +473,8 @@ Moduł trzeba zarejestrować poleceniem:
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
+
+%{__sed} -i -e '1s|#!/usr/bin/env python$|#!%{__python}|' git-p4.py
 
 %build
 %{__aclocal}
