@@ -11,7 +11,6 @@
 
 # for AC: --without doc --without gnome_keyring --without tests
 
-%include	/usr/lib/rpm/macros.perl
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
