@@ -60,7 +60,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.673
+BuildRequires:	rpmbuild(macros) >= 1.745
 %if %{with tk}
 # wish
 BuildRequires:	tk
