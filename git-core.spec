@@ -72,6 +72,10 @@ BuildRequires:	docbook-dtd45-xml
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
+BuildRequires:	perl-CGI
+BuildRequires:	perl-Digest-MD5
+BuildRequires:	perl-Encode
+BuildRequires:	perl-Time-HiRes
 %if %{with tests_cvs}
 # tests failed sometimes when using nserver/cvsnt client so enforce pure cvs here
 BuildRequires:	cvs-gnu-client < 1.13
