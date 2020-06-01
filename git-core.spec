@@ -907,7 +907,7 @@ fi
 %{perl_vendorlib}/Git/LoadCPAN/Error.pm
 %dir %{perl_vendorlib}/Git/LoadCPAN/Mail
 %{perl_vendorlib}/Git/LoadCPAN/Mail/Address.pm
-%{_mandir}/man3/Git.3pm*
+%{?with_doc:%{_mandir}/man3/Git.3pm*}
 
 %if %{with gnome_keyring}
 %files -n gnome-keyring-git-core
