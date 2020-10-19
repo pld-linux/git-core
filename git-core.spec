@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.28.0
+Version:	2.29.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	5fde0206768ed70092d1fcc8f447251a
+# Source0-md5:	b07a283043e089dca8d2174d2654191b
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -741,7 +741,6 @@ fi
 %exclude %{gitcoredir}/git-instaweb
 %exclude %{gitcoredir}/git-remote-bzr
 %exclude %{gitcoredir}/git-remote-hg
-%exclude %{gitcoredir}/git-remote-testsvn
 %exclude %{gitcoredir}/git-svn
 %exclude %{gitcoredir}/mergetools/p4merge
 %if %{with gnome_keyring}
@@ -876,7 +875,6 @@ fi
 %files svn
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gitcoredir}/git-svn
-%attr(755,root,root) %{gitcoredir}/git-remote-testsvn
 %{perl_vendorlib}/Git/SVN
 %{perl_vendorlib}/Git/SVN.pm
 %if %{with doc}

@@ -15,31 +15,28 @@ diff --git gitk-git/gitk gitk-git/gitk
 index 45e3380..0c6f3af 100755
 --- gitk-git/gitk
 +++ gitk-git/gitk
-@@ -2365,6 +2365,10 @@ proc makewindow {} {
-         }
+@@ -2528,6 +2528,10 @@
+         set ::BM "2"
      }
  
 +    foreach e $entries {
 +        bindtags $e [linsert [bindtags $e] 2 entrybind]
 +    }
 +
-     bind .pwbottom <Configure> {resizecdetpanes %W %w}
-     pack .ctop -fill both -expand 1
-     bindall <1> {selcanvline %W %x %y}
-@@ -2563,12 +2567,8 @@ proc scrollcanv {cscroll f0 f1} {
+     if {$use_ttk} {
+         bind .ctop <Map> {
+             bind %W <Map> {}
+@@ -2759,12 +2763,8 @@
  proc bindkey {ev script} {
      global entries
      bind . $ev $script
 -    set escript [bind Entry $ev]
 -    if {$escript == {}} {
--	set escript [bind Entry <Key>]
+-        set escript [bind Entry <Key>]
 -    }
      foreach e $entries {
--	bind $e $ev "$escript; break"
-+	bind entrybind $ev "break"
+-        bind $e $ev "$escript; break"
++        bind entrybind $ev "break"
      }
  }
  
--- 
-1.7.3.3
-
