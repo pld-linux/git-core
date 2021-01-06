@@ -646,6 +646,20 @@ ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftps
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+if [ ! -f /etc/shells ]; then
+	echo "%{_bindir}/git-shell" >> /etc/shells
+else
+	grep -q '^%{_bindir}/git-shell$' /etc/shells || echo "%{_bindir}/git-shell" >> /etc/shells
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+	umask 022
+	grep -v '^%{_bindir}/git-shell$' /etc/shells > /etc/shells.new
+	mv -f /etc/shells.new /etc/shells
+fi
+
 %post daemon-inetd
 %service -q rc-inetd reload
 
