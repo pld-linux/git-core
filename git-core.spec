@@ -156,9 +156,7 @@ katalogu.
 Summary:	Documentation for git-core
 Summary(pl.UTF-8):	Dokumentacja do git-core
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description doc
 Documentation for git-core.
@@ -223,9 +221,7 @@ Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tk
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description gitk
 gitk displays changes in a repository or a selected set of commits.
@@ -391,9 +387,7 @@ Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description -n bash-completion-git
 This package provides bash-completion for git.
@@ -406,9 +400,7 @@ Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Obsoletes:	perl-git-core
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description -n perl-Git
 This module provides Perl scripts easy way to interface the Git
@@ -711,8 +703,9 @@ fi
 %exclude %{_mandir}/man1/git-archimport.1*
 %exclude %{_mandir}/man1/git-svn.1*
 %exclude %{_mandir}/man1/git-cvs*.1*
-%exclude %{_mandir}/man1/git-imap-send*.1*
-%exclude %{_mandir}/man1/*email*.1*
+%exclude %{_mandir}/man1/git-imap-send.1*
+%exclude %{_mandir}/man1/git-p4.1*
+%exclude %{_mandir}/man1/git-send-email.1*
 %{_mandir}/man1/git.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/githooks.5*
@@ -885,6 +878,9 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gitcoredir}/git-p4
 %attr(755,root,root) %{gitcoredir}/mergetools/p4merge
+%if %{with doc}
+%{_mandir}/man1/git-p4.1*
+%endif
 
 %files svn
 %defattr(644,root,root,755)
@@ -898,10 +894,10 @@ fi
 %files email
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gitcoredir}/git-imap-send
-%attr(755,root,root) %{gitcoredir}/*email*
+%attr(755,root,root) %{gitcoredir}/git-send-email
 %if %{with doc}
-%{_mandir}/man1/*email*.1*
-%{_mandir}/man1/*imap-send*.1*
+%{_mandir}/man1/git-imap-send.1*
+%{_mandir}/man1/git-send-email.1*
 %endif
 
 %files -n bash-completion-git
