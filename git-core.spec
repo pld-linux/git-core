@@ -61,9 +61,11 @@ BuildRequires:	python-devel
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.752
+BuildRequires:	tar >= 1:1.22
 %if %{with tk}
 # wish
 BuildRequires:	tk
+BuildRequires:	xz
 %endif
 BuildRequires:	zlib-devel
 %if %{with doc}
