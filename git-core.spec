@@ -158,7 +158,7 @@ katalogu.
 Summary:	Documentation for git-core
 Summary(pl.UTF-8):	Dokumentacja do git-core
 Group:		Documentation
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description doc
 Documentation for git-core.
@@ -223,7 +223,7 @@ Summary(pl.UTF-8):	Napisany w Tcl/Tk interfejs do systemu kontroli wersji Git
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	tk
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description gitk
 gitk displays changes in a repository or a selected set of commits.
@@ -389,7 +389,7 @@ Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description -n bash-completion-git
 This package provides bash-completion for git.
@@ -402,7 +402,7 @@ Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Obsoletes:	perl-git-core
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description -n perl-Git
 This module provides Perl scripts easy way to interface the Git
