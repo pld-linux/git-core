@@ -401,6 +401,7 @@ Pakiet ten dostarcza bashowe uzupełnianie nazw dla gita.
 Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
+Requires:	perl-Error
 Obsoletes:	perl-git-core
 BuildArch:	noarch
 
