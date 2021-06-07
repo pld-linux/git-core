@@ -461,6 +461,21 @@ uwierzytelniać się przy użyciu mechanizmu GNOME libsecret.
 Moduł trzeba zarejestrować poleceniem:
 - git config --global credential.helper libsecret
 
+%package -n zsh-completion-git
+Summary:	Zsh completion for git command
+Summary(pl.UTF-8):	Dopełnianie parametrów komendy git dla powłoki zsh
+Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
+Requires:	bash-completion-git = %{version}-%{release}
+Requires:	zsh
+BuildArch:	noarch
+
+%description -n zsh-completion-git
+Zsh completion for git command.
+
+%description -n zsh-completion-git -l pl.UTF-8
+Dopełnianie parametrów komendy git dla powłoki zsh.
+
 %prep
 %setup -q -n git-%{version}
 %patch0 -p0
@@ -583,6 +598,9 @@ install -p contrib/credential/libsecret/git-credential-libsecret $RPM_BUILD_ROOT
 # bash completion
 install -d $RPM_BUILD_ROOT%{bash_compdir}
 cp -p contrib/completion/git-completion.bash $RPM_BUILD_ROOT%{bash_compdir}/git
+install -d $RPM_BUILD_ROOT%{zsh_compdir}
+cp -p contrib/completion/git-completion.zsh $RPM_BUILD_ROOT%{zsh_compdir}/_git
+sed -i -e "1 a zstyle ':completion:*:*:git:*' script %{bash_compdir}/git" $RPM_BUILD_ROOT%{zsh_compdir}/_git
 
 # Install git-prompt.sh
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
@@ -933,3 +951,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gitcoredir}/git-credential-libsecret
 %endif
+
+%files -n zsh-completion-git
+%defattr(644,root,root,755)
+%{zsh_compdir}/_git
