@@ -103,6 +103,7 @@ Suggests:	less
 Suggests:	openssh-clients
 Suggests:	perl-Git = %{version}-%{release}
 Suggests:	rsync
+Provides:	git = %{version}-%{release}
 Obsoletes:	git-core-gitview
 Obsoletes:	python-Git
 Conflicts:	perl-Git < %{version}
