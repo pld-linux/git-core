@@ -57,7 +57,7 @@ BuildRequires:	perl-base
 %if %{with gnome_keyring} || %{with libsecret}
 BuildRequires:	pkgconfig
 %endif
-BuildRequires:	python-devel
+BuildRequires:	python3-devel
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
@@ -488,15 +488,14 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
 
-%{__sed} -i -e '1s|#!/usr/bin/env python$|#!%{__python}|' git-p4.py
-
 %build
 %{__aclocal}
 %{__autoconf}
 %configure \
 	--sysconfdir=%{_sysconfdir}/git-core \
 	%{?with_pcre:--with-libpcre2} \
-	--with-openssl
+	--with-openssl \
+	--with-python="%{__python3}"
 
 echo "BLK_SHA1=1" >> config.mak
 
@@ -650,9 +649,6 @@ ln -snf git-gui $RPM_BUILD_ROOT%{gitcoredir}/git-citool
 ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-https
 ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftp
 ln -snf git-remote-http $RPM_BUILD_ROOT%{gitcoredir}/git-remote-ftps
-
-# remove unneeded files
-%py_postclean
 
 %{__mv} $RPM_BUILD_ROOT%{_localedir}/pt{_PT,}
 %find_lang git
