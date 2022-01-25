@@ -58,6 +58,7 @@ BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 %endif
 BuildRequires:	python-devel
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.752
