@@ -104,8 +104,8 @@ Suggests:	less
 Suggests:	openssh-clients
 Suggests:	perl-Git = %{version}-%{release}
 Suggests:	rsync
-Obsoletes:	git-core-gitview
-Obsoletes:	python-Git
+Obsoletes:	git-core-gitview < 2.12.1
+Obsoletes:	python-Git < 1.8.5
 Conflicts:	perl-Git < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -403,7 +403,7 @@ Summary:	Perl interface to the Git version control system
 Summary(pl.UTF-8):	Perlowy interfejs do systemu kontroli wersji Git
 Group:		Development/Languages/Perl
 Requires:	perl-Error
-Obsoletes:	perl-git-core
+Obsoletes:	perl-git-core < 1.4.3.5
 BuildArch:	noarch
 
 %description -n perl-Git
