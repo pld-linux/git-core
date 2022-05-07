@@ -173,9 +173,9 @@ Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	setup >= 2.4.11-1
-Provides:	git-core-daemon
-Obsoletes:	git-core-daemon
-Obsoletes:	git-core-daemon-standalone
+Provides:	git-core-daemon = %{version}-%{release}
+Obsoletes:	git-core-daemon <= %{version}-%{release}
+Obsoletes:	git-core-daemon-standalone <= %{version}-%{release}
 
 %description daemon-inetd
 Git-daemon is a really simple TCP git daemon that can serve git
@@ -192,9 +192,9 @@ Summary:	Files necessary to run git-daemon as a standalone service
 Summary(pl.UTF-8):	Pliki niezbędne do uruchomienia git-daemona w trybie usługi samodzielnej
 Group:		Networking/Daemons
 Requires:	%{name} = %{version}-%{release}
-Provides:	git-core-daemon
-Obsoletes:	git-core-daemon
-Obsoletes:	git-core-daemon-inetd
+Provides:	git-core-daemon = %{version}-%{release}
+Obsoletes:	git-core-daemon <= %{version}-%{release}
+Obsoletes:	git-core-daemon-inetd <= %{version}-%{release}
 
 %description daemon-standalone
 Git-daemon is a really simple TCP git daemon that can serve git
