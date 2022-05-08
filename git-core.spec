@@ -15,7 +15,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.36.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -75,6 +75,7 @@ BuildRequires:	docbook-dtd45-xml
 BuildRequires:	xmlto
 %endif
 %if %{with tests}
+BuildRequires:	openssh-clients
 BuildRequires:	perl-CGI
 BuildRequires:	perl-Digest-MD5
 BuildRequires:	perl-Encode
