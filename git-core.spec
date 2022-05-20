@@ -363,6 +363,7 @@ Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-Encode
 Requires:	perl-Term-ReadKey
+Requires:	perl-modules
 
 %description svn
 Subversion support for Git.
