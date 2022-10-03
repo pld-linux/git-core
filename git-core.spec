@@ -14,12 +14,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.37.3
+Version:	2.38.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	dfefd2363f2d4f9cefd6e609e0c605fe
+# Source0-md5:	7d67a6c1ca1876aa8dd08951d0592a73
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -716,6 +716,7 @@ fi
 %attr(755,root,root) %{_bindir}/git-shell
 %attr(755,root,root) %{_bindir}/git-upload-archive
 %attr(755,root,root) %{_bindir}/git-upload-pack
+%attr(755,root,root) %{_bindir}/scalar
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}
 
 %if %{with doc}
@@ -727,11 +728,14 @@ fi
 %exclude %{_mandir}/man1/git-p4.1*
 %exclude %{_mandir}/man1/git-send-email.1*
 %{_mandir}/man1/git.1*
+%{_mandir}/man1/scalar.1*
 %{_mandir}/man5/gitattributes.5*
+%{_mandir}/man5/gitformat-*.5*
 %{_mandir}/man5/githooks.5*
 %{_mandir}/man5/gitignore.5*
 %{_mandir}/man5/gitmailmap.5*
 %{_mandir}/man5/gitmodules.5*
+%{_mandir}/man5/gitprotocol-*.5*
 %{_mandir}/man5/gitrepository-layout.5*
 %{_mandir}/man7/gitcli.7*
 %{_mandir}/man7/gitcore-tutorial.7*
@@ -752,6 +756,7 @@ fi
 %dir %{gitcoredir}
 %attr(755,root,root) %{gitcoredir}/*-*
 %attr(755,root,root) %{gitcoredir}/git
+%attr(755,root,root) %{gitcoredir}/scalar
 %dir %{gitcoredir}/mergetools
 %{gitcoredir}/mergetools/*
 
