@@ -386,6 +386,25 @@ Git tools for sending email.
 %description email -l pl.UTF-8
 Narzędzia Gita do wysyłania poczty.
 
+%package scalar
+Summary:	A tool for managing large Git repositories
+Summary(pl.UTF-8):	Narzędzie do zarządzania dużymi repozytoriami Git
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+
+%description scalar
+Scalar is a repository management tool that optimizes Git for use in
+large repositories. Scalar improves performance by configuring
+advanced Git settings, maintaining repositories in the background, and
+helping to reduce data sent across the network.
+
+%description scalar -l pl.UTF-8
+Scalar jest narzędziem do zarządzania repozytorium Git
+zoptymalizowanym pod kątem dużych repozytoriów. Scalar poprawia
+wydajność poprzez konfigurację zaawansowanych ustawień Git,
+utrzymywanie repozytoriów w tle oraz pomagając zredukować ilość
+danych wysyłanych po sieci.
+
 %package -n bash-completion-git
 Summary:	bash-completion for git
 Summary(pl.UTF-8):	bashowe uzupełnianie nazw dla gita
@@ -716,7 +735,6 @@ fi
 %attr(755,root,root) %{_bindir}/git-shell
 %attr(755,root,root) %{_bindir}/git-upload-archive
 %attr(755,root,root) %{_bindir}/git-upload-pack
-%attr(755,root,root) %{_bindir}/scalar
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}
 
 %if %{with doc}
@@ -728,7 +746,6 @@ fi
 %exclude %{_mandir}/man1/git-p4.1*
 %exclude %{_mandir}/man1/git-send-email.1*
 %{_mandir}/man1/git.1*
-%{_mandir}/man1/scalar.1*
 %{_mandir}/man5/gitattributes.5*
 %{_mandir}/man5/gitformat-*.5*
 %{_mandir}/man5/githooks.5*
@@ -756,7 +773,6 @@ fi
 %dir %{gitcoredir}
 %attr(755,root,root) %{gitcoredir}/*-*
 %attr(755,root,root) %{gitcoredir}/git
-%attr(755,root,root) %{gitcoredir}/scalar
 %dir %{gitcoredir}/mergetools
 %{gitcoredir}/mergetools/*
 
@@ -924,6 +940,14 @@ fi
 %if %{with doc}
 %{_mandir}/man1/git-imap-send.1*
 %{_mandir}/man1/git-send-email.1*
+%endif
+
+%files scalar
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/scalar
+%attr(755,root,root) %{gitcoredir}/scalar
+%if %{with doc}
+%{_mandir}/man1/scalar.1*
 %endif
 
 %files -n bash-completion-git
