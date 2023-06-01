@@ -5,21 +5,20 @@
 %bcond_without	tests_svn	# tests which use subversion
 %bcond_without	doc		# building/packaging docs/manuals (takes some time)
 %bcond_without	pcre		# perl-compatible regexes support
-%bcond_without	gnome_keyring	# gnome keyring credentials support
 %bcond_without	libsecret	# libsecret credentials support
 %bcond_without	tk		# Tcl/Tk interface
 
-# for AC: --without doc --without gnome_keyring --without tests
+# for AC: --without doc --without tests
 
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.40.1
+Version:	2.41.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	125d13c374a9ec9253f42c483bacec31
+# Source0-md5:	c1f58a12b891ad73927b8e4a3aa29c7b
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -40,11 +39,8 @@ BuildRequires:	gettext-devel
 %else
 BuildRequires:	gettext-tools
 %endif
-%if %{with gnome_keyring} || %{with libsecret}
+%if %{with libsecret}
 BuildRequires:	glib2-devel >= 2.0
-%endif
-%if %{with gnome_keyring}
-BuildRequires:	libgnome-keyring-devel
 %endif
 %if %{with libsecret}
 BuildRequires:	libsecret-devel
@@ -54,7 +50,7 @@ BuildRequires:	openssl-devel
 BuildRequires:	perl-Error > 0.15
 BuildRequires:	perl-MailTools
 BuildRequires:	perl-base
-%if %{with gnome_keyring} || %{with libsecret}
+%if %{with libsecret}
 BuildRequires:	pkgconfig
 %endif
 BuildRequires:	python3-devel
@@ -441,33 +437,13 @@ dowolne polecenia Gita; w przyszłości interfejs udostępni także
 specjalne metody do łatwego wykonywania operacji nietrywialnych do
 wykonania przy użyciu ogólnego interfejsu poleceń.
 
-%package -n gnome-keyring-git-core
-Summary:	GNOME Keyring authentication provider for Git
-Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME Keyring dla Gita
-Group:		X11/Applications
-URL:		http://git-scm.com/docs/gitcredentials.html
-Requires:	%{name} = %{version}-%{release}
-
-%description -n gnome-keyring-git-core
-Authentication provider module for Git which allows git client to
-authenticate using GNOME Keyring.
-
-You need to register it with:
-- git config --global credential.helper gnome-keyring
-
-%description -n gnome-keyring-git-core -l pl.UTF-8
-Moduł uwierzytelniający dla Gita pozwalający klientom git
-uwierzytelniać się przy użyciu mechanizmu GNOME Keyring.
-
-Moduł trzeba zarejestrować poleceniem:
-- git config --global credential.helper gnome-keyring
-
 %package credential-libsecret
 Summary:	GNOME authentication provider for Git using libsecret
 Summary(pl.UTF-8):	Moduł uwierzytelniający GNOME dla Gita wykorzystujący libsecret
 Group:		X11/Applications
 URL:		http://git-scm.com/docs/gitcredentials.html
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	gnome-keyring-git-core < 2.41.0
 
 %description credential-libsecret
 Authentication provider module for Git which allows git client to
@@ -504,8 +480,6 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 %patch1 -p1
 %patch2 -p1
 
-%{__rm} {Documentation/technical,contrib/credential/gnome-keyring}/.gitignore
-
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
 
@@ -531,13 +505,6 @@ echo "BLK_SHA1=1" >> config.mak
 	V=1
 
 %{__make} -C contrib/subtree
-
-%if %{with gnome_keyring}
-%{__make} -C contrib/credential/gnome-keyring \
-	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags} -Wall" \
-	LDFLAGS="%{rpmldflags}"
-%endif
 
 %if %{with libsecret}
 %{__make} -C contrib/credential/libsecret \
@@ -606,10 +573,6 @@ cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%
 %if %{with doc}
 %{__make} -C contrib/subtree install-man \
 	DESTDIR=$RPM_BUILD_ROOT
-%endif
-
-%if %{with gnome_keyring}
-install -p contrib/credential/gnome-keyring/git-credential-gnome-keyring $RPM_BUILD_ROOT%{gitcoredir}
 %endif
 
 %if %{with libsecret}
@@ -792,9 +755,6 @@ fi
 %exclude %{gitcoredir}/git-remote-hg
 %exclude %{gitcoredir}/git-svn
 %exclude %{gitcoredir}/mergetools/p4merge
-%if %{with gnome_keyring}
-%exclude %{gitcoredir}/git-credential-gnome-keyring
-%endif
 %if %{with libsecret}
 %exclude %{gitcoredir}/git-credential-libsecret
 %endif
@@ -967,12 +927,6 @@ fi
 %dir %{perl_vendorlib}/Git/LoadCPAN/Mail
 %{perl_vendorlib}/Git/LoadCPAN/Mail/Address.pm
 %{?with_doc:%{_mandir}/man3/Git.3pm*}
-
-%if %{with gnome_keyring}
-%files -n gnome-keyring-git-core
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gitcoredir}/git-credential-gnome-keyring
-%endif
 
 %if %{with libsecret}
 %files credential-libsecret
