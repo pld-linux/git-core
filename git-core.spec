@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.43.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -92,9 +92,7 @@ Requires:	grep
 # git-pull: printf
 Requires:	coreutils
 Requires:	sed
-Suggests:	git-core-bzr
 Suggests:	git-core-cvs
-Suggests:	git-core-hg
 Suggests:	git-core-p4
 Suggests:	git-core-svn
 Suggests:	less
@@ -300,19 +298,6 @@ Git tools for importing Arch repositories.
 %description arch -l pl.UTF-8
 Narzędzia Gita do importowania repozytoriów Archa.
 
-%package bzr
-Summary:	Git tools for working with bzr repositories
-Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami bzr
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	bzr
-
-%description bzr
-Git tools for working with bzr repositories.
-
-%description bzr -l pl.UTF-8
-Narzędzia Gita do pracy z repozytoriami bzr.
-
 %package cvs
 Summary:	CVS support for Git
 Summary(pl.UTF-8):	Obsługa CVS dla Gita
@@ -326,19 +311,6 @@ CVS support for Git.
 
 %description cvs -l pl.UTF-8
 Obsługa CVS dla Gita.
-
-%package hg
-Summary:	Git tools for working with mercurial repositories
-Summary(pl.UTF-8):	Narzędzia Gita do pracy z repozytoriami mercuriala
-Group:		Development/Tools
-Requires:	%{name} = %{version}-%{release}
-Requires:	mercurial >= 1.8
-
-%description hg
-Git tools for working with mercurial repositories.
-
-%description hg -l pl.UTF-8
-Narzędzia Gita do pracy z repozytoriami mercuriala.
 
 %package p4
 Summary:	Git tools for working with Perforce depots
@@ -590,9 +562,6 @@ sed -i -e "1 a zstyle ':completion:*:*:git:*' script %{bash_compdir}/git" $RPM_B
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
 cp -p contrib/completion/git-prompt.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/contrib/completion
 
-# Install bzr and hg remote helpers from contrib
-install -p contrib/remote-helpers/git-remote-{bzr,hg} $RPM_BUILD_ROOT%{gitcoredir}
-
 # gitweb
 %{__mv} $RPM_BUILD_ROOT{%{appdir},%{cgibindir}}/gitweb.cgi
 ln -s %{cgibindir}/gitweb.cgi $RPM_BUILD_ROOT%{appdir}/gitweb.cgi
@@ -751,8 +720,6 @@ fi
 %exclude %{gitcoredir}/git-gui
 %exclude %{gitcoredir}/git-imap-send
 %exclude %{gitcoredir}/git-instaweb
-%exclude %{gitcoredir}/git-remote-bzr
-%exclude %{gitcoredir}/git-remote-hg
 %exclude %{gitcoredir}/git-svn
 %exclude %{gitcoredir}/mergetools/p4merge
 %if %{with libsecret}
@@ -859,10 +826,6 @@ fi
 %{_mandir}/man1/git-archimport.1*
 %endif
 
-%files bzr
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gitcoredir}/git-remote-bzr
-
 %files cvs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/git-cvsserver
@@ -871,10 +834,6 @@ fi
 %{_mandir}/man1/git-cvs*.1*
 %{_mandir}/man7/gitcvs-migration.7*
 %endif
-
-%files hg
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gitcoredir}/git-remote-hg
 
 %files p4
 %defattr(644,root,root,755)
