@@ -14,7 +14,7 @@ Summary:	Distributed version control system focused on speed, effectivity and us
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
 Version:	2.48.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
@@ -29,6 +29,7 @@ Source7:	gitolite.pl
 Patch0:		%{name}-key-bindings.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		cherry-picked-commitlog.patch
+Patch3:		no-meson-test-check.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -451,6 +452,7 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 %patch -P0 -p0
 %patch -P1 -p1
 %patch -P2 -p1
+%patch -P3 -p1
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
