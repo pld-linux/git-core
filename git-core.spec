@@ -448,9 +448,9 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 
 %prep
 %setup -q -n git-%{version}
-%patch0 -p0
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p0
+%patch -P1 -p1
+%patch -P2 -p1
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
