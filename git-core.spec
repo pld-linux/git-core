@@ -30,6 +30,7 @@ Patch0:		%{name}-key-bindings.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		cherry-picked-commitlog.patch
 Patch3:		no-meson-test-check.patch
+Patch4:		tests-mksh-compat.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -453,6 +454,7 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 %patch -P1 -p1
 %patch -P2 -p1
 %patch -P3 -p1
+%patch -P4 -p1
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
