@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.48.1
+Version:	2.49.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	99656f1481e70701198257ada703a480
+# Source0-md5:	7e607007a44de52cccda06040fe9362c
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -30,7 +30,6 @@ Patch0:		%{name}-key-bindings.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		cherry-picked-commitlog.patch
 Patch3:		no-meson-test-check.patch
-Patch4:		tests-mksh-compat.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
@@ -454,7 +453,6 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 %patch -P1 -p1
 %patch -P2 -p1
 %patch -P3 -p1
-%patch -P4 -p1
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
