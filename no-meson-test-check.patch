@@ -1,11 +1,11 @@
---- git-2.48.0/t/Makefile.orig	2025-01-10 18:43:46.000000000 +0100
-+++ git-2.48.0/t/Makefile	2025-01-11 18:54:04.561948727 +0100
-@@ -59,7 +59,7 @@
+--- git-2.50.0/t/Makefile~	2025-06-16 07:42:57.000000000 +0200
++++ git-2.50.0/t/Makefile	2025-06-17 09:18:14.264002642 +0200
+@@ -59,7 +59,7 @@ CHAINLINTSUPPRESS = GIT_TEST_EXT_CHAIN_L
  
  all:: $(DEFAULT_TEST_TARGET)
  
--test: pre-clean check-chainlint check-meson $(TEST_LINT)
-+test: pre-clean check-chainlint $(TEST_LINT)
+-test: pre-clean check-meson $(TEST_LINT)
++test: pre-clean $(TEST_LINT)
  	$(CHAINLINTSUPPRESS) $(MAKE) aggregate-results-and-cleanup
  
- failed:
+ ifneq ($(PERL_PATH),)
