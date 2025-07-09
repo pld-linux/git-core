@@ -1,11 +1,11 @@
---- git-2.29.0/gitk-git/gitk.orig	2020-10-19 21:40:17.774293686 +0200
-+++ git-2.29.0/gitk-git/gitk	2020-10-19 21:43:33.023626764 +0200
-@@ -9711,7 +9711,7 @@
+--- git-2.50.1/gitk-git/gitk~	2025-07-09 13:12:46.000000000 +0200
++++ git-2.50.1/gitk-git/gitk	2025-07-09 13:13:48.569902552 +0200
+@@ -9917,7 +9917,7 @@ proc cherrypick {} {
      update
      # Unfortunately git-cherry-pick writes stuff to stderr even when
      # no error occurs, and exec takes that as an indication of error...
--    if {[catch {exec sh -c "git cherry-pick -r $rowmenuid 2>&1"} err]} {
-+    if {[catch {exec sh -c "git cherry-pick -x -r $rowmenuid 2>&1"} err]} {
+-    if {[catch {safe_exec [list sh -c "git cherry-pick -r $rowmenuid 2>&1"]} err]} {
++    if {[catch {safe_exec [list sh -c "git cherry-pick -x -r $rowmenuid 2>&1"]} err]} {
          notbusy cherrypick
          if {[regexp -line \
                   {Entry '(.*)' (would be overwritten by merge|not uptodate)} \
