@@ -23,9 +23,9 @@ index 45e3380..0c6f3af 100755
 +        bindtags $e [linsert [bindtags $e] 2 entrybind]
 +    }
 +
-     if {$use_ttk} {
-         bind .ctop <Map> {
-             bind %W <Map> {}
+     bind .ctop <Map> {
+         bind %W <Map> {}
+         %W sashpos 0 $::geometry(topheight)
 @@ -2759,12 +2763,8 @@
  proc bindkey {ev script} {
      global entries
