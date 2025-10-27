@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.51.1
-Release:	2
+Version:	2.51.2
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	2dca6a751c4578c6e1cdb696b82a013c
+# Source0-md5:	6d73314753ba69d826c4b33e9ee3a8fc
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -497,8 +497,6 @@ echo "BLK_SHA1=1" >> config.mak
 %if %{without tests_cvs}
 %{__rm} t/t*cvs*.sh || :
 %endif
-# https://lore.kernel.org/git/20251018095125.GE1060824@coredump.intra.peff.net/T/
-GIT_SKIP_TESTS="$GIT_SKIP_TESTS t7528.2"
 %if %{without tests_svn}
 GIT_SKIP_TESTS="$GIT_SKIP_TESTS t91??"
 %endif
