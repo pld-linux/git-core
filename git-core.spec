@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.51.2
+Version:	2.52.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	6d73314753ba69d826c4b33e9ee3a8fc
+# Source0-md5:	4ed255ef5f557f7e41349a7ee0938c16
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -537,7 +537,6 @@ cp -p xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
 cp -p block-sha1/sha1.h $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
 cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
-cp -p xdiff/lib.a $RPM_BUILD_ROOT%{_libdir}/libgit_xdiff.a
 cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 %{__make} -C contrib/subtree install \
@@ -749,7 +748,6 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_libdir}/libgit.a
-%{_libdir}/libgit_xdiff.a
 
 %if %{with tk}
 %files gitk
