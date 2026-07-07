@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.54.0
-Release:	2
+Version:	2.55.0
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	eb1137f556bd67cb4cea974275e51297
+# Source0-md5:	758c02a1b621cc0868ee0a0d99573e6b
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -30,10 +30,10 @@ Patch0:		%{name}-key-bindings.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		cherry-picked-commitlog.patch
 Patch3:		no-meson-test-check.patch
-Patch4:		child-cleanup.patch
 URL:		http://git-scm.com/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake
+BuildRequires:	cargo
 BuildRequires:	curl-devel
 BuildRequires:	expat-devel
 %if "%{pld_release}" == "ac"
@@ -59,7 +59,8 @@ BuildRequires:	python3-devel
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpm-perlprov >= 4.1-13
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.752
+BuildRequires:	rpmbuild(macros) >= 2.050
+BuildRequires:	rust >= 1.49.0
 BuildRequires:	tar >= 1:1.22
 %if %{with tk}
 # wish
@@ -89,6 +90,7 @@ BuildRequires:	subversion
 %endif
 Conflicts:	pdksh < 5.2.14-46
 %endif
+%{?rust_req}
 # git-sh-setup: sane_grep
 Requires:	grep
 # git-pull: printf
@@ -454,7 +456,6 @@ Dopełnianie parametrów komendy git dla powłoki zsh.
 %patch -P1 -p1
 %patch -P2 -p1
 %patch -P3 -p1
-%patch -P4 -p1 -R
 
 # we build things in contrib but want to have it clean for doc purporses, too
 cp -a contrib contrib-doc
@@ -477,6 +478,8 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_LOGO="/gitweb/git-logo.png" \
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	NO_PERL_CPAN_FALLBACKS=1 \
+	CARGO_ARGS="%{__cargo_common_opts} %{!?debug:--release} --target %rust_target --target-dir %{cargo_targetdir}" \
+	RUST_TARGET_DIR="%{cargo_objdir}" \
 	perllibdir=%{perl_vendorlib} \
 	V=1
 
