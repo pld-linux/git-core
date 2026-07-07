@@ -507,7 +507,8 @@ GIT_SKIP_TESTS="$GIT_SKIP_TESTS t91??"
 %endif
 export GIT_SKIP_TESTS
 %{__make} test \
-	NO_PERL_CPAN_FALLBACKS=1
+	NO_PERL_CPAN_FALLBACKS=1 \
+	RUST_TARGET_DIR="%{cargo_objdir}"
 %endif
 
 %install
