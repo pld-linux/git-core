@@ -525,6 +525,7 @@ EOF
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	NO_PERL_CPAN_FALLBACKS=1 \
+	RUST_TARGET_DIR="%{cargo_objdir}" \
 	perllibdir=%{perl_vendorlib}
 
 %if %{with doc}
