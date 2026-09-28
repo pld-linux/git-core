@@ -13,12 +13,12 @@
 Summary:	Distributed version control system focused on speed, effectivity and usability
 Summary(pl.UTF-8):	Rozproszony system śledzenia treści skupiony na szybkości, wydajności i użyteczności
 Name:		git-core
-Version:	2.55.0
+Version:	2.56.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	https://www.kernel.org/pub/software/scm/git/git-%{version}.tar.xz
-# Source0-md5:	758c02a1b621cc0868ee0a0d99573e6b
+# Source0-md5:	d6ab87e82d6c76f9a31bfb5ab4e402dc
 Source1:	%{name}-gitweb.conf
 Source2:	%{name}-gitweb-httpd.conf
 Source3:	%{name}-gitweb-lighttpd.conf
@@ -478,8 +478,8 @@ echo "BLK_SHA1=1" >> config.mak
 	GITWEB_LOGO="/gitweb/git-logo.png" \
 	GITWEB_FAVICON="/gitweb/git-favicon.png" \
 	NO_PERL_CPAN_FALLBACKS=1 \
-	CARGO_ARGS="%{__cargo_common_opts} %{!?debug:--release} --target %rust_target --target-dir %{cargo_targetdir}" \
-	RUST_TARGET_DIR="%{cargo_objdir}" \
+	CARGO_ARGS="%{__cargo_common_opts} %{!?debug:--release}" \
+	CARGO_BUILD_TARGET="%rust_target" \
 	perllibdir=%{perl_vendorlib} \
 	V=1
 
@@ -525,7 +525,7 @@ EOF
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	NO_PERL_CPAN_FALLBACKS=1 \
-	RUST_TARGET_DIR="%{cargo_objdir}" \
+	CARGO_BUILD_TARGET="%rust_target" \
 	perllibdir=%{perl_vendorlib}
 
 %if %{with doc}
