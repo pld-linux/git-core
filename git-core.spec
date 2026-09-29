@@ -65,8 +65,8 @@ BuildRequires:	tar >= 1:1.22
 %if %{with tk}
 # wish
 BuildRequires:	tk
-BuildRequires:	xz
 %endif
+BuildRequires:	xz
 BuildRequires:	zlib-devel
 %if %{with doc}
 BuildRequires:	asciidoc >= 7.1.2-3
@@ -471,6 +471,7 @@ cp -a contrib contrib-doc
 
 echo "BLK_SHA1=1" >> config.mak
 
+export RUSTFLAGS="%{rpmrustflags}"
 %{__make} \
 	GITWEB_CONFIG="%{webappdir}/gitweb.conf" \
 	GITWEB_PROJECTROOT="/var/lib/git" \
@@ -508,7 +509,7 @@ GIT_SKIP_TESTS="$GIT_SKIP_TESTS t91??"
 export GIT_SKIP_TESTS
 %{__make} test \
 	NO_PERL_CPAN_FALLBACKS=1 \
-	RUST_TARGET_DIR="%{cargo_objdir}"
+	CARGO_BUILD_TARGET="%rust_target"
 %endif
 
 %install
