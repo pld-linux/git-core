@@ -121,6 +121,16 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		cgibindir	%{_prefix}/lib/cgi-bin
 %define		gitcoredir	%{_libexecdir}/%{name}
 
+# make test and make install regenerate gitweb.cgi and scripts unless they get the build's settings
+%define		makeopts \\\
+	GITWEB_CONFIG="%{webappdir}/gitweb.conf" \\\
+	GITWEB_PROJECTROOT="/var/lib/git" \\\
+	NO_PERL_CPAN_FALLBACKS=1 \\\
+	CARGO_ARGS="%{__cargo_common_opts} %{!?debug:--release}" \\\
+	CARGO_BUILD_TARGET="%rust_target" \\\
+	%{?debug:DEBUG=1} \\\
+	perllibdir=%{perl_vendorlib}
+
 %description
 "git" can mean anything, depending on your mood.
 
@@ -473,15 +483,7 @@ echo "BLK_SHA1=1" >> config.mak
 
 export RUSTFLAGS="%{rpmrustflags}"
 %{__make} \
-	GITWEB_CONFIG="%{webappdir}/gitweb.conf" \
-	GITWEB_PROJECTROOT="/var/lib/git" \
-	GITWEB_CSS="/gitweb/gitweb.css" \
-	GITWEB_LOGO="/gitweb/git-logo.png" \
-	GITWEB_FAVICON="/gitweb/git-favicon.png" \
-	NO_PERL_CPAN_FALLBACKS=1 \
-	CARGO_ARGS="%{__cargo_common_opts} %{!?debug:--release}" \
-	CARGO_BUILD_TARGET="%rust_target" \
-	perllibdir=%{perl_vendorlib} \
+	%{makeopts} \
 	V=1
 
 %{__make} -C contrib/subtree
@@ -508,8 +510,7 @@ GIT_SKIP_TESTS="$GIT_SKIP_TESTS t91??"
 %endif
 export GIT_SKIP_TESTS
 %{__make} test \
-	NO_PERL_CPAN_FALLBACKS=1 \
-	CARGO_BUILD_TARGET="%rust_target"
+	%{makeopts}
 %endif
 
 %install
@@ -524,10 +525,8 @@ cat << EOF > $RPM_BUILD_ROOT%{_sysconfdir}/git-core/gitconfig
 EOF
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	NO_PERL_CPAN_FALLBACKS=1 \
-	CARGO_BUILD_TARGET="%rust_target" \
-	perllibdir=%{perl_vendorlib}
+	%{makeopts} \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %if %{with doc}
 %{__make} install-doc \
@@ -544,7 +543,7 @@ cp -a compat $RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -p xdiff/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/xdiff
 install -d $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
 cp -p block-sha1/sha1.h $RPM_BUILD_ROOT%{_includedir}/%{name}/block-sha1
-cp -p libgit.a $RPM_BUILD_ROOT%{_libdir}
+cp -p libgit.a %{cargo_objdir}/libgitcore.a $RPM_BUILD_ROOT%{_libdir}
 cp -p {Makefile,config.mak,config.mak.autogen,config.mak.uname} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 %{__make} -C contrib/subtree install \
@@ -757,6 +756,7 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_libdir}/libgit.a
+%{_libdir}/libgitcore.a
 
 %if %{with tk}
 %files gitk
